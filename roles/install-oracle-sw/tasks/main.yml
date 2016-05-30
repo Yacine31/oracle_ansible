@@ -1,0 +1,16 @@
+---
+# 
+# installation des binaires ORACLE : grid infra et/ou database
+#
+
+  # ---------------------------------------------------
+  # configuration Linux : Utilisateurs et groupes
+  # ---------------------------------------------------
+  - include: users_configuration.yml
+
+  - include: install_grid_infra.yml
+    when: install_grid_infra
+
+  - include: install_database.yml
+    when: install_database
+

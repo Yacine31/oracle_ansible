@@ -1,0 +1,112 @@
+---
+# 
+# installation des binaires ORACLE
+#
+
+  - name: Création des répertoires
+    file: dest={{ item.dir }} mode={{ item.mode }} owner={{ item.owner }} group={{ item.group }} state=directory
+    with_items:
+      - { dir: "{{ oracle_base }}", owner: "{{ db_user }}", group: "{{ oracle_group }}", mode: 755 }
+      - { dir: "{{ oracle_inventory_loc }}", owner: "{{ db_user }}", group: "{{ oracle_group }}", mode: 755 }
+      - { dir: "{{ db_home }}", owner: "{{ db_user }}", group: "{{ oracle_group }}", mode: 775 }
+      - { dir: "{{ oracle_stage }}", owner: "{{ db_user }}", group: "{{ oracle_group }}", mode: 775 }
+    tags: createdir
+
+  - name: vérification de l espace disque disponible sur oracle_racine
+    action: shell df -P {{ oracle_racine }} | awk 'END { print $4 }'
+    register: u01size
+    failed_when: u01size.stdout|int < {{ u01_free_space_gb }} * 1024 * 1024
+    tags: diskfreespace
+
+  - name: vérification de l espace disque disponible sur /tmp
+    action: shell df -P /tmp | awk 'END { print $4 }'
+    register: tmpsize
+    failed_when: tmpsize.stdout|int < {{ tmp_free_space_gb }} * 1024 * 1024
+    tags: diskfreespace
+
+  - name: Vérifier si une installation existe ...
+    shell: grep "{{ db_home  }}" "{{ oracle_inventory_loc }}/ContentsXML/inventory.xml" | wc -l
+    register: checkdbswinstall
+    failed_when: checkdbswinstall.stdout != "0"
+    tags: checkifexists
+
+  - name: Extraction des binaires Oracle
+    unarchive: src={{ item[0].filename }}  dest={{ oracle_stage }}
+    with_nested: 
+      - "{{ db_software }}"
+      - "{{ db_version }}"
+    when: item[0].version == db_version  
+    sudo: yes
+    sudo_user: "{{ db_user }}"
+    tags: transfert
+
+  - name: Linux 7 - application du pacth 19404309 pour installer 11.2 sur Linux 7
+    # https://updates.oracle.com/Orion/Services/download?type=readme&aru=17984752
+    # cela consiste à copier le fichier cvu_prereq.xml dans le répertoire d'install
+    copy: src=cvu_prereq.xml dest={{ oracle_stage }}/database/stage/cvu owner={{ db_user }} group={{ oracle_group }} mode=644
+    sudo: yes
+    sudo_user: "{{ db_user }}"
+    tags: patch_p19404309
+    when: ansible_distribution_major_version == '7' and db_version == "11.2.0.4"
+
+  - name: Copie du fichier de réponse pour installation silencieuse
+    template: src=db_install_{{ db_version }}.j2 dest={{ oracle_stage }}/{{ db_response_file }}
+    sudo: yes
+    sudo_user: "{{ db_user }}"
+    tags: responsefile
+
+  - name: Création du script d installation silencieuse
+    template: src=run_db_install.sh.j2 dest={{ oracle_stage }}/run_db_install.sh mode=755
+    sudo: yes
+    sudo_user: "{{ db_user }}"
+    tags: responsefile
+
+  - name: Installation des binaires Oracle
+    shell: "{{ oracle_stage }}/run_db_install.sh"
+    sudo: yes
+    sudo_user: "{{ db_user }}"
+    register: oradbinstall
+    tags: orainstall
+
+  - debug: var=oradbinstall.stdout_lines
+    with_items: oradbinstall.results
+    tags: orainstall
+
+  - name: Vérification de l existance du fichier orainstRoot.sh
+    stat: path="{{ oracle_inventory_loc }}/orainstRoot.sh"
+    register: orainstRoot
+
+  - name: Exécution du script orainstRoot.sh
+    shell: "{{ oracle_inventory_loc }}/orainstRoot.sh"
+    sudo: yes
+    sudo_user: root
+    when: orainstRoot.stat.exists
+    tags: runroot
+
+  - name: Exécution du script root.sh
+    shell: "{{ db_home }}/root.sh"
+    sudo: yes
+    sudo_user: root
+    tags: runroot
+
+  - name: Résultat de l installation via OPatch
+    shell: "{{ db_home }}/OPatch/opatch lsinventory"
+    sudo: yes
+    sudo_user: "{{ db_user }}"
+    register: opatchls
+    tags: opatch
+
+  - debug: var=opatchls.stdout_lines
+    with_items: opatchls.results
+    tags: opatch
+
+  # suppression des binaires, du fichier de réponse et du script d'install
+  - name: suppression du repertoire des fichiers decompressés
+    file: path={{ oracle_stage }}/database state=absent
+
+  - name: suppression du fichier de réponse
+    file: path={{ oracle_stage }}/{{ db_response_file }} state=absent
+
+  - name: suppression du script d'installation
+    file: path={{ oracle_stage }}/run_db_install.sh state=absent
+

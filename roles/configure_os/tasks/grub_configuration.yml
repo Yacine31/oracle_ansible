@@ -1,0 +1,29 @@
+---
+  # --------------------------------------------------- 
+  # configuration Linux : grub pour Linux 6 et 7
+  # ---------------------------------------------------
+  - name: Configuration grub - Suppression de quiet et rhgb
+    shell: grubby --update-kernel=ALL --remove-args={{ item }}
+    with_items:
+        - "rhgb"
+        - "quiet"
+
+  - name: Configuration grub -  Désactivation de Transparent Hugepages, numa et deadline
+    shell: grubby --update-kernel=ALL --args={{ item }}
+    with_items:
+        - "transparent_hugepage=never"
+        - "numa=off"
+        - "elevator=deadline"
+
+  - name: Linux 6 et 7 - Update grub
+    shell: grubby --update-kernel=ALL
+
+  - name: Linux 6 - Configuration du mode 3 comme mode de démarrage par défaut
+    replace: dest=/etc/inittab regexp='id:5:initdefault:' replace='id:3:initdefault:'
+    when: ansible_distribution_major_version == '6'
+
+  - name: Linux 7 - Configuration du mode 3 comme mode de démarrage par défaut
+    shell: systemctl set-default multi-user.target
+    when: ansible_distribution_major_version == '7'
+    tags: multi-user
+

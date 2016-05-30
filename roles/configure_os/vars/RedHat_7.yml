@@ -1,0 +1,91 @@
+# Fichier de paramètres pour Redhat 7
+---
+
+  #----------------------------------------------------------------------
+  # url du dépôt epel
+  #----------------------------------------------------------------------
+  epel_rpm: "https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm"
+
+  #----------------------------------------------------------------------
+  # packages linux nécessaires pour travailler
+  #----------------------------------------------------------------------
+  linux_packages:
+      - bind-utils
+      - device-mapper-multipath
+      - multitail
+      - net-tools
+      - ethtool
+      - elfutils-libelf-devel
+      - nscd
+      - ntp
+      - sysstat
+      - tree
+      - unzip
+      - wget
+      - vim
+      - nmap
+      - htop
+      - rlwrap
+      - lvm2
+      - ncurses
+      - nfs-utils
+      - readline
+      - xfsprogs
+      - system-storage-manager
+      - binutils
+      - compat-libcap1
+      - compat-libstdc++-33
+      - gcc
+      - gcc-c++
+      - glibc
+      - glibc-devel
+      - ksh
+      - libaio
+      - libaio-devel
+      - libgcc
+      - libstdc++
+      - libstdc++-devel
+      - libXi
+      - libXtst
+      - make
+      - sysstat
+      - unixODBC
+      - unixODBC-devel
+      - bind-utils
+      - btrfs-progs
+      - cpp
+      - ethtool
+      - glibc-headers
+      - kernel-headers
+      - kmod-oracleasm
+      - libX11
+      - libXau
+      - libXext
+      - libXp
+      - libXt
+      - libXtst
+      - libselinux-python
+      - libtool-ltdl
+      - libxcb
+      - module-init-tools
+      - mpfr
+      - ncurses-devel
+      - ncurses-libs
+      - nfs-utils
+      - nscd
+      - ntp
+      - openssh-clients
+      - oracleasm-support
+      - parted
+      - procps
+      - readline
+      - readline-devel
+      - util-linux-ng
+      - vim-enhanced
+      - xdpyinfo
+      - xfsprogs
+      - xorg-x11-utils
+      - xorg-x11-xauth
+      - xorg-x11-xinit
+      - xsetroot
+      - xterm

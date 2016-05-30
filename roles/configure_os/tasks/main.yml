@@ -1,0 +1,54 @@
+---
+  - name: Vérification de la distribution, la version et le kernel
+    assert:
+     that: ansible_architecture == 'x86_64' and ansible_os_family == 'RedHat' and ansible_system == 'Linux' 
+    tags: oscheck
+
+  # ---------------------------------------------------
+  # Ajout du fichier de paramètres : Linux_6.yml ou Linux_7.yml
+  # ---------------------------------------------------
+  - name: ajout des paramètres spécifique à l'OS
+    include_vars: "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
+
+  # ---------------------------------------------------
+  # configuration des packages necessaires pour Linux
+  # ---------------------------------------------------
+  - include: os_configuration.yml
+
+  # ---------------------------------------------------
+  # configuration réseau
+  # ---------------------------------------------------
+  - include: network_configuration.yml
+
+  # --------------------------------------------------- 
+  # configuration Linux : grub
+  # ---------------------------------------------------
+  - include: grub_configuration.yml
+
+  # --------------------------------------------------- 
+  # configuration Linux : Personnalisation
+  # ---------------------------------------------------
+  - name: Ajout du fichier z_oracle dans /etc/profile.d
+    copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
+
+  # --------------------------------------------------- 
+  # configuration Linux : config oracle pour logrotate
+  # ---------------------------------------------------
+  - name: Gestion des logs Oracle - copy du fichier de configuration pour logrotate
+    copy: src=logrotate_oracle dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+    tags: logrotate
+
+  # --------------------------------------------------- 
+  # configuration Linux : Sécurisation
+  # ---------------------------------------------------
+  - include: secure_configuration.yml
+    when: ansible_distribution_major_version == '7'
+
+  # --------------------------------------------------- 
+  # affichage des adresse IP sur la console de logging pour les VMs
+  # ---------------------------------------------------
+  - include: ip_on_screen_loggin.yml
+    when: ansible_virtualization_type  == "virtualbox"
+
+ 
+

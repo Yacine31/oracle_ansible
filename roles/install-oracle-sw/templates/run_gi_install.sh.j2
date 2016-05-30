@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+#!/bin/bash
+
+chkifinstalled=`grep "{{ gi_home }}" "{{ oracle_inventory_loc }}/ContentsXML/inventory.xml" |wc -l`
+if [[ $chkifinstalled == 1 ]]; then
+ echo "Error: ORACLE_HOME: {{ gi_home }} already present. Exiting"
+ exit 0
+else
+{{ oracle_stage }}/grid/runInstaller -responseFile {{ oracle_stage }}/{{ gi_response_file }} -ignorePrereq -ignoreSysPrereqs -silent -waitforcompletion
+fi
+

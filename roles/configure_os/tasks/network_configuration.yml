@@ -1,0 +1,39 @@
+---
+  # --------------------------------------------------- 
+  # configuration réseau
+  # ---------------------------------------------------
+  
+  - name: Vérification de l enregistrement DNS
+    command: nslookup {{ ansible_hostname }}
+    register: ns
+    ignore_errors: True
+    tags: etchosts
+  
+  - name: Ajout du host dans /etc/hosts si absent
+    lineinfile: dest=/etc/hosts regexp='.*{{ ansible_fqdn }}$' 
+                line="{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_fqdn }}" 
+                state=present
+    # when: "'find {{ ansible_hostname }}: NXDOMAIN' in ns.stdout"
+    tags: etchosts
+  
+  - name: Modification resolv.conf pour ajouter attempts et timeout
+    lineinfile: dest=/etc/resolv.conf line="{{ item.line }}"
+    with_items:
+     - { line: "options attempts:2" }
+     - { line: "options timeout:1" }
+  
+  - name: Desactivation de IP v6 et ZeroConf (Doc ID 1161144.1)
+    lineinfile: dest=/etc/sysconfig/network line="NOZEROCONF=yes" regexp="^NOZEROCONF" state=present
+
+  - name: Desactivation de IP v6 - NETWORKING_IPV6
+    lineinfile: dest=/etc/sysconfig/network line="NETWORKING_IPV6=no" regexp="^NETWORKING_IPV6" state=present
+
+  - name: Desactivation de IP v6 - IPV6INIT
+    lineinfile: dest=/etc/sysconfig/network line="IPV6INIT=no" regexp="^IPV6INIT" state=present
+
+  - name: desactivation permanente de IP v6
+    lineinfile: 
+      dest=/etc/modprobe.d/desactivation_ipv6.conf 
+      line="options ipv6 disable=1" 
+      state=present
+      create=yes

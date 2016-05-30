@@ -1,0 +1,35 @@
+deux books : 
+- configure_OS
+- install-oracle-sw
+- fichier hosts avec les ip/nom des serveurs cibles
+
+
+Pour une première configuration, faire ssh-copy-id root@ip => pour copier la clé ssh vers la cible
+
+Le premier configure l'OS seulement
+Le second va créer les users (grid et/ou oracle) et faire l'installation DB et/ou GI
+
+
+
+
+Pour la configuration de l'Os tout est automatisé, rien à configurer juste exécuter le book :
+
+# ansible-playbook -i hosts book-configure_OS.yml
+
+
+
+Pour l'installation GI + DB :
+aller dans le fichier roles/install-oracle-sw/vars/main.yml
+
+1 - Les chemins vers les sources d'Oracle :
+    oracle_sw_source_local: "/media/sf_Oracle_Software/Oracle_Database"
+    et voir s'il faut adapter aussi les variables : gi_software et db_software
+2 - Ensuite :
+    install_grid_infra: true ou false
+    install_database: true ou false
+    gi_version: "11.2.0.4" ou "12.1.0.2"
+    db_version: "12.1.0.2" ou "11.2.0.4"
+
+3 - executer le book : ansible-playbook -i hosts book-install-oracle-sw.yml
+
+

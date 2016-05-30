@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "$1" = lo ]; then
+    exit 0
+fi
+
+cp /etc/issue.origine /etc/issue
+echo "--------------- ADRESSE IP DE LA VM --------------" >> /etc/issue
+/usr/local/bin/get-ip.sh >> /etc/issue
+echo "--------------- ADRESSE IP DE LA VM --------------" >> /etc/issue
+

@@ -1,0 +1,109 @@
+---
+
+#-------------------------------------------------------------
+# tous ce qu'il faut faire sur une installation Ubuntu
+#-------------------------------------------------------------
+
+- hosts: all 
+  sudo: yes
+  remote_user: merlin
+
+  tasks:
+
+  - name: recuperer le nom de la distribution
+    action: shell lsb_release -c | awk '{ print $2 '} 
+    register: codename
+
+  - name: activation des depots supplemntaire 
+    apt_repository: repo='deb http://archive.canonical.com/ubuntu {{ codename }} {{ item }}' state=present
+    with_items:
+        - main
+        - restricted
+        - universe
+        - multiverse
+        - partner
+
+  - name: activation des depots supplemntaire src 
+    apt_repository: repo='deb-src http://archive.canonical.com/ubuntu {{ codename }} {{ item }}' state=present
+    with_items:
+        - main
+        - restricted
+        - universe
+        - multiverse
+        - partner
+
+  - name: ajout du depot pour la librairie libdvdcss
+    apt_repository: repo='{{ item }} http://download.videolan.org/pub/debian/stable/ /' filename=libdvdcss
+    with_items:
+        - deb
+        - deb-src
+
+  - name: ajout de la cle pour le depot de la librairie libdvdcss
+    apt_key: url=http://download.videolan.org/pub/debian/videolan-apt.asc state=present
+
+  - name: mise a jour de tous les packages
+    apt: upgrade=dist update_cache=yes
+
+  - name: installation des packages supplemntaires
+    apt: name={{ item }} state=latest
+    with_items:
+      - arj
+      - bleachbit
+      - cabextract
+      - faac
+      - faad
+      - ffmpeg2theora
+      - file-roller
+      - flac
+      - flashplugin-installer
+      - gimp
+      - gimp-data
+      - gimp-data-extras
+      - gimp-plugin-registry
+      - icedax
+      - id3v2
+      - lame
+      - liba52-dev
+      - libdvdcss2
+      - libdvdnav4
+      - libdvdread4
+      - libflac++6
+      - libjpeg-progs
+      - libmad0
+      - libmpeg2-4
+      - libmpeg3-1
+      - libswscale-extra-2
+      - libxine1-ffmpeg
+      - mencoder
+      - mpack
+      - mpeg2dec
+      - mpeg3-utils
+      - mpegdemux
+      - mpg123
+      - mpg321
+      - openjdk-7-jre
+      - oracle-java8-installer
+      - p7zip-full
+      - p7zip-rar
+      - rar
+      - sharutils
+      - sox
+      - synaptic
+      - totem-mozilla
+      - ubuntu-restricted-extras
+      - ubuntu-wallpapers*
+      - unace
+      - unrar
+      - unzip
+      - uudeview
+      - vlc
+      - vorbis-tools
+      - y-ppa-manager
+      - zip
+
+  - name: installation de Google Chrome
+    apt: name=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+  - name: nettoyage du cache
+    apt: autoremove=yes
+

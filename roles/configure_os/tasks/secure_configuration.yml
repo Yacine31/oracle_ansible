@@ -1,0 +1,17 @@
+---
+  # --------------------------------------------------- 
+  # configuration Linux : Sécurisation
+  # ---------------------------------------------------
+  - name: Ajout du soft reboot
+    lineinfile: dest=/etc/rc.local state=present line='/sbin/ctrlaltdel soft'
+    tags: softreboot
+  
+  - name: Sécurisation du vidage mémoire
+    copy: src="00-vidage.conf" dest="/etc/security/limits.d/00-vidage.conf"
+  
+  - name: Application des paramètres de configuration sécurisée
+    sysctl: name={{ item.name }} value={{ item.value }} state=present reload=yes ignoreerrors=yes
+    when: secure_configuration
+    with_items: "{{ linux_secure_config }}"
+    tags: secure_config
+  

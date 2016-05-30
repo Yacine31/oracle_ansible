@@ -1,0 +1,69 @@
+[public_ol6_latest]
+name=Oracle Linux $releasever Latest ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/latest/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=1
+
+[public_ol6_ga_base]
+name=Oracle Linux $releasever GA installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/0/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_u1_base]
+name=Oracle Linux $releasever Update 1 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/1/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_u2_base]
+name=Oracle Linux $releasever Update 2 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/2/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_u3_base]
+name=Oracle Linux $releasever Update 3 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/3/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_u4_base]
+name=Oracle Linux $releasever Update 4 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/4/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_u5_base]
+name=Oracle Linux $releasever Update 5 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/5/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_UEK_latest]
+name=Latest Unbreakable Enterprise Kernel for Oracle Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_UEKR3_latest]
+name=Unbreakable Enterprise Kernel Release 3 for Oracle Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0
+
+[public_ol6_UEK_base]
+name=Unbreakable Enterprise Kernel for Oracle Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL6/UEK/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6
+gpgcheck=1
+enabled=0

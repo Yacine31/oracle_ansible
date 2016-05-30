@@ -1,0 +1,15 @@
+---
+  # ---------------------------------------------------
+  # affichage de l'adresse IP sur la console de logging 
+  # ---------------------------------------------------
+  
+  
+  # le fichier issue.origine.{{ ansible_distribution_major_version }} pour Linux 6 ou 7
+  - name: copie du fichier issue.origine
+    template: src=issue.origine.{{ ansible_distribution_major_version }} dest=/etc/issue.origine mode=0644 owner=root
+
+  - name: copie du script get-ip.sh
+    template: src=get-ip.sh dest=/usr/local/bin/get-ip.sh mode=0755 owner=root
+
+  - name: copie du script ifup-local
+    template: src=ifup-local dest=/sbin/ifup-local mode=0755 owner=root

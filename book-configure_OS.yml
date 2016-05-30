@@ -1,0 +1,9 @@
+---
+ - name: Host configuration
+   hosts: mygroup
+   user: root
+   sudo: yes
+
+   roles:
+     - configure_os
+    #- install-oracle-sw

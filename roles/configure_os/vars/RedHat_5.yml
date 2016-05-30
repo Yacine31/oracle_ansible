@@ -1,0 +1,112 @@
+# Fichier de paramètres pour Redhat 6
+---
+
+  #----------------------------------------------------------------------
+  # url du dépôt epel
+  #----------------------------------------------------------------------
+  epel_rpm: "http://mirrors.ircam.fr/pub/fedora/epel/5/x86_64/epel-release-5-4.noarch.rpm"
+
+
+  #----------------------------------------------------------------------
+  # packages linux nécessaires pour travailler
+  #----------------------------------------------------------------------
+  linux_packages:
+      - bash
+      - bc
+      - bind-utils
+      - btrfs-progs
+      - cloog-ppl
+      - compat-libcap1
+      - device-mapper-multipath
+      - ethtool
+      - expect
+      - git
+#      - htop
+      - lvm2
+      - make
+      - module-init-tools
+      - mpfr
+#      - multitail
+      - ncurses-devel
+      - ncurses-libs
+      - nfs-utils
+      - nscd
+      - nss-softokn-freebl
+      - ntp
+      - nmap
+      - openssh-clients
+      - ppl
+      - procps
+      - readline
+#      - rlwrap
+      - screen
+      - sysstat
+      - system-config-lvm
+      - tigervnc-server
+      - tree
+      - twm
+      - unzip
+      - wget
+      - vim
+      - xfsprogs
+      - bind-utils
+      - binutils
+      - btrfs-progs
+      - cloog-ppl
+      - cpp
+      - compat-libcap1
+      - compat-libstdc++-33
+      - ethtool
+      - gcc
+      - gcc-c++
+      - glibc
+      - glibc-devel
+      - glibc-headers
+      - kernel-headers
+      - kmod-oracleasm
+      - ksh
+      - libX11
+      - libXau
+      - libXext
+      - libXi
+      - libXp
+      - libXt
+      - libXtst
+      - libaio
+      - libaio-devel
+      - libgcc
+      - libselinux-python
+      - libstdc++
+      - libstdc++-devel
+      - libtool-ltdl
+      - libxcb
+      - make
+      - module-init-tools
+      - mpfr
+      - ncurses-devel
+      - ncurses-libs
+      - nfs-utils
+      - nscd
+      - ntp
+      - openssh-clients
+      - oracleasm-support
+      - parted
+      - procps
+      - readline
+      - readline-devel
+      - sysstat
+      - unixODBC
+      - util-linux-ng
+      - vim-enhanced
+      - xdpyinfo
+      - xfsprogs
+      - xorg-x11-utils
+      - xorg-x11-xauth
+      - xorg-x11-xinit
+      - xsetroot
+      - xterm
+
+  asmlib_rpm: "http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el6.x86_64.rpm"
+  ol6_repo_file: public-yum-ol6.repo
+  repo_dir: /etc/yum.repos.d/
+

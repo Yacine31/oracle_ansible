@@ -1,0 +1,8 @@
+---
+ - name: Install Oracle Software (grid + db)
+   hosts: mygroup
+   become_user: root
+   become_method: sudo
+
+   roles:
+    - install-oracle-sw

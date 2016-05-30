@@ -1,0 +1,98 @@
+---
+
+#--------------------------------------------------------------------
+# les paramètres à modifier 
+#--------------------------------------------------------------------
+# installer la grid infra (true|false)
+install_grid_infra: true
+
+# installer les binaires de la base (true|false)
+install_database: false
+
+# quelle version de la base et quelle version de la GI
+#db_version: "12.1.0.2"
+db_version: "11.2.0.4"
+#gi_version: "12.1.0.2"
+gi_version: "11.2.0.4"
+
+# emplacmeent commun des binaires Oracle
+oracle_sw_source_local: "/media/sf_Oracle_Software/Oracle_Database"
+
+# adapter les chemins si besoin vers les zip
+gi_software:
+     - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_3of7.zip", version: 11.2.0.4 }
+     - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_grid_1of2.zip", version: 12.1.0.2 }
+     - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_grid_2of2.zip", version: 12.1.0.2 }
+
+db_software:
+      - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_1of7.zip", version: 11.2.0.4 }
+      - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_2of7.zip", version: 11.2.0.4 }
+      - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_1of2.zip", version: 12.1.0.2 }
+      - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_2of2.zip", version: 12.1.0.2 }
+
+
+#--------------------------------------------------------------------
+# paramètres commun
+# dans cette section ne rien modifier sauf si besoin
+#--------------------------------------------------------------------
+
+oracle_racine: "/u01/app"
+oracle_base: "{{ oracle_racine }}/oracle"
+oracle_inventory_loc: "{{ oracle_racine }}/oraInventory"
+
+role_separation: true
+# grid_install_user: "{% if role_separation==true %}{{ grid_user }}{% else %}{{ oracle_user }}{% endif %}"
+
+oracle_groups:
+  - { group: asmdba, gid: 1004 }
+  - { group: asmoper, gid: 1005 }
+  - { group: asmadmin, gid: 1003 }
+  - { group: oinstall, gid: 1000}
+  - { group: dba, gid: 1001 }
+  - { group: backupdba, gid: 1006 }
+  - { group: oper, gid: 1002 }
+  - { group: dgdba, gid: 1007 }
+  - { group: kmdba, gid: 1008 }
+
+oracle_users:         # Passwd :Oracle123
+  - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,asmdba,backupdba,dgdba,kmdba,oper", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+
+grid_users:
+  - { username: grid, uid: 1000, primgroup: oinstall, othergroups: "asmadmin,asmdba,asmoper,dba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+
+oracle_group: "oinstall"
+dba_group: "dba"
+oinstall_group: "oinstall"
+oper_group: "oper"
+backupdba_group: "backupdba"
+dgdba_group: "dgdba"
+kmdba_group: "kmdba"
+
+asmdba_group: "asmdba"
+asmoper_group: "asmoper"
+asmadmin_group: "asmadmin"
+
+oracle_stage: "/u01/stage"
+
+# u01_free_space 4 Go pour l'install et 4 Go pour transfert et decompression des zip
+u01_free_space_gb: 8
+tmp_free_space_gb: 1
+etc_free_spage_gb: 1
+var_free_spage_gb: 1
+
+#--------------------------------------------------------------------
+# paramètres d'installation grid infra
+#--------------------------------------------------------------------
+gi_user: "grid"
+gi_home: "{{ oracle_racine }}/{{ gi_version }}/grid"
+gi_response_file: "install_gi_{{ gi_version }}.rsp"
+
+#--------------------------------------------------------------------
+# paramètres d'installation des binaires de la base
+#--------------------------------------------------------------------
+db_user: "oracle"
+db_home: "{{ oracle_base }}/product/{{ db_version }}/dbhome_1"
+
+db_edition: "EE"
+db_response_file: "install_db_{{ db_version }}_{{ db_edition }}.rsp"
+

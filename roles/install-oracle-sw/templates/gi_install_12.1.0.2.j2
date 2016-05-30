@@ -1,0 +1,30 @@
+oracle.install.responseFileVersion=/oracle/install/rspfmt_crsinstall_response_schema_v12.1.0
+ORACLE_HOSTNAME={{ ansible_hostname }}
+INVENTORY_LOCATION={{ oracle_inventory_loc }}
+SELECTED_LANGUAGES=en
+#-------------------------------------------------------------------------------
+## Specify the installation option.
+## Allowed values: CRS_CONFIG or HA_CONFIG or UPGRADE or CRS_SWONLY or HA_SWONLY
+##   - CRS_CONFIG : To configure Grid Infrastructure for cluster
+##   - HA_CONFIG  : To configure Grid Infrastructure for stand alone server
+##   - UPGRADE    : To upgrade clusterware software of earlier release
+##   - CRS_SWONLY : To install clusterware files only (can be configured for cluster
+##                  or stand alone server later)
+##   - HA_SWONLY  : To install clusterware files only (can be configured for stand
+##                  alone server later. This is only supported on Windows.)
+##-------------------------------------------------------------------------------
+oracle.install.option=CRS_SWONLY
+ORACLE_BASE={{ oracle_racine }}/{{ gi_user }}
+ORACLE_HOME={{ gi_home }}
+################################################################################
+#                              SECTION B - GROUPS                              #
+################################################################################
+oracle.install.asm.OSDBA={{ asmdba_group }}
+oracle.install.asm.OSOPER={{ asmoper_group }}
+oracle.install.asm.OSASM={{ asmadmin_group }}
+###############################################################################
+#                           SECTION D - CLUSTER & GNS                         #
+###############################################################################
+oracle.install.crs.config.ClusterType=STANDARD
+oracle.install.crs.config.gpnp.configureGNS=false
+
