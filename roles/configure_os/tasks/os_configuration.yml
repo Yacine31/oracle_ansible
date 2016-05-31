@@ -141,6 +141,8 @@
     when: ansible_distribution_major_version == '6'
 
   - name: Linux 7 - Configuration du mode 3 comme mode de démarrage par défaut
-    shell: systemctl set-default multi-user.target
+    Ghell: systemctl set-default multi-user.target
     when: ansible_distribution_major_version == '7'
 
+  - name: BASH - ajout de la fonctionnalité ignore-case lors de l'autocompletion avec TAB
+    lineinfile: dest=/etc/inputrc line="set completion-ignore-case On" create=yes state=present

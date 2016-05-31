@@ -4,10 +4,10 @@
 # les paramètres à modifier 
 #--------------------------------------------------------------------
 # installer la grid infra (true|false)
-install_grid_infra: true
+install_grid_infra: false
 
 # installer les binaires de la base (true|false)
-install_database: false
+install_database: true
 
 # quelle version de la base et quelle version de la GI
 #db_version: "12.1.0.2"
