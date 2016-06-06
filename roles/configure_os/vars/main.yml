@@ -29,6 +29,8 @@
       - { name: net.core.wmem_default, value: 262144 }
       - { name: net.core.wmem_max, value: 1048576 }
       - { name: net.ipv4.ip_local_port_range, value: "9000 65500" }
+      - { name: vm.swappiness, value: 10 }
+      - { name: vm.min_free_kbytes, value: 524288 }
 #      - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
 
   #----------------------------------------------------------------------
