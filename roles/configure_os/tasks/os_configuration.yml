@@ -3,8 +3,12 @@
   # configuration des packages necessaires pour Linux
   # ---------------------------------------------------
 
-  - name: Installation du packet libselinux-python
-    yum: name="libselinux-python" state=installed
+  - name: Installation des RPMs libselinux et libselinux-python
+    yum: name={{ item }} state=present
+    with_items:
+      - libselinux
+      - libselinux-python
+      - libselinux-utils
 
   - name: Copie du fichier repository public-yum si absent
     copy: 
