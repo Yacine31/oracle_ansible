@@ -70,7 +70,7 @@
     tags: orainstall
 
   - debug: var=oradbinstall.stdout_lines
-    with_items: oradbinstall.results
+    # with_items: oradbinstall.results
     tags: orainstall
 
   - name: Vérification de l existance du fichier orainstRoot.sh
