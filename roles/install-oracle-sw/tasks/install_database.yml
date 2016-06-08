@@ -69,7 +69,7 @@
     tags: orainstall
 
   - debug: var=oradbinstall.stdout_lines
-    with_items: oradbinstall.results
+    # with_items: oradbinstall.results
     tags: orainstall
 
   - name: Vérification de l existance du fichier orainstRoot.sh
@@ -97,7 +97,7 @@
     tags: opatch
 
   - debug: var=opatchls.stdout_lines
-    with_items: opatchls.results
+    # with_items: opatchls.results
     tags: opatch
 
   # suppression des binaires, du fichier de réponse et du script d'install
