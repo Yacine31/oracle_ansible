@@ -4,5 +4,47 @@
    become_user: root
    become_method: sudo
 
+
+   vars:
+    #--------------------------------------------------------------------
+    # les paramètres à modifier
+    #--------------------------------------------------------------------
+    # installer la grid infra (true|false)
+    install_grid_infra: true
+
+    # installer les binaires de la base (true|false)
+    install_database: true
+
+    # quelle version de la base et quelle version de la GI
+    #db_version: "12.1.0.2"
+    db_version: "11.2.0.4"
+    #gi_version: "12.1.0.2"
+    gi_version: "11.2.0.4"
+
+    # emplacmeent commun des binaires Oracle
+    oracle_sw_source_local: "/media/sf_Oracle_Software/Oracle_Database"
+
+    # adapter les chemins si besoin vers les zip
+    gi_software:
+         - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_3of7.zip", version: 11.2.0.4 }
+         - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_grid_1of2.zip", version: 12.1.0.2 }
+         - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_grid_2of2.zip", version: 12.1.0.2 }
+
+    db_software:
+          - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_1of7.zip", version: 11.2.0.4 }
+          - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_2of7.zip", version: 11.2.0.4 }
+          - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_1of2.zip", version: 12.1.0.2 }
+          - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_2of2.zip", version: 12.1.0.2 }
+
+
+
+    db_home: "{{ oracle_base }}/product/{{ db_version }}/dbhome_1"
+    gi_home: "{{ oracle_racine }}/{{ gi_version }}/grid"
+    oracle_base: "{{ oracle_racine }}/oracle"
+    oracle_inventory_loc: "{{ oracle_racine }}/oraInventory"
+    oracle_racine: "/u01/app"
+    oracle_stage: "/u01/stage"
+
    roles:
     - install-oracle-sw
+
