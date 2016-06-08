@@ -92,7 +92,7 @@
     tags: runroot
 
   - debug: var=rootsh.stdout_lines
-    with_items: rootsh.results
+    # with_items: "{{ rootsh.results }}"
     tags: runroot
 
   - name: Résultat de l installation via OPatch
@@ -100,11 +100,22 @@
     sudo: yes
     sudo_user: "{{ gi_user }}"
     register: opatchls
-    tags: opatch
+    tags: opatchgi
 
   - debug: var=opatchls.stdout_lines
-    with_items: opatchls.results
-    tags: opatch
+    # with_items: "{{ opatchls.results }}"
+    tags: opatchgi
+
+  - name: Configuration GI standalone
+    shell: "{{ gi_home }}/perl/bin/perl {{ gi_home }}/crs/install/roothas.pl"
+    sudo: yes
+    sudo_user: root
+    register: roothas
+    tags: roothas
+
+  - debug: var=roothas.stdout_lines
+    # with_items: "{{ roothas.results }}" 
+    tags: roothas
 
   # suppression des binaires, du fichier de réponse et du script d'install
   - name: suppression du repertoire des fichiers decompressés
