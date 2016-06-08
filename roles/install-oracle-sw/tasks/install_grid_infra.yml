@@ -70,7 +70,6 @@
     tags: orainstall
 
   - debug: var=oradbinstall.stdout_lines
-    # with_items: oradbinstall.results
     tags: orainstall
 
   - name: Vérification de l existance du fichier orainstRoot.sh
@@ -92,7 +91,6 @@
     tags: runroot
 
   - debug: var=rootsh.stdout_lines
-    # with_items: "{{ rootsh.results }}"
     tags: runroot
 
   - name: Résultat de l installation via OPatch
@@ -103,7 +101,6 @@
     tags: opatchgi
 
   - debug: var=opatchls.stdout_lines
-    # with_items: "{{ opatchls.results }}"
     tags: opatchgi
 
   - name: Configuration GI standalone
@@ -114,7 +111,6 @@
     tags: roothas
 
   - debug: var=roothas.stdout_lines
-    # with_items: "{{ roothas.results }}" 
     tags: roothas
 
   # suppression des binaires, du fichier de réponse et du script d'install
