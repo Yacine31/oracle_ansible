@@ -241,14 +241,6 @@ if [ $USER = "oracle" ] || [ $USER = "grid" ] || [ $USER = "root" ] ; then
             fi
         fi
 
-        # Alias RL Wrap si disponible
-        if [ `/bin/rpm -qa |grep -i rlwrap | wc -l` -eq 1 ] ; then
-            alias sqlplus='rlwrap sqlplus'
-            alias rman='rlwrap rman'
-            alias asmcmd='rlwrap asmcmd'
-            alias adrci='rlwrap adrci'      
-            alias dgmgrl='rlwrap dgmgrl'
-        fi
 
         # Ajout d'un alias pour aller dans l'OH
         alias oh='cd $ORACLE_HOME'
@@ -284,6 +276,15 @@ fi
 
 unset ajustement_limites decho APP_CTX HOSTNAME_SIMPLE DEBUG OLR_LOC ORA_INVENTORY ORA_INVENTORY_XMLFILE ORA_INVENTORY_CFFILE ORA_USER_HOME ORA_EXPL_DIR ORA_EXPL_BIN ORA_EXPL_SQL ORA_EXPL_TMP DRT_LI DRT_LI2 DRT_LI6 NODE_INFO DB_TARGET DEC_INST ORA_CRS_HOME INTERACTIF
 
+
+# Alias RL Wrap si disponible
+if [ `/bin/rpm -qa |grep -i rlwrap | wc -l` -eq 1 ] ; then
+   alias sqlplus='rlwrap sqlplus'
+   alias rman='rlwrap rman'
+   alias asmcmd='rlwrap asmcmd'
+   alias adrci='rlwrap adrci'      
+   alias dgmgrl='rlwrap dgmgrl'
+fi
 
 # alias pour le shell Bash
 alias grep='grep --color=auto'
