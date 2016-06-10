@@ -21,12 +21,12 @@
       - ethtool
       - expect
       - git
-#      - htop
+      - htop
       - lvm2
       - make
       - module-init-tools
       - mpfr
-#      - multitail
+      - multitail
       - ncurses-devel
       - ncurses-libs
       - nfs-utils
@@ -38,7 +38,7 @@
       - ppl
       - procps
       - readline
-#      - rlwrap
+      - rlwrap
       - screen
       - sysstat
       - system-config-lvm
