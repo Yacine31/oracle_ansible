@@ -1,0 +1,56 @@
+---
+- hosts: all
+  remote_user: oracle
+
+  vars:
+    u01_size_gb: 1
+    tmp_size_gb: 1
+    oracle_base: /u01/app/oracle
+    oracle_home: /u01/app/oracle/product/12.1.0.2/dbhome_1
+    patch_remote_dir: /u01/stage/psu
+    patch_local_dir: /media/sf_Oracle_Software/Oracle_Database/12c
+    opatch_file: p6880880_121010_Linux-x86-64.zip
+    psu_file: OJVM_PSU_12.1.0.2_16.04.19_p22674709_121020_Linux-x86-64.zip
+    psu_patch_number: 22674709
+    ocm_rsp_file: ocm.rsp
+
+  tasks:
+  - name: check u01 free disk space
+    action: shell df -P /u01 | awk 'END { print $4 }'
+    register: u01size
+    failed_when: u01size.stdout|int < {{ u01_size_gb }} * 1024 * 1024
+
+  - name: check tmp free disk space
+    action: shell df -P /tmp | awk 'END { print $4 }'
+    register: tmpsize
+    failed_when: tmpsize.stdout|int < {{ tmp_size_gb }} * 1024 * 1024
+
+  - name: create directory for installation files
+    action: file dest={{ patch_remote_dir }} state=directory owner=oracle group=oinstall
+
+  - name: copy opatch and psu
+    copy: src={{ patch_local_dir }}/{{ item }} dest={{ patch_remote_dir }} owner=oracle group=oinstall mode=0644
+    with_items:
+     - "{{ opatch_file }}"
+     - "{{ psu_file }}"
+     - "{{ ocm_rsp_file }}"
+
+  - name: install opatch in database home
+    action: shell unzip -oq {{ patch_remote_dir }}/{{ opatch_file }} -d {{ oracle_home }}
+
+  - name: unzip psu patch
+    action: shell unzip -oq {{ patch_remote_dir }}/{{ psu_file }} -d {{ patch_remote_dir }}
+
+  - name: patch conflict detection
+    action: shell export ORACLE_HOME={{ oracle_home }}; cd {{ patch_remote_dir }}/{{ psu_patch_number }}; $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+    register: conflict_detection
+    failed_when: "'Prereq \"checkConflictAgainstOHWithDetail\" passed.' not in conflict_detection.stdout"
+
+  - name: apply psu
+    action: shell export ORACLE_HOME={{ oracle_home}}; cd {{ patch_remote_dir }}/{{ psu_patch_number }}; $ORACLE_HOME/OPatch/opatch apply -silent -ocmrf {{ patch_remote_dir }}/{{ ocm_rsp_file }}
+    register: apply_psu
+    failed_when: "'OPatch succeeded.' not in apply_psu.stdout"
+
+  - name: clean up install directory
+    file: path={{ patch_remote_dir }} state=absent
+
