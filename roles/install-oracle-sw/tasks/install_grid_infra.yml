@@ -113,6 +113,18 @@
   - debug: var=roothas.stdout_lines
     tags: roothas
 
+  - name: Ajout de export ORACLE_HOME dans le bash_profile de grid
+    lineinfile: dest=/home/grid/.bash_profile line="export ORACLE_HOME={{ gi_home }}" state=present create=yes 
+    tags: gi_bash_profile
+
+  - name: Ajout de export ORACLE_SID dans le bash_profile de grid
+    lineinfile: dest=/home/grid/.bash_profile line="export ORACLE_SID={{ gi_user }}" state=present create=yes 
+    tags: gi_bash_profile
+
+  - name: Ajout de export PATH dans le bash_profile de grid
+    lineinfile: dest=/home/grid/.bash_profile line="export PATH=$ORACLE_HOME/bin:$PATH" state=present create=yes 
+    tags: gi_bash_profile
+
   # suppression des binaires, du fichier de réponse et du script d'install
   - name: suppression du repertoire des fichiers decompressés
     file: path={{ oracle_stage }}/grid state=absent
