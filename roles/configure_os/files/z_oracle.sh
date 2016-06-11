@@ -252,6 +252,7 @@ if [ $USER = "oracle" ] || [ $USER = "grid" ] || [ $USER = "root" ] ; then
     if [ "$INTERACTIF" = "OUI" ] ; then
         vert=$(tput setaf 2)
         bleu=$(tput setaf 4)
+        jaune=$(tput setaf 3)
         gras=$(tput bold)
         rouge=$(tput setaf 1)
         reset=$(tput sgr0)
@@ -259,13 +260,13 @@ if [ $USER = "oracle" ] || [ $USER = "grid" ] || [ $USER = "root" ] ; then
 
     decho prompt set
     if [ "$ORA_CRS_CLUSTERMODE" = "flex" ] ; then
-        export PS1='[\[$bleu\]\u\[$reset\]@\[$vert\]\h\[$reset\] ($ORA_CRS_CLUSTERMODE $ORA_CRS_CLUSTER_NAME $ORA_CRS_NODE_TYPE:$ORA_CRS_NODE_NUM) \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] ($ORA_CRS_CLUSTERMODE $ORA_CRS_CLUSTER_NAME $ORA_CRS_NODE_TYPE:$ORA_CRS_NODE_NUM) \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
     elif [ "$ORA_CRS_CLUSTERMODE" = "std" ] ; then
-        export PS1='[\[$bleu\]\u\[$reset\]@\[$vert\]\h\[$reset\] ($ORA_CRS_CLUSTERMODE $ORA_CRS_CLUSTER_NAME:$ORA_CRS_NODE_NUM) \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] ($ORA_CRS_CLUSTERMODE $ORA_CRS_CLUSTER_NAME:$ORA_CRS_NODE_NUM) \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
     elif [ "$ORA_CRS_CLUSTERMODE" = "sa" -o "$ORA_CRS_CLUSTERMODE" = "rst" ] ; then
-        export PS1='[\[$bleu\]\u\[$reset\]@\[$vert\]\h\[$reset\] ($ORA_CRS_CLUSTERMODE) \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] ($ORA_CRS_CLUSTERMODE) \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
     else
-        export PS1='[\[$bleu\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
     fi
 
 
