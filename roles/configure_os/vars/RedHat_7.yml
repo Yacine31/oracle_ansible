@@ -10,6 +10,7 @@
   # packages linux nécessaires pour travailler
   #----------------------------------------------------------------------
   linux_packages:
+      - bc
       - bind-utils
       - device-mapper-multipath
       - multitail
@@ -39,6 +40,7 @@
       - gcc-c++
       - glibc
       - glibc-devel
+      - glibc-devel.i686
       - ksh
       - libaio
       - libaio-devel
@@ -77,6 +79,7 @@
       - openssh-clients
       - oracleasm-support
       - parted
+      - psmisc
       - procps
       - readline
       - readline-devel
