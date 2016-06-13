@@ -92,3 +92,5 @@
       - xorg-x11-xinit
       - xsetroot
       - xterm
+      - lsof
+      - fuser
