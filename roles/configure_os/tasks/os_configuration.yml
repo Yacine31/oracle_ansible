@@ -27,10 +27,10 @@
     when: configure_epel_repo and internet_connection
     tags: epelrepo
 
-  - name: YUM - update cache
-    yum:  name="*" state=latest
-    when: internet_connection == true
-    ignore_errors: true
+#  - name: YUM - update cache
+#    yum:  name="*" state=latest
+#    when: internet_connection == true
+#    ignore_errors: true
 
   - name: YUM - installation des packages nécessaires
     yum:  name={{ item }} state=latest
