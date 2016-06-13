@@ -61,6 +61,7 @@
       - gcc-c++
       - glibc
       - glibc-devel
+      - glibc-devel.i686
       - glibc-headers
       - kernel-headers
       - kmod-oracleasm
