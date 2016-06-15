@@ -27,16 +27,11 @@
     when: configure_epel_repo and internet_connection
     tags: epelrepo
 
-#  - name: YUM - update cache
-#    yum:  name="*" state=latest
-#    when: internet_connection == true
-#    ignore_errors: true
-
   - name: YUM - installation des packages nécessaires
     yum:  name={{ item }} state=latest
     with_items: "{{ linux_packages }}"
     when: internet_connection == true
-    ignore_errors: true
+    #ignore_errors: true
 
   # --------------------------------------------------- 
   # si pas de connexion internet, on transfert les rpms
