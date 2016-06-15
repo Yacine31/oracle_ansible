@@ -1,0 +1,23 @@
+{{ oracle_base }}/diag/rdbms/*/*/trace/*.log 
+{{ oracle_base }}/diag/tnslsnr/*/*/trace/*.log {
+    weekly
+    missingok
+    rotate 7
+    compress
+    notifempty
+    size 10M
+    create 0640 oracle oinstall
+}
+
+
+{{ oracle_base }}/diag/tnslsnr/*/*/alert/*.xml
+{{ oracle_base }}/diag/rdbms/*/*/alert/*.xml {
+    weekly
+    copytruncate
+    missingok
+    compress
+    notifempty
+    size 10M
+    create 0640 oracle oinstall
+}
+
