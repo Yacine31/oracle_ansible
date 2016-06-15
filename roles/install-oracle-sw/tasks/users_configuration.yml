@@ -25,3 +25,10 @@
     when: role_separation
     tags: user
 
+  # --------------------------------------------------- 
+  # configuration Linux : config oracle pour logrotate
+  # ---------------------------------------------------
+  - name: Gestion des logs Oracle - copy du fichier de configuration pour logrotate
+    copy: src=logrotate_oracle dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+    tags: logrotate
+
