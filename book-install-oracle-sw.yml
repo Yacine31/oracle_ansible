@@ -1,6 +1,6 @@
 ---
  - name: Install Oracle Software (grid + db)
-   hosts: mygroup
+   hosts: all
    become_user: root
    become_method: sudo
 
@@ -10,16 +10,14 @@
     # les paramètres à modifier
     #--------------------------------------------------------------------
     # installer la grid infra (true|false)
-    install_grid_infra: true
+    install_grid_infra: false
+    #gi_version: "12.1.0.2"
+    gi_version: "11.2.0.4"
 
     # installer les binaires de la base (true|false)
     install_database: true
-
-    # quelle version de la base et quelle version de la GI
-    #db_version: "12.1.0.2"
-    db_version: "11.2.0.4"
-    #gi_version: "12.1.0.2"
-    gi_version: "11.2.0.4"
+    db_version: "12.1.0.2"
+    #db_version: "11.2.0.4"
 
     # emplacmeent commun des binaires Oracle
     oracle_sw_source_local: "/media/sf_Oracle_Software/Oracle_Database"
