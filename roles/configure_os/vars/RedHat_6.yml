@@ -44,10 +44,10 @@
       - system-config-lvm
       - tigervnc-server
       - tree
-      - twm
+      - xorg-x11-twm
       - unzip
       - wget
-      - vim
+      - vim-enhanced
       - xfsprogs
       - bind-utils
       - binutils
@@ -64,7 +64,6 @@
       - glibc-devel.i686
       - glibc-headers
       - kernel-headers
-      - kmod-oracleasm
       - ksh
       - libX11
       - libXau
@@ -104,8 +103,10 @@
       - xorg-x11-utils
       - xorg-x11-xauth
       - xorg-x11-xinit
-      - xsetroot
+      - xorg-x11-server-utils
       - xterm
+      - sg3_utils
+#      - kmod-oracleasm
 
   asmlib_rpm: "http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el6.x86_64.rpm"
   ol6_repo_file: public-yum-ol6.repo
