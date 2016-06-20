@@ -6,7 +6,13 @@
 
   # si le serveur n'pas d'accès internet, mettre la variable suivante à FALSE
   # dans ce cas, les rpm seront installée depuis le serveur Ansible
-  internet_connection: true
+  internet_connection: false
+  # si pas d'internet, le repo est sur la machine ansible
+  # http tourne et son répertoire de base est /var/www/html
+  # dedans poser les rpms dans linux/[6|7]/x86_64/
+  # penser à exécuter createrepo /var/www/html/linux/[6|7]/x86_64/ à chaque fois que ces
+  # répertoires sont mis à jour
+  ip_repo_local: "192.168.1.135"
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
   # Ajouter le dépôt epel : true ou false
