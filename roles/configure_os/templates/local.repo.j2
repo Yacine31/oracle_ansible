@@ -1,0 +1,5 @@
+[ol{{ ansible_distribution_major_version }}_local]
+name=LOCAL -- Oracle Linux {{ ansible_distribution_major_version }} pour $basearch
+baseurl=http://{{ ip_repo_local }}/linux/{{ ansible_distribution_major_version }}/$basearch
+gpgcheck=0
+enabled=1 
