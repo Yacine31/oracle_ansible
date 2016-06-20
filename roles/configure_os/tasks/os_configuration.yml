@@ -15,6 +15,7 @@
       src="public-yum-ol{{ ansible_distribution_major_version }}.repo" 
       dest="/etc/yum.repos.d/public-yum-ol{{ ansible_distribution_major_version }}.repo"
     tags: publicyumrepo
+    when: internet_connection
 
   - name: Copie de la clé GPG
     # sans cette clé, la commande YUM retourne l'erreur suivante :
@@ -27,40 +28,36 @@
     when: configure_epel_repo and internet_connection
     tags: epelrepo
 
-  - name: YUM - installation des packages nécessaires
-    yum:  name={{ item }} state=latest
-    with_items: "{{ linux_packages }}"
-    when: internet_connection == true
-    #ignore_errors: true
-
   # --------------------------------------------------- 
   # si pas de connexion internet, on transfert les rpms
   # --------------------------------------------------- 
-  - name: connexion internet, Création du répertoire destination
-    file: dest=/tmp/rpms mode=775 state=directory
+
+  - name: connexion internet, copie du fichier local.repo
+    template: src=local.repo.j2 dest=/etc/yum.repos.d/local.repo
     when: internet_connection == false
     tags: install_rpm_files
 
-  - name: connexion internet, transfert des fichiers rpm
-    unarchive: src=rpm_linux_{{ ansible_distribution_major_version }}.tgz dest=/tmp/rpms
-    when: internet_connection == false
-    tags: install_rpm_files
+  # --------------------------------------------------- 
+  # maintenant on install les rpms
+  # --------------------------------------------------- 
+  - name: YUM - installation des packages nécessaires
+    yum:  name={{ item }} state=latest disable_gpg_check=yes
+    with_items: "{{ linux_packages }}"
 
-  - name: connexion internet, Installation des rpm sur le serveur
-    shell: find /tmp/rpms -iname "*rpm" -exec rpm -Uvh {} \;
+  - name: connexion internet - suppression du epel-release
+    yum: name=epel-release state=absent
+    when: internet_connection == true
+ 
+  - name: connexion internet - suppression du public-yum
+    file: dest=/etc/yum.repos.d/public-yum-ol{{ ansible_distribution_major_version }}.repo state=absent
+    when: internet_connection == true
+ 
+  - name: connexion internet - suppression du local.repo
+    file: dest=/etc/yum.repos.d/local.repo state=absent
     when: internet_connection == false
-    tags: install_rpm_files
-
-  - name: connexion internet, Suppression du répertoire rpm
-    file: dest=/tmp/rpms state=absent
-    when: internet_connection == false
-    tags: install_rpm_files
-
+ 
   - name: Configuration du mode panic sur perte du /
     shell: free_form="tune2fs -e panic `df -P / |tail -1 | awk '{print $1}'`"
-
-  - name: Configuration du mode panic sur bug du kernel
-    sysctl: name=kernel.panic_on_oops value=1 state=present reload=yes ignoreerrors=yes
 
   # --------------------------------------------------- 
   # configuration du serveur NTPD
