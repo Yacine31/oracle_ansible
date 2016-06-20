@@ -13,7 +13,6 @@
       - bc
       - bind-utils
       - device-mapper-multipath
-      - multitail
       - net-tools
       - ethtool
       - elfutils-libelf-devel
@@ -25,8 +24,6 @@
       - wget
       - vim
       - nmap
-      - htop
-      - rlwrap
       - lvm2
       - ncurses
       - nfs-utils
@@ -90,7 +87,12 @@
       - xorg-x11-utils
       - xorg-x11-xauth
       - xorg-x11-xinit
-      - xsetroot
+      - xorg-x11-server-utils
       - xterm
       - lsof
       - psmisc
+      - sg3_utils
+      - multitail
+      - htop
+      - rlwrap
+#      - xorg-x11-twm
