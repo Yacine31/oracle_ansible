@@ -28,7 +28,13 @@
   # --------------------------------------------------- 
   # configuration Linux : config oracle pour logrotate
   # ---------------------------------------------------
-  - name: Gestion des logs Oracle - copy du fichier de configuration pour logrotate
-    copy: src=logrotate_oracle dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+  - name: Gestion des logs Oracle - copie du fichier de configuration pour logrotate
+    template: src=logrotate_oracle dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
     tags: logrotate
 
+  # --------------------------------------------------- 
+  # copy du fichier oracledb dans /etc/init.d pour redémmarage auto
+  # ---------------------------------------------------
+  - name: Copy du fichier oracledb dans /etc/init.d pour redémmarage auto
+    template: src=oracledb_init.d dest=/etc/init.d/oracledb mode=755 owner=root group=root
+    tags: init.d
