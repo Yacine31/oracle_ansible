@@ -34,8 +34,6 @@
           - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_1of2.zip", version: 12.1.0.2 }
           - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_2of2.zip", version: 12.1.0.2 }
 
-
-
     db_home: "{{ oracle_base }}/product/{{ db_version }}/dbhome_1"
     gi_home: "{{ oracle_racine }}/{{ gi_version }}/grid"
     oracle_base: "{{ oracle_racine }}/oracle"
