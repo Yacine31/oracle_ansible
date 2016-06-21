@@ -106,6 +106,7 @@
       - xorg-x11-server-utils
       - xterm
       - sg3_utils
+      - yum-utils
 #      - kmod-oracleasm
 
   asmlib_rpm: "http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.4-1.el6.x86_64.rpm"

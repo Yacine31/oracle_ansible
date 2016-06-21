@@ -95,4 +95,5 @@
       - multitail
       - htop
       - rlwrap
+      - yum-utils
 #      - xorg-x11-twm
