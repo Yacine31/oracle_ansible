@@ -2,7 +2,7 @@
  - name: Host configuration
    hosts: mygroup
    user: root
-   sudo: yes
+   become: yes
 
    roles:
      - configure_os

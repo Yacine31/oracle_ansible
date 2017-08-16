@@ -14,6 +14,7 @@
       groups={{ item.othergroups }} uid={{ item.uid }} 
       generate_ssh_key=yes append=yes state=present password={{ item.passwd }}
     with_items: "{{ oracle_users }}"
+    ignore_errors: true
     tags: user
 
   - name: Création du compte grid
@@ -23,18 +24,19 @@
       generate_ssh_key=yes append=yes state=present password={{ item.passwd }}
     with_items: "{{ grid_users }}"
     when: role_separation
+    ignore_errors: true
     tags: user
 
   # --------------------------------------------------- 
   # configuration Linux : config oracle pour logrotate
   # ---------------------------------------------------
   - name: Gestion des logs Oracle - copie du fichier de configuration pour logrotate
-    template: src=logrotate_oracle dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+    template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
     tags: logrotate
 
   # --------------------------------------------------- 
   # copy du fichier oracledb dans /etc/init.d pour redémmarage auto
   # ---------------------------------------------------
   - name: Copy du fichier oracledb dans /etc/init.d pour redémmarage auto
-    template: src=oracledb_init.d dest=/etc/init.d/oracledb mode=755 owner=root group=root
+    template: src=oracledb_initd.j2 dest=/etc/init.d/oracledb mode=755 owner=root group=root
     tags: init.d

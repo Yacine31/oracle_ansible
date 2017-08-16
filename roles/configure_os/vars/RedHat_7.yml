@@ -4,7 +4,7 @@
   #----------------------------------------------------------------------
   # url du dépôt epel
   #----------------------------------------------------------------------
-  epel_rpm: "https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm"
+  epel_rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
 
   #----------------------------------------------------------------------
   # packages linux nécessaires pour travailler
@@ -12,88 +12,80 @@
   linux_packages:
       - bc
       - bind-utils
-      - device-mapper-multipath
-      - net-tools
-      - ethtool
-      - elfutils-libelf-devel
-      - nscd
-      - ntp
-      - sysstat
-      - tree
-      - unzip
-      - wget
-      - vim
-      - nmap
-      - lvm2
-      - ncurses
-      - nfs-utils
-      - readline
-      - xfsprogs
-      - system-storage-manager
       - binutils
+      - btrfs-progs
       - compat-libcap1
       - compat-libstdc++-33
+      - cpp
+      - deltarpm
+      - device-mapper-multipath
+      - elfutils-libelf-devel
+      - ethtool
       - gcc
       - gcc-c++
       - glibc
       - glibc-devel
       - glibc-devel.i686
+      - glibc-headers
+      - htop
+      - kernel-headers
       - ksh
       - libaio
       - libaio-devel
       - libgcc
+      - libselinux-python
       - libstdc++
       - libstdc++-devel
-      - libXi
-      - libXtst
-      - make
-      - sysstat
-      - unixODBC
-      - unixODBC-devel
-      - bind-utils
-      - btrfs-progs
-      - cpp
-      - ethtool
-      - glibc-headers
-      - kernel-headers
-      - kmod-oracleasm
+      - libtool-ltdl
       - libX11
       - libXau
+      - libxcb
       - libXext
+      - libXi
       - libXp
       - libXt
       - libXtst
-      - libselinux-python
-      - libtool-ltdl
-      - libxcb
+      - lsof
+      - lvm2
+      - make
       - module-init-tools
       - mpfr
+      - multitail
+      - ncurses
       - ncurses-devel
       - ncurses-libs
+      - net-tools
       - nfs-utils
+      - nmap
       - nscd
       - ntp
       - openssh-clients
       - oracleasm-support
       - parted
-      - psmisc
       - procps
+      - psmisc
       - readline
       - readline-devel
+      - rlwrap
+      - sg3_utils
+      - sysstat
+      - system-storage-manager
+      - tree
+      - unixODBC
+      - unixODBC-devel
+      - unzip
       - util-linux-ng
+      - vim
       - vim-enhanced
+      - wget
       - xdpyinfo
       - xfsprogs
+      - xorg-x11-server-utils
       - xorg-x11-utils
       - xorg-x11-xauth
       - xorg-x11-xinit
-      - xorg-x11-server-utils
       - xterm
-      - lsof
-      - psmisc
-      - sg3_utils
-      - multitail
-      - htop
-      - rlwrap
       - yum-utils
+
+#      - kmod-oracleasm
 #      - xorg-x11-twm

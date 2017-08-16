@@ -54,6 +54,6 @@ gi_response_file: "install_gi_{{ gi_version }}.rsp"
 #--------------------------------------------------------------------
 db_user: "oracle"
 
-db_edition: "EE"
+db_edition: "SE"
 db_response_file: "install_db_{{ db_version }}_{{ db_edition }}.rsp"
 

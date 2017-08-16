@@ -4,15 +4,20 @@
   # Fichier pour les paramètres communs à toutes les versions Linux
   # ---------------------------------------------------
 
-  # si le serveur n'pas d'accès internet, mettre la variable suivante à FALSE
+  # si une installation oracle existe renseigner ces deux variables 
+  # pour les scripts d'exploitation 
+  ## oracle_base: "/u01/app/oracle"
+  ## oracle_home: "{{ oracle_base }}/product/11.2.0.4/dbhome_1"
+
+  # si le serveur n'a pas d'accès internet, mettre la variable suivante à FALSE
   # dans ce cas, les rpm seront installée depuis le serveur Ansible
-  internet_connection: false
+  internet_connection: true
   # si pas d'internet, le repo est sur la machine ansible
   # http tourne et son répertoire de base est /var/www/html
   # dedans poser les rpms dans linux/[6|7]/x86_64/
   # penser à exécuter createrepo /var/www/html/linux/[6|7]/x86_64/ à chaque fois que ces
   # répertoires sont mis à jour
-  ip_repo_local: "192.168.1.135"
+  ip_repo_local: "192.168.31.101"
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
   # Ajouter le dépôt epel : true ou false
@@ -37,13 +42,16 @@
       - { name: net.ipv4.ip_local_port_range, value: "9000 65500" }
       - { name: vm.swappiness, value: 10 }
       - { name: vm.min_free_kbytes, value: 524288 }
+      - { name: net.ipv4.conf.all.rp_filter, value: 2 }
+      - { name: net.ipv4.conf.default.rp_filter, value: 2 }
+      - { name: kernel.panic_on_oops, value: 1 }
 #      - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
 
   #----------------------------------------------------------------------
   # paramètres security limits pour une installation Oracle
   #----------------------------------------------------------------------
   oracle_seclimits:
-      - "* soft nproc 2047"
+      - "* soft nproc 16384"
       - "* hard nproc 16384"
       - "* soft nofile 1024"
       - "* hard nofile 65536"

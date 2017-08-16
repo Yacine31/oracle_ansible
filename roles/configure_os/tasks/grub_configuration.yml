@@ -39,12 +39,4 @@
     when: ansible_distribution_major_version == '7'
     tags: grub
 
-  - name: Linux 6 - Configuration du mode 3 comme mode de démarrage par défaut
-    replace: dest=/etc/inittab regexp='id:5:initdefault:' replace='id:3:initdefault:'
-    when: ansible_distribution_major_version == '6'
-
-  - name: Linux 7 - Configuration du mode 3 comme mode de démarrage par défaut
-    shell: systemctl set-default multi-user.target
-    when: ansible_distribution_major_version == '7'
-    tags: multi-user
 

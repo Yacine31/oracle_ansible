@@ -16,8 +16,8 @@
 
     # installer les binaires de la base (true|false)
     install_database: true
-    db_version: "12.1.0.2"
-    #db_version: "11.2.0.4"
+    #db_version: "12.1.0.2"
+    db_version: "11.2.0.4"
 
     # emplacmeent commun des binaires Oracle
     oracle_sw_source_local: "/media/sf_Oracle_Software/Oracle_Database"

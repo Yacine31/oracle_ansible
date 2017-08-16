@@ -1,12 +1,14 @@
 ---
 - hosts: all
+  # become_method: sudo
+  # become_user: oracle
   remote_user: oracle
 
   vars:
     u01_size_gb: 1
     tmp_size_gb: 1
     oracle_base: /u01/app/oracle
-    oracle_home: /u01/app/oracle/product/12.1.0.2/dbhome_1
+    oracle_home: /u01/app/oracle/product/12.1.0/dbhome_1
     patch_remote_dir: /u01/stage/psu
     patch_local_dir: /media/sf_Oracle_Software/Oracle_Database/12c
     opatch_file: p6880880_121010_Linux-x86-64.zip
@@ -29,7 +31,16 @@
   - name: create directory for installation files
     action: file dest={{ patch_remote_dir }} state=directory owner=oracle group=oinstall
 
-  - name: copy opatch and psu
+#  - name: unarchive opatch files in remote server
+#    unarchive: src={{ patch_local_dir }}/{{ opatch_file }} dest={{ oracle_home }} owner=oracle group=oinstall mode=0755
+
+#  - name: unarchive psu files in remote server
+#    unarchive: src={{ patch_local_dir }}/{{ psu_file }} dest={{ patch_remote_dir }} owner=oracle group=oinstall mode=0755
+
+#  - name: copy ocm files to remote server
+#    copy: src={{ patch_local_dir }}/{{ ocm_rsp_file }} dest={{ patch_remote_dir }} owner=oracle group=oinstall mode=0644
+
+  - name: copy opatch, psu and ocm files to remote server
     copy: src={{ patch_local_dir }}/{{ item }} dest={{ patch_remote_dir }} owner=oracle group=oinstall mode=0644
     with_items:
      - "{{ opatch_file }}"
