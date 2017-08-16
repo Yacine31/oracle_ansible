@@ -1,0 +1,62 @@
+---
+  #-------------------------------------------
+  # configuration OS
+  #-------------------------------------------
+  - include: config_os.yml
+
+  #-------------------------------------------
+  # installation et configuration de hostap
+  #-------------------------------------------
+  - include: hostap.yml
+
+  #-------------------------------------------
+  # installation et configuration de dnsmasq
+  #-------------------------------------------
+  - include: dnsmasq.yml
+
+  #-------------------------------------------
+  # configuration iptables
+  #-------------------------------------------
+  - include: iptables.yml
+
+  #-------------------------------------------
+  # configuration squid
+  #-------------------------------------------
+  # - include: squid.yml
+
+  #-------------------------------------------
+  # configuration squidguard
+  #-------------------------------------------
+  # - include: squidguard.yml
+
+  #-------------------------------------------
+  # configuration privoxy
+  #-------------------------------------------
+  - include: privoxy.yml
+
+  #---------------------------------------------
+  # installation et configuration de nginx
+  #---------------------------------------------
+  # - include: nginx.yml
+
+  #-------------------------------------------
+  # redémarrage de tous les services
+  #-------------------------------------------
+  - name: redémarrage de tous les services
+    service: name={{ item }} state=restarted
+    with_items:
+       - dnsmasq
+       - privoxy
+       - hostapd
+  #     - nginx
+  #     - php5-fpm
+  #     - squid3
+
+  #-------------------------------------------
+  # reboot après l'upgrade de la distrib
+  #-------------------------------------------
+  # - name: Reboot du RPI
+  #  shell: reboot
+  #  async: 0
+  #  poll: 0
+  #  ignore_errors: true

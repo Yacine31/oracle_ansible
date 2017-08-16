@@ -1,0 +1,35 @@
+[Unit]
+Description=Screen Viewer
+After=matchbox.service
+
+[Service]
+WorkingDirectory=/home/pi
+User=pi
+
+Environment=DISPLAY=:0.0
+
+# Fix white flickering in omxplayer
+Environment=NOREFRESH=1
+
+# Wait for 10 seconds
+ExecStartPre=/bin/sleep 5
+
+# Don't activate screensaver
+ExecStartPre=/usr/bin/xset s off
+
+# Disable DPMS (Energy Star) features
+ExecStartPre=/usr/bin/xset -dpms
+
+# Don't blank the video device
+ExecStartPre=/usr/bin/xset s noblank
+
+ExecStart=/usr/bin/uzbl-browser -u http://localhost/index.php -c /home/pi/.config/uzbl/config
+Restart=on-failure
+
+# Disable uzbl status bar 
+ExecStartPost=/bin/sleep 10
+ExecStartPost=/bin/bash -c "/usr/bin/xdotool key t"
+
+[Install]
+WantedBy=multi-user.target
+

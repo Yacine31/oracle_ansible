@@ -1,0 +1,41 @@
+---
+  #-------------------------------------------
+  # configuration squidguard
+  #-------------------------------------------
+  
+  - name: suppression de /etc/squid
+    file: name=/etc/squid state=absent
+
+  - name: création du lien symbolic vers /etc/squid3
+    file: src=/etc/squid3 dest=/etc/squid state=link  
+
+  - name: création des répertoire de log, db et blacklists
+    file: name={{ item }} state=directory mode=0755 owner=proxy group=proxy 
+    with_items:
+        - /var/lib/squidguard/db/blacklists
+        - /var/log/squidguard
+
+  - name: récupération de la blacklist de Toulouse
+    command: "rsync -arpogvt rsync://ftp.ut-capitole.fr/blacklist/dest/* /var/lib/squidguard/db/blacklists"
+
+  - name: copie du fichier de configuration squidGuard.conf 
+    template: src=squidGuard.conf.j2 dest=/etc/squidguard/squidGuard.conf owner=proxy group=proxy mode=0640
+    #copy: src=squidGuard.conf dest=/etc/squidguard/squidGuard.conf owner=proxy group=proxy mode=0640
+
+  - name: ajout du filtre YOU - création du répertoire
+    file: name=/var/lib/squidguard/db/blacklists/you_mon_filtre state=directory owner=proxy group=proxy mode=0755   
+
+  - name: ajout du filtre YOU - copie du fichier domains
+    copy: src=you_mon_filtre-domains dest=/var/lib/squidguard/db/blacklists/you_mon_filtre/domains owner=proxy group=proxy mode=0755   
+
+  - name: mise à jour de la base de squidGuard
+    command: "/usr/bin/squidGuard -C all"
+
+  - name: modification des droits sur les fichiers db
+    file: name=/var/lib/squidguard/db state=directory recurse=yes owner=proxy group=proxy mode=0755   
+
+  - name: copie du script de mise à jour des blacklists
+    copy: src=update_squid_blacklist.sh dest=/home/pi/ owner=pi group=pi mode=0755
+
+  - name: ajout du script dans le crontab
+    cron: minute="0" hour="22" weekday="*" job="bash /home/pi/update_squid_blacklist.sh" state=present

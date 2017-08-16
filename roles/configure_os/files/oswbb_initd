@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+# chkconfig: 35 90 30
+#########################################################################
+#########################################################################
+## Démarrage et arrêt d'OS Watcher BlackBox avec SysV
+##
+## Fichier: oswbb 
+## Date de création: 2016-04-08
+##
+## Dernières modifications:
+## 2016-04-08     YOM     Création
+#########################################################################
+#########################################################################
+## Pilote le démarrage et l'arrêt d'OSWBB de façon intuitive
+## avec SysV
+#########################################################################
+#########################################################################
+
+# description: Démarrage et arrêt d'OS Watcher BlackBox
+#
+#
+# Environnement standard
+initdir=/etc/rc.d/init.d
+. $initdir/functions
+
+# Pour OSW, surtout à cause des formats de date, on doit être en anglais
+export LANG=en_us.UTF8
+
+export OSW_INSTALL=/opt/oswbb
+# Fréquence de clichés en secondes
+export OSW_FREQUENCE=60
+# Durée de conservation en heures (24*8 jours=192)
+export OSW_CONSERVATION=192
+# Commandes
+export OSW_DEMARRAGE=startOSWbb.sh
+export OSW_ARRET=stopOSWbb.sh
+# Fichier SUBSYS
+OSW_SUBSYS=/var/lock/subsys/oswbb
+# On précise l'emplacement du JAVA de l'installation
+export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:$PATH
+
+function demarrer ()
+{
+    cd $OSW_INSTALL
+    $OSW_INSTALL/$OSW_DEMARRAGE $OSW_FREQUENCE $OSW_CONSERVATION
+    if [ $? -eq 0 ] ; then
+        echo_success "OSWBB : demarrage en cours"
+    else
+        echo_failure "OSWBB : demarrage echoue"
+    fi
+}
+
+function arreter ()
+{
+    cd $OSW_INSTALL
+    $OSW_INSTALL/$OSW_ARRET
+    if [ $? -eq 0 ] ; then
+        echo_success "OSWBB : arret en cours"
+    else
+        echo_failure "OSWBB : arret echoue"
+    fi    
+}
+
+case "$1" in
+     'start')
+          demarrer
+          touch $OSW_SUBSYS
+          ;;
+     'stop')
+          arreter
+          rm -f $OSW_SUBSYS
+          ;;
+     'restart')
+          stop
+          start
+          ;;
+     '*')
+          logger -s -t OSWBB "commande inconnue"
+          ;;
+esac
+
+# End of script oswbb
+#########################################################################
+#########################################################################

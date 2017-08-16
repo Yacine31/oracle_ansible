@@ -1,0 +1,19 @@
+---
+  #-------------------------------------------
+  # configuration iptables
+  #-------------------------------------------
+
+  - name: activation ip forward au niveau OS
+    sysctl: name="net.ipv4.ip_forward" value=1 state=present sysctl_file=/etc/sysctl.conf reload=yes
+
+  - name: copie du fichier des règles iptables vers le rasp
+    copy: src=iptables_rules dest=/etc owner=root group=root mode=0644
+
+  - debug: msg="Les règles iptables seront chargées au reboot"
+
+  - name: relancer les services dnsmasq et hostapd 
+    service: name={{ item }} state=restarted
+    with_items:
+        - dnsmasq
+        - hostapd
+

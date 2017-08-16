@@ -1,0 +1,19 @@
+---
+  #---------------------------------------------
+  # installation et configuration de nginx
+  # les packages nginx et php5-fpm sont déjà installés
+  #---------------------------------------------
+
+  - name: configuration php5pfm avec nginx
+    copy: src=nginx-default dest=/etc/nginx/sites-available/default owner=root group=root mode=0644
+
+  - name: ajout du www.conf dans pool.d
+    copy: src=php5-fpm-www.conf dest=/etc/php5/fpm/pool.d/ owner=root group=root mode=0644
+
+  - name: copie de la page de redirection
+    template: src=nginx-index.php.j2 dest=/var/www/html/index.php owner=root group=root mode=0644
+    # copy: src=nginx-index.php dest=/var/www/html/index.php owner=root group=root mode=0644
+
+  - name: copie de l image stop.png
+    copy: src=stop.png dest=/var/www/html/stop.png owner=root group=root mode=0644
+

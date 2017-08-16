@@ -1,0 +1,28 @@
+---
+  # ---------------------------------------------------
+  # déploiement et configuration OSWBB
+  # Source MOS : 
+  #     - OSWatcher (Includes: [Video]) (Doc ID 301137.1)
+  #     - OS Watcher User's Guide (Doc ID 1531223.1)
+  # ---------------------------------------------------
+  
+  - name: Copy du fichier oswbb733.tar dans /opt
+    copy: src=oswbb733.tar dest=/opt owner=root mode=644
+    tags: oswbb
+
+  - name: décompression de oswbb dans /opt
+    unarchive: copy=no src=/opt/oswbb733.tar dest=/opt owner=root
+    tags: oswbb
+
+  - name: Suppression du fichier oswbb733.tar
+    file: name=/opt/oswbb733.tar state=absent
+    tags: oswbb
+
+  - name: copie du fichier oswbb dans /etc/init.d 
+    copy: src=oswbb_initd dest=/etc/init.d/oswbb mode=0755 owner=root
+    tags: oswbb
+
+  - name: activation du service oswbb 
+    service: name=oswbb enabled=yes state=started
+    tags: oswbb
+    # restarted démarre le service contrairement à started"

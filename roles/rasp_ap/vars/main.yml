@@ -1,0 +1,22 @@
+---
+#----------------------------------------------
+# fichier de paramètres
+#----------------------------------------------
+
+# les paramètres du réseau Wifi
+#
+# le réseau qui sera utilisé par les client
+add_reseau: 192.168.31.0
+mask_reseau: 255.255.255.0
+add_broadcast: 192.168.31.255
+# adresse IP de la carte Wifi du RPI
+add_ip: 192.168.31.1
+
+# paramètres DHCP
+dhcp_debut: 192.168.31.111
+dhcp_fin: 192.168.31.222
+dhcp_bail: 12h
+
+# le SSID du réseau Wifi
+ssid_wifi: wifi_31
+mdp_wifi: vexyrs67363

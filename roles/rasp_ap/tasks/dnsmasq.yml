@@ -1,0 +1,33 @@
+---
+  #-------------------------------------------
+  # installation et configuration de dnsmasq
+  #-------------------------------------------
+
+  - name: configuration du fichier /etc/dnsmasq.conf
+    lineinfile: dest=/etc/dnsmasq.conf line={{ item }}
+    with_items:
+        - domain-needed
+        - bogus-priv
+        - filterwin2k
+        - interface=wlan0
+        - dhcp-range={{ dhcp_debut }},{{ dhcp_fin }},{{ mask_reseau }},{{ dhcp_bail }}
+
+  - name: récupération de la liste des hosts à blacklister
+    get_url: url=http://www.mvps.org/winhelp2002/hosts.zip dest=/tmp force=yes 
+
+  - name: suppression du répertoire /var/local/dnsmasq si présent
+    file: name=/var/local/dnsmasq state=absent
+
+  - name: création du répertoire /var/local/dnsmasq
+    file: name=/var/local/dnsmasq state=directory owner=root group=root mode=0755
+
+  # le fichier dézippé porte le nom HOSTS
+  - name: décompression du fichier hosts.zip  dans /var/local/dnsmasq
+    unarchive: copy=no dest=/var/local/dnsmasq src=/tmp/hosts.zip owner=root group=root mode=0644
+
+  - name: configuration dnsmasq pour prendre en compte le fichier HOSTS
+    lineinfile: dest=/etc/dnsmasq.conf line="addn-hosts=/var/local/dnsmasq/HOSTS"
+
+  - name: redémarrage du service dnsmasq
+    service: name=dnsmasq state=restarted
+

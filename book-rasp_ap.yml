@@ -1,0 +1,10 @@
+---
+ - name: Configuration rasp en AP Wifi 
+   hosts: all
+   user: pi
+   # sudo: yes
+   become: yes
+   gather_facts: no
+
+   roles:
+     - rasp_ap

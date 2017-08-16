@@ -1,0 +1,97 @@
+---
+- name: copy splash image
+  file:
+    src: splashscreen.jpg
+    dest: /etc/splashscreen.jpg
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Copy asplashscreen script
+  file: 
+    src: asplashscreen
+    dest: /etc/init.d/asplashscreen
+    mode: 0755
+    owner: root
+    group: root
+
+
+- name: add asplashscreen service
+  command: update-rc.d asplashscreen defaults
+
+- name: config.txt - several updates
+  lineinfile:
+    dest: /boot/config.txt
+    line: {{ item }}
+    with_items:
+        - { 'framebuffer_depth=32' }
+        - { 'framebuffer_ignore_alpha=1' }
+        - { 'disable_overscan=1' }
+        - { 'overscan_left=10' }
+        - { 'overscan_right=10' }
+        - { 'overscan_top=10' }
+        - { 'overscan_bottom=10' }
+
+- name: Apache - create www directories 
+  file:
+    owner: root
+    group: www-data
+    mode: {{ item.mode }}
+    path: {{ item.dir }}
+    with_items:
+        - { dir: '/var/www/html', mode: '0755' }
+        - { dir: '/var/www/html/images', mode: '0777' }
+
+- name: Apache - add index.php to dir.conf
+  copy:
+    owner: root
+    group: root
+    src: dir.conf
+    dest: /etc/apache2/mods-available/dir.conf 
+
+- name: increase PHP upload_max_sizefile
+  lineinfile: 
+    dest: /etc/php5/apache2/php.ini 
+    regexp: ^upload_max_filesize 
+    line: upload_max_filesize=10M
+
+- name: Copy screen service unit file
+  copy:
+    owner: root
+    group: root
+    mode: 0755
+    src: screen.service
+    dest: /etc/systemd/system/screen.service
+
+- name: Activate screen service
+  command: systemctl enable screen.service chdir=/etc/systemd/system
+
+- name: Copy matchbox service unit file
+  copy: 
+    owner: root
+    group: root
+    mode: 0755
+    src: matchbox.service
+    dest: /etc/systemd/system/matchbox.service
+
+- name: Activate matchbox service
+  command: systemctl enable matchbox.service chdir=/etc/systemd/system
+
+- name: Copy X service unit file
+  copy: 
+    owner: root
+    group: root
+    mode: 0755
+    src: X.service
+    dest: /etc/systemd/system/X.service
+
+- name: Activate X service
+  command: systemctl enable X.service chdir=/etc/systemd/system
+
+- name: Copy gtkrc config file
+  copy:
+    owner: pi
+    group: pi
+    src: gtkrc-2.0
+    dest: /home/pi/.gtkrc-2.0
+   

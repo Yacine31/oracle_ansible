@@ -1,0 +1,45 @@
+---
+  #-------------------------------------------
+  # installation et configuration de hostap
+  #-------------------------------------------
+
+  - name: arrêt de hostapd
+    service: name=hostapd state=stopped
+
+  - name: suppression du répertoire /home/pi/hostap si deja existant
+    file: dest=/home/pi/hostap state=absent
+
+  - name: récupération de hostap depuis le repository git
+    git: repo=git://w1.fi/srv/git/hostap.git dest=/home/pi/hostap clone=yes
+
+  - name: copie du fichier de configuration
+    command: "cp -f /home/pi/hostap/hostapd/defconfig /home/pi/hostap/hostapd/.config"
+
+  - name: modification du fichier de configuration hostapd
+    lineinfile: dest=/home/pi/hostap/hostapd/.config line="CONFIG_DRIVER_NL80211=y"
+
+  - name: compilation de hostapd
+    make: chdir=/home/pi/hostap/hostapd
+
+  - name: copie des nouveaux fichiers hostapd et hostapd_cli
+    command: "cp -f /home/pi/hostap/hostapd/hostapd /usr/sbin/"
+
+  - name: copie des nouveaux fichiers hostapd et hostapd_cli
+    command: "cp -f /home/pi/hostap/hostapd/hostapd_cli /usr/sbin/"
+
+  - name: copie du fichier de configuration hostapd.conf
+    template: src=hostapd.conf.j2 dest=/etc/hostapd/hostapd.conf owner=root group=root mode=0644
+    # copy: src=hostapd.conf dest=/etc/hostapd owner=root group=root mode=0644
+
+  - name: ajout du fichier de configuration et les options dans /etc/default/hostapd
+    lineinfile: dest=/etc/default/hostapd line={{ item }}
+    with_items: 
+      - DAEMON_CONF="/etc/hostapd/hostapd.conf"
+      - DAEMON_OPTS="-d"
+
+  - name: suppression du répertoire /home/pi/hostap
+    file: dest=/home/pi/hostap state=absent
+
+  - name: redémarrage du service hostapd
+    service: name=hostapd state=started
+

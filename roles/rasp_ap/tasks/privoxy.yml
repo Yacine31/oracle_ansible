@@ -1,0 +1,37 @@
+---
+
+#-----------------------------------------
+# installation et configuration de privoxy
+#-----------------------------------------
+
+- name: installation de privoxy
+  apt: name=privoxy state=present
+
+- name: configuration du port d'écoute
+  lineinfile: dest=/etc/privoxy/config line="listen-address  {{ add_ip }}:8118"
+
+- name: suppression de la ligne d'écoute sur localhost
+  lineinfile: dest=/etc/privoxy/config line="listen-address  localhost:8118" state=absent
+
+#---------------------------------------------
+# la première ligen indique à squid de passer par privoxy
+# les 2 autres lui indiquent de ne pas contacter directement les sites web
+#--------------------------------------------- 
+- name: modification de la config squid pour passer par privoxy
+  lineinfile: dest=/etc/squid3/squid.conf line={{ item }}
+  with_items:
+    - "cache_peer {{ add_ip }} parent 8118 0 no-query"
+    - "never_direct allow all"
+    - "always_direct deny all"
+
+- name: ajout des directives debug
+  lineinfile: dest=/etc/privoxy/config line={{ item }}
+  with_items:
+    - "debug     1"
+    - "debug  1024"
+
+- name: ajout du script pour importer les listes adblock dans privoxy
+  copy: src=privoxy-blacklist.sh dest=/home/pi owner=pi group=pi mode=0755
+
+- name: execution du script
+  command: bash /home/pi/privoxy-blacklist.sh -v 1
