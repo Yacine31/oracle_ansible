@@ -20,19 +20,21 @@
     db_version: "11.2.0.4"
 
     # emplacmeent commun des binaires Oracle
-    oracle_sw_source_local: "/media/sf_Oracle_Software/Oracle_Database"
+    oracle_sw_source_local: "/media/sf_Oracle_Database"
 
     # adapter les chemins si besoin vers les zip
     gi_software:
          - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_3of7.zip", version: 11.2.0.4 }
-         - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_grid_1of2.zip", version: 12.1.0.2 }
-         - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_grid_2of2.zip", version: 12.1.0.2 }
+         - { filename: "{{ oracle_sw_source_local }}/12c/EE/Linux_64/12.1.0.2/linuxamd64_12102_grid_1of2.zip", version: 12.1.0.2 }
+         - { filename: "{{ oracle_sw_source_local }}/12c/EE/Linux_64/12.1.0.2/linuxamd64_12102_grid_2of2.zip", version: 12.1.0.2 }
+         - { filename: "{{ oracle_sw_source_local }}/12c/EE/Linux_64/12.2.0.1/linuxx64_12201_grid_home.zip", version: 12.2.0.1 }
 
     db_software:
           - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_1of7.zip", version: 11.2.0.4 }
           - { filename: "{{ oracle_sw_source_local }}/11g/Linux_64/11.2.0.4/p13390677_112040_Linux-x86-64_2of7.zip", version: 11.2.0.4 }
-          - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_1of2.zip", version: 12.1.0.2 }
-          - { filename: "{{ oracle_sw_source_local }}/12c/12.1.0.2/Linux_64/linuxamd64_12102_database_2of2.zip", version: 12.1.0.2 }
+          - { filename: "{{ oracle_sw_source_local }}/12c/EE/Linux_64/12.1.0.2/linuxamd64_12102_database_1of2.zip", version: 12.1.0.2 }
+          - { filename: "{{ oracle_sw_source_local }}/12c/EE/Linux_64/12.1.0.2/linuxamd64_12102_database_2of2.zip", version: 12.1.0.2 }
+          - { filename: "{{ oracle_sw_source_local }}/12c/EE/Linux_64/12.2.0.1/linuxx64_12201_database.zip", version: 12.2.0.1 }
 
     db_home: "{{ oracle_base }}/product/{{ db_version }}/dbhome_1"
     gi_home: "{{ oracle_racine }}/{{ gi_version }}/grid"
