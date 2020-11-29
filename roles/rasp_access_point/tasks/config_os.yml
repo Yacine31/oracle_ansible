@@ -1,0 +1,44 @@
+---
+  - name: update cache
+    apt: update_cache=yes
+
+  - name: update distrib
+    apt: upgrade=dist
+
+  - name: installation des packages de base
+    apt: name={{ item }} state=present
+    with_items:
+        - hostapd
+        - squid3
+        - squidguard
+        - iptables 
+        - dnsmasq 
+        - multitail
+        - wget
+        - dnsutils 
+        - vim
+        - vim-tiny
+        - build-essential
+        - git
+        - libnl-dev
+        - libssl-dev 
+        - wavemon
+
+  - name: mise à jour du timezone
+    copy: content='Europe/Paris' dest=/etc/timezone owner=root group=root mode=0644
+
+  - name: validation du timezone
+    command: dpkg-reconfigure --frontend noninteractive tzdata
+
+  - name: configuration reseau par copie du fichier /etc/network/interfaces
+    copy: src=interfaces dest=/etc/network owner=root group=root mode=0644
+
+  #----------------------------------------------------------------------------
+  # corriger l'erreur qui revient souvent dans le fichier /var/log/syslog :
+  # rsyslogd-2007: action 'action 17' suspended, next retry is ....
+  #----------------------------------------------------------------------------
+  - name: modificationde rsyslog.conf
+    copy: src=rsyslog.conf dest=/etc owner=root group=root mode=0644
+
+  - name: redémarrage de rsyslog
+    service: name=rsyslog state=restarted

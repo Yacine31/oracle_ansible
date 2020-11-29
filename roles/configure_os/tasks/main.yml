@@ -28,8 +28,8 @@
   # --------------------------------------------------- 
   # configuration Linux : Personnalisation par z_oracle.sh
   # ---------------------------------------------------
-#  - name: Ajout du fichier z_oracle dans /etc/profile.d
-#    copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
+  - name: Ajout du fichier z_oracle dans /etc/profile.d
+    copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
 
   # --------------------------------------------------- 
   # configuration Linux : Sécurisation

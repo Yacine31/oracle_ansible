@@ -1,0 +1,11 @@
+---
+  #-------------------------------------------
+  # configuration squid
+  #-------------------------------------------
+
+  - name: copie du fichier de configuration squid.conf 
+    copy: src=squid.conf dest=/etc/squid3 owner=root group=root mode=0644
+
+  - name: redémarrage du service squid3
+    service: name=squid3 state=restarted
+

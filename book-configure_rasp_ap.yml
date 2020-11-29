@@ -1,0 +1,9 @@
+---
+ - name: Raspberry AP
+   hosts: mygroup
+   remote_user: pi
+   become: yes
+   become_method: sudo
+
+   roles:
+     - rasp_access_point

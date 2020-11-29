@@ -9,11 +9,11 @@
   - include: users_configuration.yml
     when: install_grid_infra or install_database
 
-#  - include: install_grid_infra.yml
-#    when: install_grid_infra
+  - include: install_grid_infra.yml
+    when: install_grid_infra
 
-#  - include: install_database.yml
-#    when: install_database
+  - include: install_database.yml
+    when: install_database
 
-#  - include: scripts_exploitation.yml
+  - include: scripts_exploitation.yml
 

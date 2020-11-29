@@ -1,0 +1,19 @@
+oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v12.2.0
+oracle.install.option=INSTALL_DB_SWONLY
+ORACLE_HOSTNAME={{ ansible_hostname }}
+UNIX_GROUP_NAME={{ oracle_group }}
+INVENTORY_LOCATION={{ oracle_inventory_loc }}
+SELECTED_LANGUAGES=en,fr
+ORACLE_HOME={{ db_home }}
+ORACLE_BASE={{ oracle_base }}
+oracle.install.db.InstallEdition={{ db_edition }}
+oracle.install.db.DBA_GROUP={{ dba_group }}
+oracle.install.db.OPER_GROUP={{ oper_group }}
+oracle.install.db.BACKUPDBA_GROUP={{ backupdba_group }}
+oracle.install.db.DGDBA_GROUP={{ dgdba_group }}
+oracle.install.db.KMDBA_GROUP={{ kmdba_group }}
+oracle.install.db.OSRACDBA_GROUP={{ racdba_group }}
+SECURITY_UPDATES_VIA_MYORACLESUPPORT=false
+DECLINE_SECURITY_UPDATES=true
+oracle.installer.autoupdates.option=SKIP_UPDATES
+

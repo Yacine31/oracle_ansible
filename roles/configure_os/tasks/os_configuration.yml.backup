@@ -1,0 +1,145 @@
+---
+  # ---------------------------------------------------
+  # configuration des packages necessaires pour Linux
+  # ---------------------------------------------------
+
+#  - name: Installation des RPMs libselinux et libselinux-python
+#    yum: name={{ item }} state=present
+#    with_items:
+#      - libselinux
+#      - libselinux-python
+#      - libselinux-utils
+#
+  - name: Copie du fichier repository public-yum si absent
+    copy:
+      src="public-yum-ol{{ ansible_distribution_major_version }}.repo"
+      dest="/etc/yum.repos.d/public-yum-ol{{ ansible_distribution_major_version }}.repo"
+    tags: publicyumrepo
+    when: internet_connection
+
+  - name: Copie de la clé GPG
+    # sans cette clé, la commande YUM retourne l'erreur suivante :
+    # Couldn't open file /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+    copy: src=RPM-GPG-KEY-oracle dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+    tags: rpmgpgkey
+
+  - name: Installation du RPM EPEL Repo
+    yum: name={{ epel_rpm }} state=installed
+    when: configure_epel_repo and internet_connection
+    tags: epelrepo
+
+  # ---------------------------------------------------
+  # si pas de connexion internet, on transfert les rpms
+  # ---------------------------------------------------
+
+  - name: PAS de connexion internet, copie du fichier local.repo
+    template: src=local.repo.j2 dest=/etc/yum.repos.d/local.repo
+    when: internet_connection == false
+    tags: install_rpm_files
+
+  # ---------------------------------------------------
+  # maintenant on install les rpms
+  # ---------------------------------------------------
+  - name: YUM - installation des packages nécessaires
+    yum:  name={{ item }} state=latest disable_gpg_check=yes
+    with_items: "{{ linux_packages }}"
+
+#  - name: connexion internet - suppression du epel-release
+#    yum: name=epel-release state=absent
+#    when: internet_connection == true
+
+#  - name: connexion internet - suppression du public-yum
+#    file: dest=/etc/yum.repos.d/public-yum-ol{{ ansible_distribution_major_version }}.repo state=absent
+#    when: internet_connection == true and ansible_os_family == 'RedHat'
+
+  - name: PAS de connexion internet - suppression du local.repo
+    file: dest=/etc/yum.repos.d/local.repo state=absent
+    when: internet_connection == false
+
+  - name: Configuration du mode panic sur perte du /
+    shell: free_form="tune2fs -e panic `df -P / |tail -1 | awk '{print $1}'`"
+
+  # ---------------------------------------------------
+  # configuration du serveur NTPD
+  # ---------------------------------------------------
+  - name: Modification de la configuration NTP configuration (ajout du flag -x)
+    lineinfile: dest="/etc/sysconfig/ntpd"
+              regexp='^OPTIONS='
+              line='OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"'
+              state=present
+              create=yes
+
+  - name: restart ntpd
+    service: name=ntpd  state=started  enabled=yes
+
+  # ---------------------------------------------------
+  # configuration Linux : Selinux
+  # ---------------------------------------------------
+  - name: Disactiver Selinux (de façon permanente)
+    selinux: state=disabled
+    register: selinux
+
+  - name: Disactiver Selinux (runtime)
+    shell: setenforce 0
+    ignore_errors: true
+
+  # ---------------------------------------------------
+  # configuration Linux : les services
+  # ---------------------------------------------------
+  - name: arrêter et désactiver les services inutils
+    with_items: "{{ linux_services }}"
+    service: name={{ item }}  state=stopped  enabled=no
+    tags: linuxservices
+    ignore_errors: true
+
+  #------------------------------------------------------------------------------------
+  # configuration Linux : Paramètres du kernel
+  # pour Linux 7, on utilise un fichier de conf séparé /etc/sysctl.d/98-oracle.conf
+  # au lieu du fichier par défaut /etc/sysctl.conf
+  # SAUF que l'installeur Oracle ne voit pas les paramètres dans un autre fichier
+  # que le sysctl.conf !!!
+  #------------------------------------------------------------------------------------
+  - name: Linux 6 et 7 - Ajustement des paramètres du Kernel dans /etc/sysctl.conf
+    sysctl:
+      name={{ item.name }} value={{ item.value }}
+      state=present reload=yes ignoreerrors=yes sysctl_set=yes
+#    when: ansible_distribution_major_version == '6'
+    with_items: "{{ oracle_sysconfig }}"
+    tags: sysconfig
+
+#  - name: Linux 7 - Ajustement des paramètres du Kernel dans /etc/sysctl.d/98-oracle.conf
+#    sysctl:
+#      name={{ item.name }} value={{ item.value }}
+#      state=present reload=yes ignoreerrors=yes sysctl_set=yes
+#      sysctl_file=/etc/sysctl.d/98-oracle.conf
+#    when: ansible_distribution_major_version == '7'
+#    with_items: "{{ oracle_sysconfig }}"
+#    tags: sysconfig
+
+  - name: Configuration PAM
+    lineinfile: dest=/etc/pam.d/login state=present line="session required pam_limits.so"
+    tags: pamconfig
+
+  - name: Linux 7 - Ajustement des limits pour Oracle dans /etc/security/limits.d/98-oracle.conf
+    when: ansible_distribution_major_version == '7'
+    lineinfile: dest=/etc/security/limits.d/98-oracle.conf create=yes state=present line={{ item }}
+    with_items: "{{ oracle_seclimits }}"
+    tags: seclimit
+
+  - name: Linux 6 - Ajustement des limits pour Oracle dans /etc/security/limits.conf
+    when: ansible_distribution_major_version == '6'
+    lineinfile: dest=/etc/security/limits.conf create=yes state=present line={{ item }}
+    with_items: "{{ oracle_seclimits }}"
+    tags: seclimit
+
+  - name: Linux 6 - Configuration du mode 3 comme mode de démarrage par défaut
+    replace: dest=/etc/inittab regexp='id:5:initdefault:' replace='id:3:initdefault:'
+    when: ansible_distribution_major_version == '6'
+
+  - name: Linux 7 - Configuration du mode 3 comme mode de démarrage par défaut
+    shell: systemctl set-default multi-user.target
+    when: ansible_distribution_major_version == '7'
+
+  - name: BASH - ajout de ignore-case pour autocompletion avec TAB
+    lineinfile: dest=/etc/inputrc line="set completion-ignore-case On" create=yes state=present
+

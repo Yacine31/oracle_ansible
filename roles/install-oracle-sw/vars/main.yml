@@ -8,10 +8,10 @@ role_separation: true
 # grid_install_user: "{% if role_separation==true %}{{ grid_user }}{% else %}{{ oracle_user }}{% endif %}"
 
 oracle_users:         # Passwd :Oracle123
-  - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,asmdba,backupdba,dgdba,kmdba,oper", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+  - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,asmdba,backupdba,dgdba,kmdba,oper,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
 
 grid_users:
-  - { username: grid, uid: 1000, primgroup: oinstall, othergroups: "asmadmin,asmdba,asmoper,dba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+  - { username: grid, uid: 1000, primgroup: oinstall, othergroups: "asmadmin,asmdba,asmoper,dba,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
 
 oracle_group: "oinstall"
 dba_group: "dba"
@@ -23,6 +23,7 @@ kmdba_group: "kmdba"
 asmdba_group: "asmdba"
 asmoper_group: "asmoper"
 asmadmin_group: "asmadmin"
+racdba_group: "racdba"
 
 oracle_groups:
   - { group: asmdba, gid: 1004 }
@@ -34,6 +35,7 @@ oracle_groups:
   - { group: oper, gid: 1002 }
   - { group: dgdba, gid: 1007 }
   - { group: kmdba, gid: 1008 }
+  - { group: racdba, gid: 1009 }
 
 oracle_stage: "/u01/stage"
 

@@ -1,0 +1,47 @@
+---
+  #-------------------------------------------
+  # configuration OS
+  #-------------------------------------------
+  - include: config_os.yml
+
+  #-------------------------------------------
+  # installation et configuration de hostap
+  #-------------------------------------------
+  - include: hostap.yml
+
+  #-------------------------------------------
+  # installation et configuration de dnsmasq
+  #-------------------------------------------
+  - include: dnsmasq.yml
+
+  #-------------------------------------------
+  # configuration iptables
+  #-------------------------------------------
+  - include: iptables.yml
+
+  #-------------------------------------------
+  # configuration squid
+  #-------------------------------------------
+  #-- include: squid.yml
+
+  #-------------------------------------------
+  # configuration squidguard
+  #-------------------------------------------
+  #- include: squidguard.yml
+
+  #-------------------------------------------
+  # configuration privoxy
+  #-------------------------------------------
+  - include: privoxy.yml
+
+  #-------------------------------------------
+  # redémarrage de tous les services
+  #-------------------------------------------
+  - name: redemarrage de tous les services
+    service: name={{ item }} state=restarted
+    with_items:
+        - hostapd
+        - dnsmasq
+        - privoxy
+        - squid3
+
