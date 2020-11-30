@@ -40,9 +40,9 @@
   # ---------------------------------------------------
   # maintenant on install les rpms
   # ---------------------------------------------------
-#   - name: YUM - installation des packages nécessaires
-#     yum:  name={{ item }} state=latest disable_gpg_check=yes
-#     with_items: "{{ linux_packages }}"
+  - name: YUM - installation des packages nécessaires
+    yum:  name={{ item }} state=latest disable_gpg_check=yes
+    with_items: "{{ linux_packages }}"
 
 #   - name: connexion internet - suppression du epel-release
 #     yum: name=epel-release state=absent
@@ -99,22 +99,32 @@
   # SAUF que l'installeur Oracle ne voit pas les paramètres dans un autre fichier
   # que le sysctl.conf !!!
   #------------------------------------------------------------------------------------
-   - name: Linux 6 et 7 - Ajustement des paramètres du Kernel dans /etc/sysctl.conf
+   - name: Linux 6 - Ajustement des paramètres du Kernel dans /etc/sysctl.conf
      sysctl:
        name={{ item.name }} value={{ item.value }}
        state=present reload=yes ignoreerrors=yes sysctl_set=yes
- #    when: ansible_distribution_major_version == '6'
+     when: ansible_distribution_major_version == '6'
      with_items: "{{ oracle_sysconfig }}"
      tags: sysconfig
 
-#  - name: Linux 7 - Ajustement des paramètres du Kernel dans /etc/sysctl.d/98-oracle.conf
-#    sysctl:
-#      name={{ item.name }} value={{ item.value }}
-#      state=present reload=yes ignoreerrors=yes sysctl_set=yes
-#      sysctl_file=/etc/sysctl.d/98-oracle.conf
-#    when: ansible_distribution_major_version == '7'
-#    with_items: "{{ oracle_sysconfig }}"
-#    tags: sysconfig
+   - name: Linux 7 - Ajustement des paramètres du Kernel dans /etc/sysctl.d/98-oracle.conf
+     sysctl:
+       name={{ item.name }} value={{ item.value }}
+       state=present reload=yes ignoreerrors=yes sysctl_set=yes
+       sysctl_file=/etc/sysctl.d/98-oracle.conf
+     when: ansible_distribution_major_version == '7'
+     with_items: "{{ oracle_sysconfig }}"
+     tags: sysconfig
+   
+   - name: récupérer la valeur nr_hugepages
+     shell: sysctl -n vm.nr_hugepages
+     register: nr_hp 
+
+   - name: mise à jour nr_hugepages
+     sysctl: 
+       name=vm.nr_hugepages value="{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}"
+       state=present reload=yes ignoreerrors=yes sysctl_set=yes
+     when: nr_hp.stdout <= 0
 
    - name: Configuration PAM
      lineinfile: dest=/etc/pam.d/login state=present line="session required pam_limits.so"
