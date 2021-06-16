@@ -15,7 +15,7 @@
     with_items:
         - "rhgb"
         - "quiet"
-    when: ansible_distribution_major_version == '7'
+    when: ansible_distribution_major_version >= '7'
     tags: grub
 
 
@@ -25,7 +25,6 @@
         - "transparent_hugepage=never"
         - "numa=off"
         - "elevator=deadline"
-        # - "vga=791"
     when: ansible_distribution_major_version == '6'
     tags: grub
 
@@ -36,7 +35,7 @@
         - "numa=off"
         - "elevator=deadline"
         - "vga=791"
-    when: ansible_distribution_major_version == '7'
+    when: ansible_distribution_major_version >= '7'
     tags: grub
 
 

@@ -22,7 +22,7 @@
   secure_configuration: false
   # Ajouter le dépôt epel : true ou false
   # Pour pouvoir installer des packets comme rlwrap, htop, multitail, ...
-  configure_epel_repo: true
+  configure_epel_repo: false
 
 
   #----------------------------------------------------------------------
@@ -45,6 +45,7 @@
       - { name: net.ipv4.conf.all.rp_filter, value: 2 }
       - { name: net.ipv4.conf.default.rp_filter, value: 2 }
       - { name: kernel.panic_on_oops, value: 1 }
+      - { name: vm.hugetlb_shm_group=501, value: 1000 }
 #      - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
 
   #----------------------------------------------------------------------

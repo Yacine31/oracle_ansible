@@ -1,0 +1,42 @@
+# Fichier de paramètres pour Oracle Linux 8
+---
+
+  #----------------------------------------------------------------------
+  # url du dépôt epel
+  #----------------------------------------------------------------------
+  epel_rpm: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+
+  #----------------------------------------------------------------------
+  # packages linux nécessaires pour travailler
+  #----------------------------------------------------------------------
+  linux_packages:
+       - bc
+       - binutils
+       - elfutils-libelf
+       - elfutils-libelf-devel
+       - fontconfig-devel
+       - glibc
+       - glibc-devel
+       - ksh
+       - libaio
+       - libaio-devel
+       - libXrender
+       - libX11
+       - libXau
+       - libXi
+       - libXtst
+       - libgcc
+       - libnsl
+       - librdmacm
+       - libstdc++
+       - libstdc++-devel
+       - libxcb
+       - libibverbs
+       - make
+       - policycoreutils
+       - policycoreutils-python-utils
+       - smartmontools
+       - sysstat
+       - net-tools
+       - nfs-utils
+       - unixODBC

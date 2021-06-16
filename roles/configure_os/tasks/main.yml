@@ -43,6 +43,10 @@
   - include: ip_on_screen_loggin.yml
     when: ansible_virtualization_type  == "virtualbox"
 
+  # ---------------------------------------------------
+  # configuration Linux : Utilisateurs et groupes Oracle
+  # ---------------------------------------------------
+  - include: users_configuration.yml
  
   # --------------------------------------------------- 
   # déploiement de OSWatcher BlackBox
