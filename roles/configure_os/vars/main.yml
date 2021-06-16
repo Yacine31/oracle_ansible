@@ -62,6 +62,8 @@
       - "* hard stack 32768"
       - "* soft core unlimited"
       - "* hard core unlimited"
+      - "* soft data unlimited"
+      - "* hard data unlimited"
 
   #----------------------------------------------------------------------
   # services Linux à désactiver :
