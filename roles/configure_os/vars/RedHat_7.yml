@@ -54,7 +54,7 @@
       - make
       - module-init-tools
       - mpfr
-      - multitail
+      # - multitail
       - ncurses
       - ncurses-devel
       - ncurses-libs
