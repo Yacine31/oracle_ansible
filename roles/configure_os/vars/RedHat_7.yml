@@ -11,51 +11,47 @@
   #----------------------------------------------------------------------
   linux_packages:
       - bc
+      - bind-utils
       - binutils
+      - btrfs-progs
       - compat-libcap1
       - compat-libstdc++-33
-      - elfutils-libelf
-      - elfutils-libelf-devel
-      - fontconfig-devel
-      - glibc
-      - glibc-devel
-      - ksh
-      - libaio
-      - libaio-devel
-      - libXrender
-      - libXrender-devel
-      - libX11
-      - libXau
-      - libXi
-      - libXtst
-      - libgcc
-      - libstdc++
-      - libstdc++-devel
-      - libxcb
-      - make
-      - policycoreutils
-      - policycoreutils-python
-      - smartmontools
-      - sysstat
-      - bind-utils
-      - btrfs-progs
       - cpp
       - deltarpm
       - device-mapper-multipath
+      - elfutils-libelf
+      - elfutils-libelf-devel
       - ethtool
+      - fontconfig-devel
       - gcc
       - gcc-c++
+      - glibc
+      - glibc-devel
       - glibc-devel.i686
       - glibc-headers
-      - htop
+      # - htop
       - kernel-headers
+      - ksh
+      - libaio
+      - libaio-devel
+      - libgcc
       - libselinux-python
+      - libstdc++
+      - libstdc++-devel
       - libtool-ltdl
+      - libX11
+      - libXau
+      - libxcb
       - libXext
+      - libXi
       - libXp
+      - libXrender
+      - libXrender-devel
       - libXt
+      - libXtst
       - lsof
       - lvm2
+      - make
       - module-init-tools
       - mpfr
       - multitail
@@ -70,12 +66,16 @@
       - openssh-clients
       - oracleasm-support
       - parted
+      - policycoreutils
+      - policycoreutils-python
       - procps
       - psmisc
       - readline
       - readline-devel
       - rlwrap
       - sg3_utils
+      - smartmontools
+      - sysstat
       - system-storage-manager
       - tree
       - unixODBC
