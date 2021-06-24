@@ -3,7 +3,7 @@
   # configuration des packages necessaires pour Linux
   # ---------------------------------------------------
   - name: YUM - installation des packages nécessaires
-    yum:  name={{ rpm_packages }} state=latest disable_gpg_check=yes
+    yum:  name={{ linux_packages }} state=latest disable_gpg_check=yes
     # yum:  name={{ item }} state=latest disable_gpg_check=yes
     # with_items: "{{ linux_packages }}"
     tags: rpm_packages
