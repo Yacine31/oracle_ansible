@@ -38,30 +38,30 @@
   # ---------------------------------------------------
   # configuration Linux : les services
   # ---------------------------------------------------
-   - name: arrêter et désactiver les services inutils
-     with_items: "{{ linux_services }}"
-     service: name={{ item }}  state=stopped  enabled=no
-     tags: linuxservices
-     ignore_errors: true
+  - name: arrêter et désactiver les services inutils
+    with_items: "{{ linux_services }}"
+    service: name={{ item }}  state=stopped  enabled=no
+    tags: linuxservices
+    ignore_errors: true
 
   #------------------------------------------------------------------------------------
   # configuration Linux : Paramètres du kernel
   #------------------------------------------------------------------------------------
-   - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.conf
-     sysctl:
-       name={{ item.name }} value={{ item.value }}
-       state=present reload=yes ignoreerrors=yes sysctl_set=yes
-     with_items: "{{ oracle_sysconfig }}"
-     tags: sysctl.conf 
+  - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.conf
+    sysctl:
+      name={{ item.name }} value={{ item.value }}
+      state=present reload=yes ignoreerrors=yes sysctl_set=yes
+    with_items: "{{ oracle_sysconfig }}"
+    tags: sysctl.conf 
 
-   - name: Configuration PAM
-     lineinfile: dest=/etc/pam.d/login state=present line="session required pam_limits.so"
-     tags: pamconfig
+  - name: Configuration PAM
+    lineinfile: dest=/etc/pam.d/login state=present line="session required pam_limits.so"
+    tags: pamconfig
 
-   - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
-     lineinfile: dest=/etc/security/limits.conf create=yes state=present line={{ item }}
-     with_items: "{{ oracle_seclimits }}"
-     tags: seclimit
+  - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
+    lineinfile: dest=/etc/security/limits.conf create=yes state=present line={{ item }}
+    with_items: "{{ oracle_seclimits }}"
+    tags: seclimit
 
 
   # ---------------------------------------------------
@@ -99,12 +99,12 @@
   # --------------------------------------------------- 
   # configuration du démarrage en mode 3 par défaut
   # ---------------------------------------------------
-   - name: Linux 6 - Configuration du mode 3 comme mode de démarrage par défaut
-     replace: dest=/etc/inittab regexp='id:5:initdefault:' replace='id:3:initdefault:'
-     when: ansible_distribution_major_version == '6'
-     tags: init3
+  - name: Linux 6 - Configuration du mode 3 comme mode de démarrage par défaut
+    replace: dest=/etc/inittab regexp='id:5:initdefault:' replace='id:3:initdefault:'
+    when: ansible_distribution_major_version == '6'
+    tags: init3
 
-   - name: Linux 7/8 - Configuration du mode 3 comme mode de démarrage par défaut
-     shell: systemctl set-default multi-user.target
-     when: ansible_distribution_major_version >= '7'
-     tags: init3
+  - name: Linux 7/8 - Configuration du mode 3 comme mode de démarrage par défaut
+    shell: systemctl set-default multi-user.target
+    when: ansible_distribution_major_version >= '7'
+    tags: init3
