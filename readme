@@ -6,11 +6,16 @@ ansible sur le poste à configurer
 
 $ pwd = /root
 
-$ yum install -y wget bzip2 unzip git
-# git clone https://github.com/Yacine31/ansible
-$ tar xfj ansible/portable-ansible-v0.4.2-py2.tar.bz2
+$ yum install -y wget bzip2 unzip git python2
+# git clone https://github.com/Yacine31/config_linux
+$ tar xfj config_linux/portable-ansible-v0.4.2-py2.tar.bz2
 # ln -s ansible ansible-playbook
-# python ansible-playbook ansible/book-config_OS.yml -i ansible/hosts
+# python2 ansible-playbook config_linux/book-configure_OS.yml -i config_linux/hosts
+
+# pour actualiser 
+# cd ~/config_linux
+# git pull origin master
+# python2 ../ansible-playbook book-configure_OS.yml -i hosts
 
 =====
 
