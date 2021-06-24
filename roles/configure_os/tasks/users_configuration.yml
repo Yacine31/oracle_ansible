@@ -4,26 +4,28 @@
   # ---------------------------------------------------
   - name: Création des groupes
     group: name={{ item.group }} gid={{ item.gid }} state=present
-    with_items: "{{ oracle_groups }}"
+    with_items: 
+        - { group: oinstall, gid: 1001}
+        - { group: dba, gid: 1002 }
+        - { group: asmadmin, gid: 1003 }
+        - { group: asmdba, gid: 1004 }
+        - { group: asmoper, gid: 1005 }
+        - { group: backupdba, gid: 1006 }
+        - { group: dgdba, gid: 1007 }
+        - { group: kmdba, gid: 1009 }
+        - { group: oper, gid: 1009 }
+        - { group: racdba, gid: 1010 }
     ignore_errors: true
     tags: group
 
-  - name: Création du compte Oracle
+  - name: Création du compte Oracle et grid
     user: 
       name={{ item.username }}  group={{ item.primgroup }} 
       groups={{ item.othergroups }} uid={{ item.uid }} 
       generate_ssh_key=yes append=yes state=present password={{ item.passwd }}
-    with_items: "{{ oracle_users }}"
-    ignore_errors: true
-    tags: user
-
-  - name: Création du compte grid
-    user: 
-      name={{ item.username }}  group={{ item.primgroup }} 
-      groups={{ item.othergroups }} uid={{ item.uid }} 
-      generate_ssh_key=yes append=yes state=present password={{ item.passwd }}
-    with_items: "{{ grid_users }}"
-    when: role_separation
+    with_items:
+     - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,asmdba,backupdba,dgdba,kmdba,oper,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+     - { username: grid, uid: 1002, primgroup: oinstall, othergroups: "asmadmin,asmdba,asmoper,dba,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
     ignore_errors: true
     tags: user
 
