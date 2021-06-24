@@ -13,8 +13,8 @@
         - { group: backupdba, gid: 1006 }
         - { group: dgdba, gid: 1007 }
         - { group: kmdba, gid: 1009 }
-        - { group: oper, gid: 1009 }
-        - { group: racdba, gid: 1010 }
+        - { group: oper, gid: 1010 }
+        - { group: racdba, gid: 1011 }
     ignore_errors: true
     tags: group
 
