@@ -5,6 +5,7 @@
   - name: Création des groupes
     group: name={{ item.group }} gid={{ item.gid }} state=present
     with_items: "{{ oracle_groups }}"
+    ignore_errors: true
     tags: group
 
   - name: Création du compte Oracle
