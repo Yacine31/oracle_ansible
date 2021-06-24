@@ -1,3 +1,19 @@
+=====
+
+ansible sur le poste à configurer 
+
+===
+
+$ pwd = /root
+
+$ yum install -y wget bzip2 unzip git
+# git clone https://github.com/Yacine31/ansible
+$ tar xfj ansible/portable-ansible-v0.4.2-py2.tar.bz2
+# ln -s ansible ansible-playbook
+# python ansible-playbook ansible/book-config_OS.yml -i ansible/hosts
+
+=====
+
 deux books : 
 - configure_OS
 - install-oracle-sw

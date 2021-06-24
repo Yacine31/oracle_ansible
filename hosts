@@ -1,3 +1,2 @@
-[mygroup]
-192.168.31.212
-192.168.31.242
+[local]
+localhost ansible_connection=local
