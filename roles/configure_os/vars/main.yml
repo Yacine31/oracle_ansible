@@ -45,7 +45,7 @@
       - { name: vm.min_free_kbytes, value: 524288 }
       - { name: kernel.panic_on_oops, value: 1 }
       - { name: vm.hugetlb_shm_group, value: 1000 }
-      - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
+#      - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
 
 
   #----------------------------------------------------------------------
