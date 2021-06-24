@@ -25,6 +25,8 @@
         - "transparent_hugepage=never"
         - "numa=off"
         - "elevator=deadline"
+        - "GRUB_ENABLE_BLSCFG=true"
+        - "vga=791"
     when: ansible_distribution_major_version == '6'
     tags: grub
 
@@ -35,6 +37,8 @@
         - "numa=off"
         - "elevator=deadline"
         - "vga=791"
+        #  Workaround of Orabug 20734786
+        - "GRUB_ENABLE_BLSCFG=true"
     when: ansible_distribution_major_version >= '7'
     tags: grub
 

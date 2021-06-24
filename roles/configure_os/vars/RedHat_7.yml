@@ -11,43 +11,51 @@
   #----------------------------------------------------------------------
   linux_packages:
       - bc
-      - bind-utils
       - binutils
-      - btrfs-progs
       - compat-libcap1
       - compat-libstdc++-33
+      - elfutils-libelf
+      - elfutils-libelf-devel
+      - fontconfig-devel
+      - glibc
+      - glibc-devel
+      - ksh
+      - libaio
+      - libaio-devel
+      - libXrender
+      - libXrender-devel
+      - libX11
+      - libXau
+      - libXi
+      - libXtst
+      - libgcc
+      - libstdc++
+      - libstdc++-devel
+      - libxcb
+      - make
+      - policycoreutils
+      - policycoreutils-python
+      - smartmontools
+      - sysstat
+      - bind-utils
+      - btrfs-progs
       - cpp
       - deltarpm
       - device-mapper-multipath
-      - elfutils-libelf-devel
       - ethtool
       - gcc
       - gcc-c++
-      - glibc
-      - glibc-devel
       - glibc-devel.i686
       - glibc-headers
       - htop
       - kernel-headers
-      - ksh
-      - libaio
-      - libaio-devel
-      - libgcc
       - libselinux-python
-      - libstdc++
-      - libstdc++-devel
       - libtool-ltdl
-      - libX11
-      - libXau
-      - libxcb
       - libXext
-      - libXi
       - libXp
       - libXt
-      - libXtst
       - lsof
       - lvm2
-      - make
       - module-init-tools
       - mpfr
       - multitail
@@ -68,7 +76,6 @@
       - readline-devel
       - rlwrap
       - sg3_utils
-      - sysstat
       - system-storage-manager
       - tree
       - unixODBC
@@ -86,6 +93,3 @@
       - xorg-x11-xinit
       - xterm
       - yum-utils
-
-#      - kmod-oracleasm
-#      - xorg-x11-twm

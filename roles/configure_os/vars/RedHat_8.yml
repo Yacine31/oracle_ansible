@@ -20,23 +20,24 @@
        - ksh
        - libaio
        - libaio-devel
-       - libXrender
-       - libX11
-       - libXau
-       - libXi
-       - libXtst
        - libgcc
+       - libibverbs
        - libnsl
        - librdmacm
        - libstdc++
        - libstdc++-devel
+       - libX11
+       - libXau
        - libxcb
-       - libibverbs
+       - libXi
+       - libXrender
+       - libXtst
        - make
+       - net-tools
+       - nfs-utils
        - policycoreutils
        - policycoreutils-python-utils
        - smartmontools
        - sysstat
-       - net-tools
-       - nfs-utils
        - unixODBC
+

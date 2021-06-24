@@ -7,14 +7,14 @@
     with_items: 
         - { group: oinstall, gid: 1001}
         - { group: dba, gid: 1002 }
-        - { group: asmadmin, gid: 1003 }
-        - { group: asmdba, gid: 1004 }
-        - { group: asmoper, gid: 1005 }
-        - { group: backupdba, gid: 1006 }
-        - { group: dgdba, gid: 1007 }
-        - { group: kmdba, gid: 1009 }
-        - { group: oper, gid: 1010 }
-        - { group: racdba, gid: 1011 }
+        - { group: oper, gid: 1003 }
+        - { group: backupdba, gid: 1004 }
+        - { group: dgdba, gid: 1005 }
+        - { group: kmdba, gid: 1006 }
+        - { group: racdba, gid: 1007 }
+        - { group: asmadmin, gid: 1008 }
+        - { group: asmdba, gid: 1009 }
+        - { group: asmoper, gid: 1010 }
     ignore_errors: true
     tags: group
 
@@ -24,8 +24,8 @@
       groups={{ item.othergroups }} uid={{ item.uid }} 
       generate_ssh_key=yes append=yes state=present password={{ item.passwd }}
     with_items:
-     - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,asmdba,backupdba,dgdba,kmdba,oper,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
-     - { username: grid, uid: 1002, primgroup: oinstall, othergroups: "asmadmin,asmdba,asmoper,dba,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+     - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,oper,backupdba,dgdba,kmdba,racdba,asmdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
+     - { username: grid, uid: 1002, primgroup: oinstall, othergroups: "dba,asmdba,asmoper,asmadmin,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0" }
     ignore_errors: true
     tags: user
 
