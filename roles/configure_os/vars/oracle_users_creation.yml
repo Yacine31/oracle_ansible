@@ -25,16 +25,16 @@ asmadmin_group: "asmadmin"
 racdba_group: "racdba"
 
 oracle_groups:
+  - { group: oinstall, gid: 1001}
+  - { group: dba, gid: 1002 }
+  - { group: asmadmin, gid: 1003 }
   - { group: asmdba, gid: 1004 }
   - { group: asmoper, gid: 1005 }
-  - { group: asmadmin, gid: 1003 }
-  - { group: oinstall, gid: 1000}
-  - { group: dba, gid: 1001 }
   - { group: backupdba, gid: 1006 }
-  - { group: oper, gid: 1002 }
   - { group: dgdba, gid: 1007 }
-  - { group: kmdba, gid: 1008 }
-  - { group: racdba, gid: 1009 }
+  - { group: kmdba, gid: 1009 }
+  - { group: oper, gid: 1009 }
+  - { group: racdba, gid: 1010 }
 
 oracle_stage: "/u01/stage"
 
