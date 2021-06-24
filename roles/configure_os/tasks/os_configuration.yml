@@ -2,60 +2,38 @@
   # ---------------------------------------------------
   # configuration des packages necessaires pour Linux
   # ---------------------------------------------------
-
-#  - name: Installation des RPMs libselinux et libselinux-python
-#    yum: name={{ item }} state=present
-#    with_items:
-#      - libselinux
-#      - libselinux-python
-#      - libselinux-utils
-#
-#   - name: Copie du fichier repository public-yum si absent
-#     copy:
-#       src="public-yum-ol{{ ansible_distribution_major_version }}.repo"
-#       dest="/etc/yum.repos.d/public-yum-ol{{ ansible_distribution_major_version }}.repo"
-#     tags: publicyumrepo
-#
-#   - name: Copie de la clé GPG
-#     # sans cette clé, la commande YUM retourne l'erreur suivante :
-#     # Couldn't open file /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
-#     copy: src=RPM-GPG-KEY-oracle dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
-#     tags: rpmgpgkey
-
-  # ---------------------------------------------------
-  # maintenant on install les rpms
-  # ---------------------------------------------------
-   - name: YUM - installation des packages nécessaires
-     yum:  name={{ item }} state=latest disable_gpg_check=yes
-     with_items: "{{ linux_packages }}"
-
-
-   - name: Configuration du mode panic sur perte du /
-     shell: free_form="tune2fs -e panic `df -P / |tail -1 | awk '{print $1}'`"
+  - name: YUM - installation des packages nécessaires
+    yum:  name={{ item }} state=latest disable_gpg_check=yes
+    with_items: "{{ linux_packages }}"
+    tags: rpm_packages
 
   # ---------------------------------------------------
   # configuration du serveur NTPD
   # ---------------------------------------------------
-   - name: Modification de la configuration NTP configuration (ajout du flag -x)
-     lineinfile: dest="/etc/sysconfig/ntpd"
-              regexp='^OPTIONS='
-              line='OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"'
-              state=present
-              create=yes
+  - name: Modification de la configuration NTP configuration (ajout du flag -x)
+    lineinfile: dest="/etc/sysconfig/ntpd"
+             regexp='^OPTIONS='
+             line='OPTIONS="-x -u ntp:ntp -p /var/run/ntpd.pid -g"'
+             state=present
+             create=yes
+    when: ansible_distribution_major_version == '6'
 
-   - name: restart ntpd
-     service: name=ntpd  state=started  enabled=yes
+  - name: restart ntpd
+    service: name=ntpd  state=started  enabled=yes
+    when: ansible_distribution_major_version == '6'
 
-  # ---------------------------------------------------
+  # --------------------------------------------------- 
   # configuration Linux : Selinux
   # ---------------------------------------------------
-   - name: Disactiver Selinux (de façon permanente)
-     selinux: state=disabled
-     register: selinux
-
-   - name: Disactiver Selinux (runtime)
-     shell: setenforce 0
-     ignore_errors: true
+  - name: Disactiver Selinux (de façon permanente)
+    selinux: state=disabled
+    register: selinux
+    tags: selinux
+  
+  - name: Disactiver Selinux (runtime)
+    shell: setenforce 0
+    ignore_errors: true
+    tags: selinux
 
   # ---------------------------------------------------
   # configuration Linux : les services
@@ -85,22 +63,48 @@
      with_items: "{{ oracle_seclimits }}"
      tags: seclimit
 
+
+  # ---------------------------------------------------
+  # Shell : aliases bash & oracle
+  # ---------------------------------------------------
+  - name: Ajout du fichier z_oracle dans /etc/profile.d
+    copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
+    tags: bash_alias
+
+  - name: BASH - Ajout du fichier z_bash_aliases dans /etc/profile.d
+    copy: src=z_bash_aliases.sh dest=/etc/profile.d/z_bash_aliases.sh owner=root mode=644
+    tags: bash_alias
+
+  - name: BASH - ajout de ignore-case pour autocompletion avec TAB
+    lineinfile: dest=/etc/inputrc line="set completion-ignore-case On" create=yes state=present
+    tags: bash_alias
+
+  - name: Desactivation de la commande crontab -r 
+    lineinfile: dest=/etc/profile.d/z_crontab_r.sh
+          line='crontab () { [[ $@ =~ -[iel]*r ]] && echo "option -r (remove) not allowed" || command crontab "$@" ;}'
+          state=present
+          create=yes
+
+  # --------------------------------------------------- 
+  # configuration Linux : Mode panic
+  # ---------------------------------------------------
+  - name: Configuratio du mode panic sur perte du /
+    shell: free_form="tune2fs -e panic `df -P / |tail -1 | awk '{print $1}'`"
+    tags: mode_panic
+
+  - name: Configuratio du mode panic sur bug du kernel
+    sysctl: name=kernel.panic_on_oops value=1 state=present reload=yes ignoreerrors=yes
+    tags: mode_panic
+
+  # --------------------------------------------------- 
+  # configuration du démarrage en mode 3 par défaut
+  # ---------------------------------------------------
    - name: Linux 6 - Configuration du mode 3 comme mode de démarrage par défaut
      replace: dest=/etc/inittab regexp='id:5:initdefault:' replace='id:3:initdefault:'
      when: ansible_distribution_major_version == '6'
+     tags: init3
 
    - name: Linux 7/8 - Configuration du mode 3 comme mode de démarrage par défaut
      shell: systemctl set-default multi-user.target
      when: ansible_distribution_major_version >= '7'
-
-   - name: BASH - ajout de ignore-case pour autocompletion avec TAB
-     lineinfile: dest=/etc/inputrc line="set completion-ignore-case On" create=yes state=present
-
-   - name: BASH - copie du fichier des alias
-     copy:
-       src="99_alias_bash.sh"
-       dest="/etc/profile.d/99_alias_bash.sh"
-       owner=root
-       group=root
-       mode=0644
-     tags: bash_alias
+     tags: init3

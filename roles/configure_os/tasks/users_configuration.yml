@@ -1,4 +1,4 @@
----
+  ---
   # --------------------------------------------------- 
   # configuration Linux : Utilisateurs et groupes
   # ---------------------------------------------------
@@ -34,9 +34,14 @@
     template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
     tags: logrotate
 
+
   # --------------------------------------------------- 
   # copy du fichier oracledb dans /etc/init.d pour redémmarage auto
   # ---------------------------------------------------
-  - name: Copy du fichier oracledb dans /etc/init.d pour redémmarage auto
-    template: src=oracledb_initd.j2 dest=/etc/init.d/oracledb mode=755 owner=root group=root
-    tags: init.d
+  - name: Copie du script de démarrage auto des bases Oracle
+    template: src=dbora_initd.j2 dest=/etc/init.d/dbora owner=root mode=755
+    tags: dbora_init
+
+  - name: Activation par chkconfig du script de démarrage auto des bases Oracle
+    service: name=dbora enabled=yes
+    tags: dbora_init

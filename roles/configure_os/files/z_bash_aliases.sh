@@ -19,8 +19,3 @@ alias oh='cd $ORACLE_HOME'
 alias tailf='tail -100f'
 alias tns='cd $ORACLE_HOME/network/admin'
 alias vi=vim
-
-
-
-
-

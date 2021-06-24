@@ -10,7 +10,7 @@
     when: ansible_distribution_major_version == '6'
     tags: grub
 
-  - name: Configuration grub Linux 7 - Suppression de quiet et rhgb
+  - name: Configuration grub Linux 7/8 - Suppression de quiet et rhgb
     shell: grubby --update-kernel=ALL --remove-args={{ item }} 
     with_items:
         - "rhgb"
@@ -28,7 +28,7 @@
     when: ansible_distribution_major_version == '6'
     tags: grub
 
-  - name: Configuration grub Linux 7 -  Désactivation de Transparent Hugepages, numa et deadline
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages, numa et deadline
     shell: grubby --update-kernel=ALL --args={{ item }} 
     with_items:
         - "transparent_hugepage=never"

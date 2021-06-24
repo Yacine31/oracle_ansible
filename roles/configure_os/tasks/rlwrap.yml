@@ -1,0 +1,22 @@
+---
+# installation de l'utilitaire rlwrap pour oracle
+
+  - name: Copy du rpm rlwrap OL8 vers le serveur
+    copy: src=rlwrap-0.44-1.el8.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
+    when: ansible_distribution_major_version == '8'
+    tags: rlwrap
+
+  - name: Copy du rpm rlwrap OL7 vers le serveur
+    copy: src=rlwrap-0.42-1.el7.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
+    when: ansible_distribution_major_version == '7'
+    tags: rlwrap
+
+  - name: Install rlwrap rpm from a local file
+    yum:
+      name: /tmp/rlwrap.x86_64.rpm
+      state: present
+    tags: rlwrap
+
+  - name: suppression du rpm rlwrap du serveur
+    file: path=/tmp/rlwrap.x86_64.rpm state=absent
+    tags: rlwrap

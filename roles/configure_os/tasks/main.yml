@@ -5,7 +5,7 @@
     tags: oscheck
 
   # ---------------------------------------------------
-  # Ajout du fichier de paramètres : Linux_6.yml ou Linux_7.yml
+  # Ajout du fichier de paramètres : Redhat_6.yml ou Redhat_7.yml ...
   # ---------------------------------------------------
   - name: ajout des paramètres spécifique à l'OS
     include_vars: "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
@@ -25,11 +25,6 @@
   # ---------------------------------------------------
   - include: grub_configuration.yml
 
-  # --------------------------------------------------- 
-  # configuration Linux : Personnalisation par z_oracle.sh
-  # ---------------------------------------------------
-  - name: Ajout du fichier z_oracle dans /etc/profile.d
-    copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
 
   # --------------------------------------------------- 
   # configuration Linux : Sécurisation
@@ -48,6 +43,11 @@
   # ---------------------------------------------------
   - include: users_configuration.yml
  
+  # ---------------------------------------------------
+  # configuration Linux : personnalisation rlwrap
+  # ---------------------------------------------------
+  - include: rlwrap.yml
+
   # --------------------------------------------------- 
   # déploiement de OSWatcher BlackBox
   # - décompression de oswbb.tar dans /opt
