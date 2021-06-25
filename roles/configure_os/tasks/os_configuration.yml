@@ -85,6 +85,7 @@
           line='crontab () { [[ $@ =~ -[iel]*r ]] && echo "option -r (remove) not allowed" || command crontab "$@" ;}'
           state=present
           create=yes
+    tags: bash_alias
 
   # --------------------------------------------------- 
   # configuration Linux : Mode panic

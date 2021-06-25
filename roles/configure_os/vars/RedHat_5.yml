@@ -1,10 +1,5 @@
-# Fichier de paramètres pour Redhat 6
+# Fichier de paramètres pour Redhat 5
 ---
-
-  #----------------------------------------------------------------------
-  # url du dépôt epel
-  #----------------------------------------------------------------------
-  epel_rpm: "http://mirrors.ircam.fr/pub/fedora/epel/5/x86_64/epel-release-5-4.noarch.rpm"
 
 
   #----------------------------------------------------------------------
