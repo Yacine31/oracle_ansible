@@ -16,7 +16,7 @@
     when: ansible_distribution_major_version == '6'
     tags: rlwrap
 
-  - name: Copy du rpm rlwrap OL6 vers le serveur
+  - name: Copy du rpm rlwrap OL5 vers le serveur
     copy: src=rlwrap-0.42-1.el5.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
     when: ansible_distribution_major_version == '5'
     tags: rlwrap
