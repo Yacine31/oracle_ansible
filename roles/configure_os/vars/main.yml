@@ -7,6 +7,7 @@
   # pour une installation oracle  renseigner ces variables 
   # pour les scripts d'exploitation et la création des répertoires
 
+  oracle_version: "19.0.0"
   oracle_base: "/u01/app/oracle"
   oracle_home: "{{ oracle_base }}/product/19.0.0/dbhome_1"
   oracle_inventory: "/u01/app/oraInventory"
@@ -15,11 +16,6 @@
 
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
-
-  # Ajouter le dépôt epel : true ou false
-  # Pour pouvoir installer des packets comme rlwrap, htop, multitail, ...
-  configure_epel_repo: false
-
 
   #----------------------------------------------------------------------
   # paramètres du noyeau pour une installation Oracle
