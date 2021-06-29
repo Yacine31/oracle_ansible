@@ -38,12 +38,29 @@
 
 
   # --------------------------------------------------- 
-  # copy du fichier oracledb dans /etc/init.d pour redémmarage auto
+  # copy du fichier dbora dans /etc/init.d pour redémmarage auto
   # ---------------------------------------------------
   - name: Copie du script de démarrage auto des bases Oracle
     template: src=dbora_initd.j2 dest=/etc/init.d/dbora owner=root mode=755
     tags: dbora_init
+    when: ansible_distribution_major_version == '6'
+
 
   - name: Activation par chkconfig du script de démarrage auto des bases Oracle
     service: name=dbora enabled=yes
     tags: dbora_init
+    when: ansible_distribution_major_version == '6'
+
+  # --------------------------------------------------- 
+  # copy du fichier dbora.service dans /lib/systemd/system pour redémmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage auto des bases Oracle
+    template: src=dbora.service.j2 dest=/lib/systemd/system/dbora.service owner=root mode=644
+    tags: dbora_init
+    when: ansible_distribution_major_version >= '7'
+
+
+  - name: Activation par systemctl du script de démarrage auto des bases Oracle
+    systemd: name=dbora daemon_reload=yes enabled=yes
+    tags: dbora_init
+    when: ansible_distribution_major_version >= '7'
