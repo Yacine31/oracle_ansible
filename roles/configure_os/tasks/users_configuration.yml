@@ -36,6 +36,13 @@
     template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
     tags: logrotate
 
+  # --------------------------------------------------- 
+  # configuration Linux : oracle cleaner dans cron.daily
+  # ---------------------------------------------------
+  - name: Netoyage ADR Oracle - copie du fichier de configuration pour cron
+    template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle mode=755 owner=root group=root
+    tags: cron_daily
+
 
   # --------------------------------------------------- 
   # copy du fichier dbora dans /etc/init.d pour redémmarage auto

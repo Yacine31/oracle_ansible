@@ -1,0 +1,13 @@
+#!/bin/sh
+
+/usr/bin/logger -t oracle_trc "Clean xml file older than 7 days from {{ oracle_base }}/diag/rdbms/"
+find {{ oracle_base }}/diag/rdbms/ -iname "*xml"  -mtime +7 -print -delete | logger -t oracle_trc
+
+/usr/bin/logger -t oracle_trc "Clean xml file older than 7 days from /u01/app/oracle/diag/tnslsnr/"
+find {{ oracle_base }}/diag/tnslsnr/ -iname "*xml"  -mtime +7 -print -delete | logger -t oracle_trc
+
+/usr/bin/logger -t oracle_trc "Clean trc file older than 7 days from {{ oracle_base }}/diag/rdbms/"
+find {{ oracle_base }}/diag/rdbms/ -iname "*trc"  -mtime +7 -print -delete | logger -t oracle_trc
+
+/usr/bin/logger -t oracle_trc "Clean trm file older than 7 days from {{ oracle_base }}/diag/rdbms/"
+find {{ oracle_base }}/diag/rdbms/ -iname "*trc"  -mtime +7 -print -delete | logger -t oracle_trc
