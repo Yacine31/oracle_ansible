@@ -12,18 +12,3 @@
     create 0640 oracle oinstall
 }
 
-
-{{ oracle_base }}/diag/tnslsnr/*/*/alert/*.xml*
-{{ oracle_base }}/diag/rdbms/*/*/alert/*.xml* 
-{{ oracle_base }}/diag/rdbms/*/*/trace/*.trc 
-{{ oracle_base }}/diag/tnslsnr/*/*/trace/*.trm 
-{
-    su oracle oinstall
-    daily
-    rotate 0
-    maxage 7
-    missingok
-    notifempty
-}
-
-
