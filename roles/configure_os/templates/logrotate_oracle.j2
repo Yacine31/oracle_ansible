@@ -1,7 +1,6 @@
 {{ oracle_base }}/diag/rdbms/*/*/trace/*.log 
 {{ oracle_base }}/diag/tnslsnr/*/*/trace/*.log 
-{{ oracle_base }}/diag/tnslsnr/*/*/alert/*.xml
-{{ oracle_base }}/diag/rdbms/*/*/alert/*.xml {
+{
     su oracle oinstall
     daily
     rotate 6
@@ -12,3 +11,14 @@
     create 0640 oracle oinstall
 }
 
+
+{{ oracle_base }}/diag/tnslsnr/*/*/alert/*.xml
+{{ oracle_base }}/diag/rdbms/*/*/alert/*.xml 
+{
+    su oracle oinstall
+    daily
+    missingok
+    notifempty
+    size 10M
+    create 0640 oracle oinstall
+}
