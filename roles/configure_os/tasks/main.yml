@@ -30,7 +30,7 @@
   # configuration Linux : Sécurisation
   # ---------------------------------------------------
   - include: secure_configuration.yml
-    when: ansible_distribution_major_version == '7'
+    when: ansible_distribution_major_version >= '7'
 
   # --------------------------------------------------- 
   # affichage des adresse IP sur la console de logging pour les VMs
