@@ -56,3 +56,24 @@ aller dans le fichier roles/install-oracle-sw/vars/main.yml
 3 - executer le book : ansible-playbook -i hosts book-install-oracle-sw.yml
 
 
+=====
+INSTALLATION ANSIBLE DIRECT SUR LA MACHINE
+=====
+
+yum install -y git epel-release
+yum install -y ansible
+
+# pour Oracle Linux
+# yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+git clone https://github.com/Yacine31/config_linux
+
+cd config_linux/
+ansible-playbook book-configure_OS.yml -i hosts --extra-vars "oracle_version=19c oracle_base=/opt/oracle"
+
+
+Pour mettre à jour le contenu du répertoire suite à une mise à jour :
+
+cd config_linux/
+git pull
+
