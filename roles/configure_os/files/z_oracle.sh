@@ -47,3 +47,5 @@ gras=$(tput bold)
 reset=$(tput sgr0)
 
 export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+
+export NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'
