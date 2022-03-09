@@ -33,7 +33,7 @@
   # --------------------------------------------------- 
   # configuration Linux : Selinux
   # ---------------------------------------------------
-  - name: Disactiver Selinux (de façon permanente)
+  - name: Desactiver Selinux (de façon permanente)
     selinux: state=disabled
     register: selinux
     tags: selinux
