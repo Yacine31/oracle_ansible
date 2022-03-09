@@ -38,4 +38,16 @@
        - chrony
        - vim
        - vim-enhanced
+       - mlocate
+       - bind-utils
+       - perl
+       - libaio-devel
+       - elfutils-libelf-devel
+       - sysstat
+       - unixODBC
+       - unixODBC-devel
+       - net-snmp
+       - wget
+       - htop
+
 
