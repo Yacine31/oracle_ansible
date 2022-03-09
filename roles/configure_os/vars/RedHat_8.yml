@@ -35,4 +35,5 @@
        - smartmontools
        - sysstat
        - unixODBC
+       - chrony
 
