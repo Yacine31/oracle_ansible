@@ -25,6 +25,7 @@
     yum:
       name: /tmp/rlwrap.x86_64.rpm
       state: present
+      disable_gpg_check: yes
     tags: rlwrap
 
   - name: suppression du rpm rlwrap du serveur
