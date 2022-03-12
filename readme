@@ -69,7 +69,7 @@ yum install -y ansible
 git clone https://github.com/Yacine31/config_linux
 
 cd config_linux/
-ansible-playbook book-configure_OS.yml -i hosts --extra-vars "oracle_version=19c oracle_base=/opt/oracle"
+ansible-playbook book-configure_OS.yml -i hosts --extra-vars "oracle_version=19c oracle_base=/opt/oracle oracle_home=/opt/oracle/product/19c/dbhome_1"
 
 
 Pour mettre à jour le contenu du répertoire suite à une mise à jour :
