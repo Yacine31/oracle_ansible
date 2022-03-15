@@ -1,12 +1,3 @@
-# Alias RL Wrap si disponible
-if [ `type rlwrapp 2>/dev/null | wc -l` -eq 1 ] ; then
-   alias sqlplus='rlwrap sqlplus'
-   alias rman='rlwrap rman'
-   alias asmcmd='rlwrap asmcmd'
-   alias adrci='rlwrap adrci'      
-   alias dgmgrl='rlwrap dgmgrl'
-fi
-
 # aliases bash 
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -19,3 +10,4 @@ alias oh='cd $ORACLE_HOME'
 alias tailf='tail -100f'
 alias tns='cd $ORACLE_HOME/network/admin'
 alias vi=vim
+

@@ -77,7 +77,7 @@
   # ---------------------------------------------------
   - name: Ajout du fichier z_oracle dans /etc/profile.d
     copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
-    tags: bash_alias
+    tags: z_oracle
 
   - name: BASH - Ajout du fichier z_bash_aliases dans /etc/profile.d
     copy: src=z_bash_aliases.sh dest=/etc/profile.d/z_bash_aliases.sh owner=root mode=644
@@ -85,14 +85,14 @@
 
   - name: BASH - ajout de ignore-case pour autocompletion avec TAB
     lineinfile: dest=/etc/inputrc line="set completion-ignore-case On" create=yes state=present
-    tags: bash_alias
+    tags: bash_tab
 
   - name: Desactivation de la commande crontab -r 
     lineinfile: dest=/etc/profile.d/z_crontab_r.sh
           line='crontab () { [[ $@ =~ -[iel]*r ]] && echo "option -r (remove) not allowed" || command crontab "$@" ;}'
           state=present
           create=yes
-    tags: bash_alias
+    tags: bash_cron_r
 
   # --------------------------------------------------- 
   # configuration Linux : Mode panic
