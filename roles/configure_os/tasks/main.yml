@@ -36,7 +36,7 @@
   # affichage des adresse IP sur la console de logging pour les VMs
   # ---------------------------------------------------
   - include: ip_on_screen_loggin.yml
-    when: ansible_virtualization_type  == "virtualbox"
+    when: ansible_virtualization_type == "virtualbox" or ansible_virtualization_type == "QEMU" 
 
   # ---------------------------------------------------
   # configuration Linux : Utilisateurs et groupes Oracle
