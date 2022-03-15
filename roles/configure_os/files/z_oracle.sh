@@ -38,14 +38,18 @@ if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
 
 fi
 
-# prompt coloré
-rouge=$(tput setaf 1)
-vert=$(tput setaf 2)
-jaune=$(tput setaf 3)
-bleu=$(tput setaf 4)
-gras=$(tput bold)
-reset=$(tput sgr0)
+# eviter le prompt si ce n'est pas une connexion ssh en tty
+if [ "x${SSH_TTY}" != "x" ]; then
+        # prompt coloré
+        rouge=$(tput setaf 1)
+        vert=$(tput setaf 2)
+        jaune=$(tput setaf 3)
+        bleu=$(tput setaf 4)
+        gras=$(tput bold)
+        reset=$(tput sgr0)
 
-export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'
+fi
 
-export NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'
+
