@@ -3,9 +3,9 @@
 ## On entre seulement pour certains utilisateurs.
 if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
     
-     # Certaines operations ne sont pas a realiser pour root
-     # les limites sont laissees par defaut
-     # ainsi que le masque de creation de fichier ou le stty break.
+    # Certaines operations ne sont pas a realiser pour root
+    # les limites sont laissees par defaut
+    # ainsi que le masque de creation de fichier ou le stty break.
     if [ $USER != "root" ] ; then
         # ajustement des limites
         if [ $SHELL = "/bin/ksh" ] ; then
@@ -21,11 +21,6 @@ if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
         # Masque de création des fichiers    
         umask 022
 
-        # Pour prévention SSH
-        # if [ -t 0 ]; then
-        #     stty intr ^C
-        # fi
-
         # Alias RL Wrap si disponible
         if [ `type rlwrapp 2>/dev/null | wc -l` -eq 1 ] ; then
             alias sqlplus="rlwrap sqlplus"
@@ -37,17 +32,17 @@ if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
     fi
         
     # eviter le prompt si ce n'est pas une connexion ssh en tty
-    if [ "x${SSH_TTY}" != "x" ]; then
-            # prompt coloré
-            rouge=$(tput setaf 1)
-            vert=$(tput setaf 2)
-            jaune=$(tput setaf 3)
-            bleu=$(tput setaf 4)
-            gras=$(tput bold)
-            reset=$(tput sgr0)
+    if [ -t 0 ]; then
+        # prompt coloré
+        rouge=$(tput setaf 1)
+        vert=$(tput setaf 2)
+        jaune=$(tput setaf 3)
+        bleu=$(tput setaf 4)
+        gras=$(tput bold)
+        reset=$(tput sgr0)
 
-            export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
-            export NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'
+        export PS1='[\[$jaune\]\u\[$reset\]@\[$vert\]\h\[$reset\] \[$rouge\]${TWO_TASK:-$ORACLE_SID}\[$reset\] \W]\$ '
+        export NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'
     fi
 fi
 
