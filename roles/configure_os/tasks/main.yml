@@ -51,7 +51,7 @@
   # ---------------------------------------------------
   # configuration Linux : Création des répertoires Oracle
   # ---------------------------------------------------
-  - include: dir_creation.yml
+#  - include: dir_creation.yml
 
   # --------------------------------------------------- 
   # déploiement de OSWatcher BlackBox
