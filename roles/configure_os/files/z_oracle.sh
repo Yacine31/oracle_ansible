@@ -23,7 +23,7 @@ if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
         umask 022
 
         # export ORACLE_HOME et ORACLe_SID
-        export ORACLE_SID=$(ps -ef | grep pmon | egrep -v 'grep|ASM|APX' | cut -d_ -f3)
+        export ORACLE_SID=$(ps -ef | grep pmon | egrep -v 'grep|ASM|APX' | cut -d_ -f3 | head -1)
         INV_LOC=$(cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2)
         export ORACLE_HOME=$(cat ${INV_LOC}/ContentsXML/inventory.xml | grep "<HOME_LIST" -A1 | tail -1 | sed 's/.*LOC="//g' | cut -d'"' -f1)
         export PATH=$ORACLE_HOME/bin:$PATH
