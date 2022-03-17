@@ -35,7 +35,7 @@ if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
 
 
         # Alias RL Wrap si disponible
-        if [ `type rlwrapp 2>/dev/null | wc -l` -eq 1 ] ; then
+        if [ `type rlwrap 2>/dev/null | wc -l` -eq 1 ] ; then
             alias sqlplus="rlwrap sqlplus"
             alias rman="rlwrap rman"
             alias asmcmd="rlwrap asmcmd"
