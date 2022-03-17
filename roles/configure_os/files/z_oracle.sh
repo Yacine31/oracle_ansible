@@ -22,16 +22,16 @@ if [ $USER = "grid" ] || [ $USER = "oracle" ] || [ $USER = "root" ] ; then
         # Masque de création des fichiers    
         umask 022
 
-#        # export ORACLE_HOME et ORACLE_SID
-#        ORACLE_SID=$(ps -ef | grep pmon | egrep -v 'grep|ASM|APX' | cut -d_ -f3 | head -1)
-#        if [ -n "$ORACLE_SID" ]; then export ORACLE_SID; fi
-#        if [ -e "/etc/oraInst.loc" ]; then
-#            INV_LOC=$(cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2)
-#            if [ -e "${INV_LOC}/ContentsXML/inventory.xml" ]; then
-#                export ORACLE_HOME=$(cat ${INV_LOC}/ContentsXML/inventory.xml | grep "<HOME_LIST" -A1 | tail -1 | sed 's/.*LOC="//g' | cut -d'"' -f1)
-#                export PATH=$ORACLE_HOME/bin:$PATH
-#            fi
-#        fi
+        # export ORACLE_HOME et ORACLE_SID
+        ORACLE_SID=$(ps -ef | grep pmon | egrep -v 'grep|ASM|APX' | cut -d_ -f3 | head -1)
+        if [ -n "$ORACLE_SID" ]; then export ORACLE_SID; fi
+        if [ -e "/etc/oraInst.loc" ]; then
+            INV_LOC=$(cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2)
+            if [ -e "${INV_LOC}/ContentsXML/inventory.xml" ]; then
+                export ORACLE_HOME=$(cat ${INV_LOC}/ContentsXML/inventory.xml | grep "<HOME_LIST" -A1 | tail -1 | sed 's/.*LOC="//g' | cut -d'"' -f1)
+                export PATH=$ORACLE_HOME/bin:$PATH
+            fi
+        fi
 
 
         # Alias RL Wrap si disponible
