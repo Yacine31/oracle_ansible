@@ -42,7 +42,7 @@
     tags: pamconfig
 
 #    lineinfile: dest=/etc/security/limits.d/oracle_seclimits.conf create=yes state=present line={{ item }}
-  - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
+  - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.d/oracle-database-preinstall-19c.conf
     lineinfile: dest=/etc/security/limits.d/oracle-database-preinstall-19c.conf create=yes state=present line={{ item }}
     with_items: "{{ oracle_seclimits }}"
     tags: seclimit
