@@ -1,4 +1,12 @@
 ---
+  # pour une installation oracle  renseigner ces variables 
+  # pour les scripts d'exploitation et la création des répertoires
+
+  oracle_version: "19.0.0"
+  oracle_base: "/u01/app/oracle"
+  oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
+  oracle_inventory: "/u01/app/oraInventory"
+  oracle_sources: "/u01/sources"
 
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
