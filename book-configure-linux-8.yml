@@ -1,0 +1,8 @@
+---
+ - name: Host configuration
+   hosts: all
+   user: root
+   become: yes
+
+   roles:
+     - config-linux-8

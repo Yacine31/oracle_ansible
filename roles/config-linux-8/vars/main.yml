@@ -1,0 +1,4 @@
+---
+
+  # faire une configuration securisée du system d'exploitation
+  secure_configuration: false

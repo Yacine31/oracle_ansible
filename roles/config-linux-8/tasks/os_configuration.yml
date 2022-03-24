@@ -1,0 +1,122 @@
+---
+  # ---------------------------------------------------
+  # configuration des packages necessaires pour Linux
+  # ---------------------------------------------------
+  - name: YUM - installation des packages nécessaires
+    yum:  name={{ linux_packages }} state=latest disable_gpg_check=yes
+    tags: rpm_packages
+
+  # ---------------------------------------------------
+  # configuration du serveur Chronyd - Linux >= 7
+  # ---------------------------------------------------
+  - name: start chronyd
+    service: name=chronyd  state=started  enabled=yes
+    when: ansible_distribution_major_version >= '7'
+
+  # --------------------------------------------------- 
+  # configuration Linux : Selinux
+  # ---------------------------------------------------
+  - name: Desactiver Selinux (de façon permanente)
+    selinux: state=disabled
+    register: selinux
+    tags: selinux
+  
+  - name: Disactiver Selinux (runtime)
+    shell: setenforce 0
+    ignore_errors: true
+    tags: selinux
+
+  # ---------------------------------------------------
+  # configuration Linux : les services
+  # ---------------------------------------------------
+  - name: arrêter et désactiver les services inutils
+    with_items: "{{ linux_services }}"
+    service: name={{ item }}  state=stopped  enabled=no
+    tags: linuxservices
+    ignore_errors: true
+
+  #------------------------------------------------------------------------------------
+  # configuration Linux : Paramètres du kernel
+  #------------------------------------------------------------------------------------
+  - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.d/oracle_sysctl.conf
+    sysctl:
+      name={{ item.name }} value={{ item.value }}
+      state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/oracle_sysctl.conf 
+    with_items: "{{ oracle_sysconfig }}"
+    tags: sysctl.conf 
+
+  - name: Configuration PAM
+    lineinfile: dest=/etc/pam.d/login state=present line="session required pam_limits.so"
+    tags: pamconfig
+
+  - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
+    lineinfile: dest=/etc/security/limits.conf create=yes state=present line={{ item }}
+    with_items: "{{ oracle_seclimits }}"
+    tags: seclimit
+
+
+  # ---------------------------------------------------
+  # Shell : aliases bash & oracle
+  # ---------------------------------------------------
+  - name: Ajout du fichier z_oracle dans /etc/profile.d
+    copy: src=z_oracle.sh dest=/etc/profile.d/z_oracle.sh owner=root mode=644
+    tags: z_oracle
+
+  - name: BASH - Ajout du fichier z_bash_aliases dans /etc/profile.d
+    copy: src=z_bash_aliases.sh dest=/etc/profile.d/z_bash_aliases.sh owner=root mode=644
+    tags: bash_alias
+
+  - name: BASH - ajout de ignore-case pour autocompletion avec TAB
+    lineinfile: dest=/etc/inputrc line="set completion-ignore-case On" create=yes state=present
+    tags: bash_tab
+
+  - name: Desactivation de la commande crontab -r 
+    lineinfile: dest=/etc/profile.d/z_crontab_r.sh
+          line='crontab () { [[ $@ =~ -[iel]*r ]] && echo "option -r (remove) not allowed" || command crontab "$@" ;}'
+          state=present
+          create=yes
+    tags: bash_cron_r
+
+  # --------------------------------------------------- 
+  # configuration Linux : Mode panic
+  # ---------------------------------------------------
+  - name: Configuratio du mode panic sur perte du /
+    shell: free_form="tune2fs -e panic `df -P / |tail -1 | awk '{print $1}'`"
+    tags: mode_panic
+
+  - name: Configuratio du mode panic sur bug du kernel
+    sysctl: name=kernel.panic_on_oops value=1 state=present reload=yes ignoreerrors=yes
+    tags: mode_panic
+
+  # --------------------------------------------------- 
+  # configuration du démarrage en mode 3 par défaut
+  # ---------------------------------------------------
+  - name: Linux 7/8 - Configuration du mode 3 comme mode de démarrage par défaut
+    shell: systemctl set-default multi-user.target
+    when: ansible_distribution_major_version >= '7'
+    tags: init3
+
+  # --------------------------------------------------- 
+  # configuration Linux : config oracle pour logrotate
+  # ---------------------------------------------------
+  - name: Gestion des logs Oracle - copie du fichier de configuration pour logrotate
+    template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+    tags: logrotate
+
+  # --------------------------------------------------- 
+  # configuration Linux : oracle cleaner dans cron.daily
+  # ---------------------------------------------------
+  - name: Netoyage ADR Oracle - copie du fichier de configuration pour cron
+    template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle mode=755 owner=root group=root
+    tags: cron_daily
+
+  # --------------------------------------------------- 
+  # copy du fichier dbora.service dans /lib/systemd/system pour redémmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage auto des bases Oracle
+    template: src=dbora.service.j2 dest=/lib/systemd/system/dbora.service owner=root mode=644
+    tags: dbora_init
+
+  - name: Activation par systemctl du script de démarrage auto des bases Oracle
+    systemd: name=dbora daemon_reload=yes enabled=yes
+    tags: dbora_init
