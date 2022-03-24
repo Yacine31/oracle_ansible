@@ -29,10 +29,10 @@
   # configuration Linux : Paramètres du kernel
   #------------------------------------------------------------------------------------
 #  - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.d/oracle_sysctl.conf
+#      state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/99-oracle-sysctl.conf 
   - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.d/99-oracle-database-preinstall-19c-sysctl.conf
     sysctl:
       name={{ item.name }} value={{ item.value }}
-#      state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/99-oracle-sysctl.conf 
       state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/99-oracle-database-preinstall-19c-sysctl.conf 
     with_items: "{{ oracle_sysconfig }}"
     tags: sysctl.conf 
@@ -41,8 +41,8 @@
     lineinfile: dest=/etc/pam.d/login state=present line="session required pam_limits.so"
     tags: pamconfig
 
-  - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
 #    lineinfile: dest=/etc/security/limits.d/oracle_seclimits.conf create=yes state=present line={{ item }}
+  - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
     lineinfile: dest=/etc/security/limits.d/oracle-database-preinstall-19c.conf create=yes state=present line={{ item }}
     with_items: "{{ oracle_seclimits }}"
     tags: seclimit
