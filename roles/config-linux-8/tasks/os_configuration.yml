@@ -11,7 +11,6 @@
   # ---------------------------------------------------
   - name: start chronyd
     service: name=chronyd  state=started  enabled=yes
-    when: ansible_distribution_major_version >= '7'
 
   # --------------------------------------------------- 
   # configuration Linux : Selinux
@@ -26,22 +25,15 @@
     ignore_errors: true
     tags: selinux
 
-  # ---------------------------------------------------
-  # configuration Linux : les services
-  # ---------------------------------------------------
-  - name: arrêter et désactiver les services inutils
-    with_items: "{{ linux_services }}"
-    service: name={{ item }}  state=stopped  enabled=no
-    tags: linuxservices
-    ignore_errors: true
-
   #------------------------------------------------------------------------------------
   # configuration Linux : Paramètres du kernel
   #------------------------------------------------------------------------------------
-  - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.d/oracle_sysctl.conf
+#  - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.d/oracle_sysctl.conf
+  - name: Linux - Ajustement des paramètres du Kernel dans /etc/sysctl.d/99-oracle-database-preinstall-19c-sysctl.conf
     sysctl:
       name={{ item.name }} value={{ item.value }}
-      state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/oracle_sysctl.conf 
+#      state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/99-oracle-sysctl.conf 
+      state=present reload=yes ignoreerrors=yes sysctl_set=yes sysctl_file=/etc/sysctl.d/99-oracle-database-preinstall-19c-sysctl.conf 
     with_items: "{{ oracle_sysconfig }}"
     tags: sysctl.conf 
 
@@ -50,7 +42,8 @@
     tags: pamconfig
 
   - name: Linux - Ajustement des limits pour Oracle dans /etc/security/limits.conf
-    lineinfile: dest=/etc/security/limits.conf create=yes state=present line={{ item }}
+#    lineinfile: dest=/etc/security/limits.d/oracle_seclimits.conf create=yes state=present line={{ item }}
+    lineinfile: dest=/etc/security/limits.d/oracle-database-preinstall-19c.conf create=yes state=present line={{ item }}
     with_items: "{{ oracle_seclimits }}"
     tags: seclimit
 
@@ -84,16 +77,15 @@
     shell: free_form="tune2fs -e panic `df -P / |tail -1 | awk '{print $1}'`"
     tags: mode_panic
 
-  - name: Configuratio du mode panic sur bug du kernel
+  - name: Configuration du mode panic sur bug du kernel
     sysctl: name=kernel.panic_on_oops value=1 state=present reload=yes ignoreerrors=yes
     tags: mode_panic
 
   # --------------------------------------------------- 
   # configuration du démarrage en mode 3 par défaut
   # ---------------------------------------------------
-  - name: Linux 7/8 - Configuration du mode 3 comme mode de démarrage par défaut
+  - name: Configuration du mode 3 comme mode de démarrage par défaut
     shell: systemctl set-default multi-user.target
-    when: ansible_distribution_major_version >= '7'
     tags: init3
 
   # --------------------------------------------------- 
@@ -107,7 +99,7 @@
   # configuration Linux : oracle cleaner dans cron.daily
   # ---------------------------------------------------
   - name: Netoyage ADR Oracle - copie du fichier de configuration pour cron
-    template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle mode=755 owner=root group=root
+    template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle_cleaner mode=755 owner=root group=root
     tags: cron_daily
 
   # --------------------------------------------------- 
