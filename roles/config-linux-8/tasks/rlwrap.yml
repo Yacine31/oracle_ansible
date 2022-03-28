@@ -2,7 +2,7 @@
   # ---------------------------------------------------
   # installation de l'utilitaire rlwrap pour oracle
   # ---------------------------------------------------
-  - name: YUM - installation des packages nécessaires
+  - name: YUM - installation de rlwrap
     yum:  name=rlwrap state=latest disable_gpg_check=yes
     tags: rlwrap
 
