@@ -7,7 +7,7 @@
     tags: rlwrap
 
 #  - name: Copy du rpm rlwrap OL8 vers le serveur
-#    copy: src=rlwrap-0.44-1.el8.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
+#    copy: src=rlwrap-0.45.2-1.el8.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
 #    tags: rlwrap
 #
 #  - name: Install rlwrap rpm from a local file
