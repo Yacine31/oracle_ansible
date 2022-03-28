@@ -29,5 +29,12 @@
     ignore_errors: true
     tags: user
 
+  - name: Ajout du compte oracle et grid au sudoers
+    ignore_errors: true
+    template: src=sudoers.j2 dest=/etc/sudoers.d/{{ item }} owner=root mode=0600
+    with_items:
+      - oracle
+      - grid
+    tags: sudoadd
 
 
