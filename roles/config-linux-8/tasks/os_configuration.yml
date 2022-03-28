@@ -90,6 +90,7 @@
 
   # --------------------------------------------------- 
   # configuration Linux : config oracle pour logrotate
+  # Gestion des fichiers logs seulement (archivage et réinitialisation)
   # ---------------------------------------------------
   - name: Gestion des logs Oracle - copie du fichier de configuration pour logrotate
     template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
@@ -97,6 +98,7 @@
 
   # --------------------------------------------------- 
   # configuration Linux : oracle cleaner dans cron.daily
+  # Gestion des fichiers trace et xml : purge des anciens fichiers
   # ---------------------------------------------------
   - name: Netoyage ADR Oracle - copie du fichier de configuration pour cron
     template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle_cleaner mode=755 owner=root group=root
