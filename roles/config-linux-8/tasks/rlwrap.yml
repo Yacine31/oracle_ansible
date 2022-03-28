@@ -1,17 +1,22 @@
 ---
-# installation de l'utilitaire rlwrap pour oracle
-
-  - name: Copy du rpm rlwrap OL8 vers le serveur
-    copy: src=rlwrap-0.44-1.el8.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
+  # ---------------------------------------------------
+  # installation de l'utilitaire rlwrap pour oracle
+  # ---------------------------------------------------
+  - name: YUM - installation des packages nécessaires
+    yum:  name=rlwrap state=latest disable_gpg_check=yes
     tags: rlwrap
 
-  - name: Install rlwrap rpm from a local file
-    yum:
-      name: /tmp/rlwrap.x86_64.rpm
-      state: present
-      disable_gpg_check: yes
-    tags: rlwrap
-
-  - name: suppression du rpm rlwrap du serveur
-    file: path=/tmp/rlwrap.x86_64.rpm state=absent
-    tags: rlwrap
+#  - name: Copy du rpm rlwrap OL8 vers le serveur
+#    copy: src=rlwrap-0.44-1.el8.x86_64.rpm dest=/tmp/rlwrap.x86_64.rpm owner=root mode=644
+#    tags: rlwrap
+#
+#  - name: Install rlwrap rpm from a local file
+#    yum:
+#      name: /tmp/rlwrap.x86_64.rpm
+#      state: present
+#      disable_gpg_check: yes
+#    tags: rlwrap
+#
+#  - name: suppression du rpm rlwrap du serveur
+#    file: path=/tmp/rlwrap.x86_64.rpm state=absent
+#    tags: rlwrap
