@@ -10,3 +10,27 @@
 
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
+
+
+  #----------------------------------------------------------------------
+  # services Linux à désactiver :
+  #----------------------------------------------------------------------
+  linux_services:
+      - avahi-daemon
+      - bluetooth
+      - cups
+      - firewalld
+      - firstboot
+      - gpm
+      - hidd
+      - hplip
+      - ip6tables
+      - iptables
+      - isdn
+      - mcstrans
+      - mdmonitor
+      - restorecond
+      - rhnsd
+      - setroubleshoot
+      - smartd
+      - yum-updatesd

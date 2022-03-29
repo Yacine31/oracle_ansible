@@ -25,6 +25,15 @@
     ignore_errors: true
     tags: selinux
 
+  # ---------------------------------------------------
+  # configuration Linux : les services
+  # ---------------------------------------------------
+  - name: arrêter et désactiver les services inutils
+    with_items: "{{ linux_services }}"
+    service: name={{ item }}  state=stopped  enabled=no
+    tags: linuxservices
+    ignore_errors: true
+
   #------------------------------------------------------------------------------------
   # configuration Linux : Paramètres du kernel
   #------------------------------------------------------------------------------------
