@@ -41,7 +41,6 @@
     - libibverbs
     - libICE
     - libmaxminddb
-    - libpkgconf
     - librdmacm
     - libselinux-python
     - libSM
