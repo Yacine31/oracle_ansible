@@ -5,7 +5,7 @@
     tags: oscheck
 
   # ---------------------------------------------------
-  # Ajout du fichier de paramètres : Redhat_6.yml ou Redhat_7.yml ...
+  # Ajout du fichier de paramètres : Redhat_8.yml ou Redhat_7.yml ...
   # ---------------------------------------------------
   - name: ajout des paramètres spécifique à l'OS
     include_vars: "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
