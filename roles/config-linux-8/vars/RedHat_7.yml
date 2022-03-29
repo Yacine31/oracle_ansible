@@ -50,7 +50,6 @@
     - libverto-libevent
     - libX11
     - libX11-common
-    - libX11-xcb
     - libXau
     - libxcb
     - libXcomposite
