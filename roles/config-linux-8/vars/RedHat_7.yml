@@ -5,10 +5,6 @@
   # packages linux nécessaires pour travailler
   #----------------------------------------------------------------------
   linux_packages:
-  #----------------------------------------------------------------------
-  # packages linux nécessaires pour travailler
-  #----------------------------------------------------------------------
-  linux_packages:
     - bc
     - bind-libs
     - bind-libs-lite
