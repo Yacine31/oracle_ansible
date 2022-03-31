@@ -5,4 +5,4 @@
    become: yes
 
    roles:
-     - config-linux-8
+     - oracle-db-preinstall

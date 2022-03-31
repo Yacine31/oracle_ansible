@@ -25,7 +25,6 @@
   # ---------------------------------------------------
   - include: grub_configuration.yml
 
-
   # --------------------------------------------------- 
   # configuration Linux : Sécurisation
   # ---------------------------------------------------
@@ -44,6 +43,7 @@
   # ---------------------------------------------------
   # configuration Linux : Création des répertoires Oracle
   # ---------------------------------------------------
-  # - include: dir_creation.yml
+  - include: dir_creation.yml
+  
 
 

@@ -8,6 +8,10 @@
   oracle_inventory: "/u01/app/oraInventory"
   oracle_sources: "/u01/sources"
 
+  # faire une configuration minimal ?
+  # la configuration complète : fait en plsu la création des users, des groupes, des répertoires ...
+  full_configuration: false
+  
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
 
