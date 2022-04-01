@@ -11,7 +11,7 @@
     register: rhgb_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 - Suppression de rhgb
+  - name: Configuration grub - Suppression de rhgb
     shell: grubby --update-kernel=ALL --remove-args=rhgb 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
@@ -24,7 +24,7 @@
     register: quiet_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 - Suppression de quiet
+  - name: Configuration grub - Suppression de quiet
     shell: grubby --update-kernel=ALL --remove-args=quiet 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
@@ -37,7 +37,7 @@
     register: quiet_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+  - name: Configuration grub -  Désactivation de Transparent Hugepages
     shell: grubby --update-kernel=ALL --args=transparent_hugepage=never 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
@@ -50,7 +50,7 @@
     register: quiet_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+  - name: Configuration grub -  Désactivation de numa=off
     shell: grubby --update-kernel=ALL --args=numa=off 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
@@ -63,7 +63,7 @@
     register: quiet_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+  - name: Configuration grub - elevator=deadline
     shell: grubby --update-kernel=ALL --args=elevator=deadline 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
@@ -76,20 +76,7 @@
     register: quiet_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
-    shell: grubby --update-kernel=ALL --args=vga=791 
-    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
-    tags: grub
-
-  # ---------------------------------------------------
-  # ajout de vga=791 
-  # ---------------------------------------------------
-  - name: check if vga=791 is set 
-    ansible.builtin.shell: grubby --info DEFAULT | grep -i vga=791 | wc -l
-    register: quiet_count
-    tags: grub
-
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+  - name: Configuration grub - vga=791
     shell: grubby --update-kernel=ALL --args=vga=791 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
@@ -103,7 +90,7 @@
     register: quiet_count
     tags: grub
 
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+  - name: Configuration grub - GRUB_ENABLE_BLSCFG=true
     shell: grubby --update-kernel=ALL --args=GRUB_ENABLE_BLSCFG=true 
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
