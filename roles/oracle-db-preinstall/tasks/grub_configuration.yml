@@ -9,6 +9,7 @@
   - name: check if rhgb is set 
     ansible.builtin.shell: grubby --info DEFAULT | grep rhgb | wc -l
     register: rhgb_count
+    tags: grub
 
   - name: Configuration grub Linux 7/8 - Suppression de rhgb
     shell: grubby --update-kernel=ALL --remove-args=rhgb 
@@ -21,6 +22,7 @@
   - name: check if quiet is set 
     ansible.builtin.shell: grubby --info DEFAULT | grep quiet | wc -l
     register: quiet_count
+    tags: grub
 
   - name: Configuration grub Linux 7/8 - Suppression de quiet
     shell: grubby --update-kernel=ALL --remove-args=quiet 
