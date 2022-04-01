@@ -12,8 +12,7 @@
 
   - name: Configuration grub Linux 7/8 - Suppression de rhgb
     shell: grubby --update-kernel=ALL --remove-args=rhgb 
-    when: rhgb_count.stdout != 0
-    when: ansible_distribution_major_version >= '7'
+    when: rhgb_count.stdout != 0 and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -25,8 +24,7 @@
 
   - name: Configuration grub Linux 7/8 - Suppression de quiet
     shell: grubby --update-kernel=ALL --remove-args=quiet 
-    when: rhgb_count.stdout != 0
-    when: ansible_distribution_major_version >= '7'
+    when: rhgb_count.stdout != 0 and ansible_distribution_major_version >= '7'
     tags: grub
 
 #  - name: Configuration grub Linux 7/8 - Suppression de quiet et rhgb
