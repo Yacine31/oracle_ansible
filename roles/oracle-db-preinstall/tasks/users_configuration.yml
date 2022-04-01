@@ -16,7 +16,7 @@
         - { group: asmdba, gid: 1009 }
         - { group: asmoper, gid: 1010 }
     ignore_errors: true
-    when: full_configuration | bool
+    when: full_configuration |bool
     tags: group
 
   # --------------------------------------------------- 
@@ -31,7 +31,7 @@
     - { username: oracle, uid: 1001, primgroup: oinstall, othergroups: "dba,oper,backupdba,dgdba,kmdba,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0"}
     - { username: grid, uid: 1002, primgroup: oinstall, othergroups: "dba,asmdba,asmoper,asmadmin,racdba", passwd: "$6$0xHoAXXF$K75HKb64Hcb/CEcr3YEj2LGERi/U2moJgsCK.ztGxLsKoaXc4UBiNZPL0hlxB5ng6GL.gyipfQOOXplzcdgvD0"}
     ignore_errors: true
-    when: full_configuration | bool
+    when: full_configuration |bool
     tags: user
 
 

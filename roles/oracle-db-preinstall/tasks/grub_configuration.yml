@@ -13,7 +13,7 @@
 
   - name: Configuration grub - Suppression de rhgb
     shell: grubby --update-kernel=ALL --remove-args=rhgb 
-    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -26,7 +26,7 @@
 
   - name: Configuration grub - Suppression de quiet
     shell: grubby --update-kernel=ALL --remove-args=quiet 
-    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
