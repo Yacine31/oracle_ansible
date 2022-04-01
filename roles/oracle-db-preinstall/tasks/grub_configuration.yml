@@ -13,7 +13,7 @@
 
   - name: Configuration grub - Suppression de rhgb
     shell: grubby --update-kernel=ALL --remove-args=rhgb 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -26,7 +26,7 @@
 
   - name: Configuration grub - Suppression de quiet
     shell: grubby --update-kernel=ALL --remove-args=quiet 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -39,7 +39,7 @@
 
   - name: Configuration grub -  Désactivation de Transparent Hugepages
     shell: grubby --update-kernel=ALL --args=transparent_hugepage=never 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -52,7 +52,7 @@
 
   - name: Configuration grub -  Désactivation de numa=off
     shell: grubby --update-kernel=ALL --args=numa=off 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -65,7 +65,7 @@
 
   - name: Configuration grub - elevator=deadline
     shell: grubby --update-kernel=ALL --args=elevator=deadline 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -78,7 +78,7 @@
 
   - name: Configuration grub - vga=791
     shell: grubby --update-kernel=ALL --args=vga=791 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
   # ---------------------------------------------------
@@ -92,6 +92,6 @@
 
   - name: Configuration grub - GRUB_ENABLE_BLSCFG=true
     shell: grubby --update-kernel=ALL --args=GRUB_ENABLE_BLSCFG=true 
-    when: grep_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    when: grep_count.stdout == '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
