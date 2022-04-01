@@ -2,13 +2,40 @@
   # --------------------------------------------------- 
   # configuration Linux : grub pour Linux 8
   # ---------------------------------------------------
-  - name: Configuration grub Linux 7/8 - Suppression de quiet et rhgb
-    shell: grubby --update-kernel=ALL --remove-args={{ item }} 
-    with_items:
-        - "rhgb"
-        - "quiet"
+
+  # ---------------------------------------------------
+  # suppression de rhgb
+  # ---------------------------------------------------
+  - name: check if rhgb is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep rhgb | wc -l
+    register: rhgb_count
+
+  - name: Configuration grub Linux 7/8 - Suppression de rhgb
+    shell: grubby --update-kernel=ALL --remove-args=rhgb 
+    when: rhgb_count.stdout != 0
     when: ansible_distribution_major_version >= '7'
     tags: grub
+
+  # ---------------------------------------------------
+  # suppression de quiet
+  # ---------------------------------------------------
+  - name: check if quiet is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep quiet | wc -l
+    register: quiet_count
+
+  - name: Configuration grub Linux 7/8 - Suppression de quiet
+    shell: grubby --update-kernel=ALL --remove-args=quiet 
+    when: rhgb_count.stdout != 0
+    when: ansible_distribution_major_version >= '7'
+    tags: grub
+
+#  - name: Configuration grub Linux 7/8 - Suppression de quiet et rhgb
+#    shell: grubby --update-kernel=ALL --remove-args=rhgb 
+#    with_items:
+#        - "rhgb"
+#        - "quiet"
+#    when: ansible_distribution_major_version >= '7'
+#    tags: grub
 
   - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages, numa et deadline
     shell: grubby --update-kernel=ALL --args={{ item }} 
