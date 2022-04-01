@@ -1,6 +1,6 @@
 ---
   # --------------------------------------------------- 
-  # configuration Linux : grub pour Linux 8
+  # configuration de grub
   # ---------------------------------------------------
 
   # ---------------------------------------------------
@@ -29,24 +29,82 @@
     when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
     tags: grub
 
-#  - name: Configuration grub Linux 7/8 - Suppression de quiet et rhgb
-#    shell: grubby --update-kernel=ALL --remove-args=rhgb 
-#    with_items:
-#        - "rhgb"
-#        - "quiet"
-#    when: ansible_distribution_major_version >= '7'
-#    tags: grub
-
-  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages, numa et deadline
-    shell: grubby --update-kernel=ALL --args={{ item }} 
-    with_items:
-        - "transparent_hugepage=never"
-        - "numa=off"
-        - "elevator=deadline"
-        - "vga=791"
-        #  Workaround of Orabug 20734786
-        - "GRUB_ENABLE_BLSCFG=true"
-    when: ansible_distribution_major_version >= '7'
+  # ---------------------------------------------------
+  # ajout de transparent_hugepage=never 
+  # ---------------------------------------------------
+  - name: check if transparent_hugepage=never is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep -i transparent_hugepage=never | wc -l
+    register: quiet_count
     tags: grub
 
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+    shell: grubby --update-kernel=ALL --args=transparent_hugepage=never 
+    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    tags: grub
+
+  # ---------------------------------------------------
+  # ajout de numa=off 
+  # ---------------------------------------------------
+  - name: check if numa=off is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep -i numa=off | wc -l
+    register: quiet_count
+    tags: grub
+
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+    shell: grubby --update-kernel=ALL --args=numa=off 
+    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    tags: grub
+
+  # ---------------------------------------------------
+  # ajout de elevator=deadline 
+  # ---------------------------------------------------
+  - name: check if elevator=deadline is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep -i elevator=deadline | wc -l
+    register: quiet_count
+    tags: grub
+
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+    shell: grubby --update-kernel=ALL --args=elevator=deadline 
+    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    tags: grub
+
+  # ---------------------------------------------------
+  # ajout de vga=791 
+  # ---------------------------------------------------
+  - name: check if vga=791 is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep -i vga=791 | wc -l
+    register: quiet_count
+    tags: grub
+
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+    shell: grubby --update-kernel=ALL --args=vga=791 
+    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    tags: grub
+
+  # ---------------------------------------------------
+  # ajout de vga=791 
+  # ---------------------------------------------------
+  - name: check if vga=791 is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep -i vga=791 | wc -l
+    register: quiet_count
+    tags: grub
+
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+    shell: grubby --update-kernel=ALL --args=vga=791 
+    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    tags: grub
+
+  # ---------------------------------------------------
+  # ajout de GRUB_ENABLE_BLSCFG=true 
+  #  Workaround of Orabug 20734786
+  # ---------------------------------------------------
+  - name: check if GRUB_ENABLE_BLSCFG=true is set 
+    ansible.builtin.shell: grubby --info DEFAULT | grep -i GRUB_ENABLE_BLSCFG=true | wc -l
+    register: quiet_count
+    tags: grub
+
+  - name: Configuration grub Linux 7/8 -  Désactivation de Transparent Hugepages
+    shell: grubby --update-kernel=ALL --args=GRUB_ENABLE_BLSCFG=true 
+    when: rhgb_count.stdout != '0' and ansible_distribution_major_version >= '7'
+    tags: grub
 
