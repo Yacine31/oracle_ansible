@@ -20,8 +20,6 @@
     lineinfile: 
       dest=/etc/sysctl.d/98-disable_ipv6.conf
       line="{{ item.line }}"
-      # dest=/etc/modprobe.d/desactivation_ipv6.conf 
-      # line="options ipv6 disable=1" 
       state=present
       create=yes
     with_items:
