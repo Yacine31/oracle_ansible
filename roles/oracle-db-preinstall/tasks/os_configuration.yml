@@ -123,3 +123,5 @@
   - name: Activation par systemctl du script de démarrage auto des bases Oracle
     systemd: name=dbora daemon_reload=yes enabled=yes
     tags: dbora_init
+
+
