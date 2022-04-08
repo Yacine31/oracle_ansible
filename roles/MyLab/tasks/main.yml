@@ -1,7 +1,14 @@
 ---
+  # configuration des mes VMs et serveurs
+  #-------------------------------------------
+  #-------------------------------------------
+
+  #-------------------------------------------
+  # installation de telegraf
+  #-------------------------------------------
+
   - name: download influxdb key
     get_url: url=https://repos.influxdata.com/influxdb.key dest=/etc/apt/trusted.gpg.d/influxdb.asc
-
 
   - name: get id 
     shell: cat /etc/os-release | grep "^ID=" | cut -d= -f2

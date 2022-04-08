@@ -1,0 +1,9 @@
+---
+ - name: Config MyLab
+   hosts: all
+   user: root
+   become: yes
+
+   roles:
+     - MyLab
+    #- install-oracle-sw
