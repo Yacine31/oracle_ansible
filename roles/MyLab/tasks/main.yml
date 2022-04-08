@@ -18,10 +18,16 @@
     shell: cat /etc/os-release | grep "VERSION_CODENAME=" | cut -d= -f2
     register: version_codename
     
+  - name: remove repo file for debian
+    file: 
+      src: /etc/apt/sources.list.d/influxdb.list
+      state: absent
+    when: ansible_os_family == 'Debian'
+
   - name: create repo file for debian
     lineinfile: 
       dest=/etc/apt/sources.list.d/influxdb.list
-      line=deb https://repos.influxdata.com/{{os_id}} {{version_codename}} stable
+      line="deb https://repos.influxdata.com/{{os_id}} {{version_codename}} stable"
     when: ansible_os_family == 'Debian'
 
   - name: install telgreaf
