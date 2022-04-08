@@ -20,14 +20,14 @@
     
   - name: remove repo file for debian
     file: 
-      src: /etc/apt/sources.list.d/influxdb.list
+      path: /etc/apt/sources.list.d/influxdb.list
       state: absent
     when: ansible_os_family == 'Debian'
 
   - name: create repo file for debian
     lineinfile: 
-      dest=/etc/apt/sources.list.d/influxdb.list
-      line="deb https://repos.influxdata.com/{{os_id}} {{version_codename}} stable"
+      dest: /etc/apt/sources.list.d/influxdb.list
+      line: "deb https://repos.influxdata.com/{{os_id}} {{version_codename}} stable"
     when: ansible_os_family == 'Debian'
 
   - name: install telgreaf
