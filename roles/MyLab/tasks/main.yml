@@ -12,11 +12,11 @@
 
   - name: get id 
     shell: cat /etc/os-release | grep "^ID=" | cut -d= -f2
-    register: os_id
+    register: os_id.stdout
 
   - name: get version_codename 
     shell: cat /etc/os-release | grep "VERSION_CODENAME=" | cut -d= -f2
-    register: version_codename
+    register: version_codename.stdout
     
   - name: remove repo file for debian
     file: 
