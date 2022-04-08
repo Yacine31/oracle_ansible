@@ -28,6 +28,7 @@
     lineinfile: 
       dest: /etc/apt/sources.list.d/influxdb.list
       line: "deb https://repos.influxdata.com/{{os_id}} {{version_codename}} stable"
+      create: yes
     when: ansible_os_family == 'Debian'
 
   - name: install telgreaf
