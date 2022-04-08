@@ -1,0 +1,52 @@
+---
+  #-------------------------------------------
+  # configuration des mes VMs et serveurs
+  #-------------------------------------------
+
+  #-------------------------------------------
+  # installation de telegraf
+  #-------------------------------------------
+
+  - name: download influxdb key
+    get_url: url=https://repos.influxdata.com/influxdb.key dest=/etc/apt/trusted.gpg.d/influxdb.asc
+
+  - name: get id 
+    shell: cat /etc/os-release | grep "^ID=" | cut -d= -f2
+    register: os_id
+
+  - name: get version_codename 
+    shell: cat /etc/os-release | grep "VERSION_CODENAME=" | cut -d= -f2
+    register: version_codename
+    
+  - name: create repo file for debian
+    lineinfile: 
+      dest=/etc/apt/sources.list.d/influxdb.list
+      line=deb https://repos.influxdata.com/{{os_id}} {{version_codename}} stable
+    when: ansible_os_family == 'Debian'
+
+  - name: install telgreaf
+    apt: name=telegraf state=present update_cache=yes
+    when: ansible_os_family == 'Debian'
+
+  - name: create repo file for Redhat
+    blockinfile:
+      path: /etc/yum.repos.d/influxdb.repo
+      block: |
+        [influxdb]
+        name = InfluxDB Repository - RHEL $releasever
+        baseurl = https://repos.influxdata.com/rhel/$releasever/$basearch/stable
+        enabled = 1
+        gpgcheck = 1
+        gpgkey = https://repos.influxdata.com/influxdb.key
+    when: ansible_os_family == 'Redhat'
+
+  - name: install telgreaf
+    yum: name=telegraf state=present update_cache=yes
+    when: ansible_os_family == 'Redhat'
+
+  - name: create config file
+    file: src=telegraf.conf dest=/etc/telegraf/telegraf.conf state=touch owner=root group=root mode=0755
+
+  - name: restart tlegraf
+    service: name=telegraf state=restarted
+
