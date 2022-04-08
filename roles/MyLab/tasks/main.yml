@@ -52,7 +52,7 @@
     when: ansible_os_family == 'Redhat'
 
   - name: create config file
-    file: src=telegraf.conf dest=/etc/telegraf/telegraf.conf state=touch owner=root group=root mode=0755
+    copy: src=telegraf.conf dest=/etc/telegraf/telegraf.conf owner=root group=root mode=0755
 
   - name: restart tlegraf
     service: name=telegraf state=restarted
