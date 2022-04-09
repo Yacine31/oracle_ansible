@@ -1,13 +1,13 @@
 ---
  - name: Config MyLab
-   hosts: Host_ROOT
+   hosts: groupe_root
    user: root
    become: yes
    roles:
      - MyLab
 
  - name: Config MyLab
-   hosts: Host_PI
+   hosts: groupe_non_root
    become: yes
    roles:
      - MyLab
