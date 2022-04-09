@@ -3,15 +3,12 @@
    hosts: Host_ROOT
    user: root
    become: yes
-
    roles:
      - MyLab
 
  - name: Config MyLab
-   hosts: all
-   user: root
+   hosts: Host_PI
    become: yes
-
    roles:
      - MyLab
 
