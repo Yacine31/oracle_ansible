@@ -10,9 +10,9 @@
   - name: download influxdb key
     get_url: url=https://repos.influxdata.com/influxdb.key dest=/etc/apt/trusted.gpg.d/influxdb.asc
 
-  - name: get id 
-    shell: cat /etc/os-release | grep "^ID=" | cut -d= -f2
-    register: os_id
+#  - name: get id 
+#    shell: cat /etc/os-release | grep "^ID=" | cut -d= -f2
+#    register: os_id
 
   - name: get version_codename 
     shell: cat /etc/os-release | grep "VERSION_CODENAME=" | cut -d= -f2
@@ -27,7 +27,7 @@
   - name: create repo file for debian
     lineinfile: 
       dest: /etc/apt/sources.list.d/influxdb.list
-      line: "deb https://repos.influxdata.com/{{os_id.stdout}} {{version_codename.stdout}} stable"
+      line: "deb https://repos.influxdata.com/debian {{version_codename.stdout}} stable"
       create: yes
     when: ansible_os_family == 'Debian'
 
