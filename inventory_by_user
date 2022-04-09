@@ -8,6 +8,7 @@ localhost		ansible_connection=local
 [groupe_non_root]
 192.168.31.6 	ansible_connection=ssh		ansible_user=root
 192.168.31.7 	ansible_connection=ssh		ansible_user=root
+192.168.31.8 	ansible_connection=ssh		ansible_user=root
 192.168.31.9 	ansible_connection=ssh		ansible_user=root
 
 
