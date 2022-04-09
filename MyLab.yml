@@ -1,9 +1,16 @@
 ---
  - name: Config MyLab
-   hosts: all
+   hosts: Host_PI
+   user: pi
+   become: yes
+
+   roles:
+     - MyLab
+
+ - name: Config MyLab
+   hosts: Host_ROOT
    user: root
    become: yes
 
    roles:
      - MyLab
-    #- install-oracle-sw
