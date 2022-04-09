@@ -8,6 +8,7 @@
 
  - name: Config MyLab
    hosts: Host_PI
+   user: pi
    become: yes
    roles:
      - MyLab
