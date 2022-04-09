@@ -7,3 +7,11 @@
    roles:
      - MyLab
 
+ - name: Config MyLab
+   hosts: all
+   user: root
+   become: yes
+
+   roles:
+     - MyLab
+
