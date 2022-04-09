@@ -1,0 +1,10 @@
+localhost		ansible_connection=local
+
+[Host_PI]
+192.168.31.3 	ansible_connection=ssh		ansible_user=pi
+192.168.31.2 	ansible_connection=ssh		ansible_user=pi
+
+[Host_ROOT]
+192.168.31.6 	ansible_connection=ssh		ansible_user=root
+192.168.31.7 	ansible_connection=ssh		ansible_user=root
+192.168.31.9 	ansible_connection=ssh		ansible_user=root
