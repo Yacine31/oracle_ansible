@@ -1,6 +1,6 @@
 ---
  - name: Config MyLab
-   hosts: all
+   hosts: Host_ROOT
    user: root
    become: yes
 
