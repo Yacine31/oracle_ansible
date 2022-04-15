@@ -117,8 +117,7 @@
       - { name: net.ipv4.ip_local_port_range, value: "9000 65500" }
       - { name: vm.swappiness, value: 10 }
       # vm.min_free_kbytes value (Kb) MAX(1GB * number_numa_nodes, 0.5% * total_memory) 
-      # - { name: vm.min_free_kbytes, value: 524288 }
-      - { name: vm.min_free_kbytes, value: "{{ ((1048576, ((0.5/100 * ansible_memtotal_mb)*1024)|round|int) | max) }}" }
+      - { name: vm.min_free_kbytes, value: 1048576 }
       - { name: vm.hugetlb_shm_group, value: 1001 }
       # - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
       # Orabug 19212317
