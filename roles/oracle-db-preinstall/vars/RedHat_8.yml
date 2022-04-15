@@ -120,7 +120,7 @@
       - { name: vm.min_free_kbytes, value: "{{ ((1048576, ((0.5/100 * ansible_memtotal_mb)*1024)|round|int) | max) }}" }
       # - { name: vm.min_free_kbytes, value: 1048576 }
       - { name: vm.hugetlb_shm_group, value: 1001 }
-      # - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
+      - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
       # Orabug 19212317
       - { name: kernel.panic_on_oops, value: 1 }
 
