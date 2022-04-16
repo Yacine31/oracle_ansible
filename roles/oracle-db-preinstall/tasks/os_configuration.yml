@@ -11,6 +11,7 @@
   # ---------------------------------------------------
   - name: start chronyd
     service: name=chronyd  state=started  enabled=yes
+    ignore_errors: true
 
   # --------------------------------------------------- 
   # configuration Linux : Selinux
