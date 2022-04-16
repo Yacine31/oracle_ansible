@@ -18,6 +18,8 @@ tmp_free_space_gb: 1
 etc_free_spage_gb: 1
 var_free_spage_gb: 1
 
+db_response_file: "install_db_{{ oracle_version }}.rsp"
+
 # role_separation: true
 # # grid_install_user: "{% if role_separation==true %}{{ grid_user }}{% else %}{{ oracle_user }}{% endif %}"
 # 
@@ -65,5 +67,4 @@ var_free_spage_gb: 1
 # db_user: "oracle"
 # 
 # db_edition: "EE"
-# db_response_file: "install_db_{{ oracle_version }}.rsp"
 
