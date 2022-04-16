@@ -52,6 +52,10 @@
     template: src=run_db_install.sh.j2 dest={{ oracle_sources }}/run_db_install.sh mode=755
     tags: responsefile
 
+  - name: modification du numero de distib sur Linux 8
+    lineinfile: dest={{ oracle_home }}/cv/admin/cvu_config state=present line="CV_ASSUME_DISTID=OEL7"
+    tags: distid_ol7
+
   - name: Installation des binaires Oracle
     shell: "{{ oracle_sources }}/run_db_install.sh"
     register: oradbinstall
