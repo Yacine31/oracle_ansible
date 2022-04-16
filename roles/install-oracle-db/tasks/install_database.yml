@@ -62,6 +62,7 @@
     become: true
     become_method: su
     become_user: oracle
+    ignore_errors: true
     tags: orainstall
 
   - debug: var=oradbinstall.stdout_lines
