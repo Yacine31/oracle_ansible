@@ -53,7 +53,7 @@
     tags: responsefile
 
   - name: modification du numero de distib sur Linux 8
-    lineinfile: dest={{ oracle_home }}/cv/admin/cvu_config state=present line="CV_ASSUME_DISTID=OEL7"
+    lineinfile: dest={{ oracle_home }}/cv/admin/cvu_config state=present line="CV_ASSUME_DISTID=OEL7.6"
     tags: distid_ol7
 
   - name: Installation des binaires Oracle
