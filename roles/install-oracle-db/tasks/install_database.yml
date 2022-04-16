@@ -50,7 +50,7 @@
     tags: responsefile
 
   - name: Installation des binaires Oracle
-    shell: "{{ oracle_sources }}/run_db_install.sh"
+    shell: "su - oracle {{ oracle_sources }}/run_db_install.sh"
     register: oradbinstall
     tags: orainstall
 
@@ -72,7 +72,7 @@
     tags: runroot
 
   - name: Résultat de l installation via OPatch
-    shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
+    shell: "u - oracle {{ oracle_home }}/OPatch/opatch lsinventory"
     register: opatchls
     tags: opatch
 
