@@ -6,6 +6,7 @@ if [[ $chkifinstalled == 1 ]]; then
  echo "Error: ORACLE_HOME: {{ oracle_home }} already present. Exiting"
  exit 0
 else
+export CV_ASSUME_DISTID=OEL7.6
 {{ oracle_home }}/runInstaller -responseFile {{ oracle_sources }}/{{ db_response_file }} -ignorePrereq -ignoreSysPrereqs -silent -waitforcompletion
 fi
 
