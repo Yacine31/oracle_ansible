@@ -61,7 +61,6 @@
   - name: Installation des binaires Oracle
     shell: "{{ oracle_sources }}/run_db_install.sh"
     register: oradbinstall
-    sudo: yes
     sudo_user: root
     tags: orainstall
 
@@ -80,7 +79,6 @@
 
   - name: Exécution du script root.sh
     shell: "{{ oracle_home }}/root.sh"
-    sudo: yes
     sudo_user: root
     tags: runroot
 
