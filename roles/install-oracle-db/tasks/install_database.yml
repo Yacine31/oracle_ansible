@@ -22,13 +22,13 @@
   - name: vérification de l espace disque disponible sur oracle_base
     action: shell df -P {{ oracle_base }} | awk 'END { print $4 }'
     register: u01size
-    failed_when: u01size.stdout|int < {{ u01_free_space_gb }} * 1024 * 1024
+    failed_when: u01size.stdout|int < u01_free_space_gb*1024*1024
     tags: diskfreespace
 
   - name: vérification de l espace disque disponible sur /tmp
     action: shell df -P /tmp | awk 'END { print $4 }'
     register: tmpsize
-    failed_when: tmpsize.stdout|int < {{ tmp_free_space_gb }} * 1024 * 1024
+    failed_when: tmpsize.stdout|int < tmp_free_space_gb*1024*1024
     tags: diskfreespace
 
   - name: Vérifier si une installation existe ...
