@@ -41,15 +41,6 @@
     unarchive: src={{ oracle_sources }}/LINUX.X64_193000_db_home.zip  dest={{ oracle_home }}
     tags: transfert
 
-#  - name: Linux 7 - application du pacth 19404309 pour installer 11.2 sur Linux 7
-#    # https://updates.oracle.com/Orion/Services/download?type=readme&aru=17984752
-#    # cela consiste à copier le fichier cvu_prereq.xml dans le répertoire d'install
-#    copy: src=cvu_prereq.xml dest={{ oracle_sources }}/database/stage/cvu owner={{ db_user }} group={{ oracle_group }} mode=644
-#    sudo: yes
-#    sudo_user: oracle
-#    tags: patch_p19404309
-#    when: ansible_distribution_major_version == '7' and db_version == "11.2.0.4"
-
   - name: Copie du fichier de réponse pour installation silencieuse
     template: src=db_install_{{ oracle_version }}.j2 dest={{ oracle_sources }}/{{ db_response_file }}
     tags: responsefile
@@ -61,7 +52,6 @@
   - name: Installation des binaires Oracle
     shell: "{{ oracle_sources }}/run_db_install.sh"
     register: oradbinstall
-    sudo_user: root
     tags: orainstall
 
   - debug: var=oradbinstall.stdout_lines
@@ -79,7 +69,6 @@
 
   - name: Exécution du script root.sh
     shell: "{{ oracle_home }}/root.sh"
-    sudo_user: root
     tags: runroot
 
   - name: Résultat de l installation via OPatch
