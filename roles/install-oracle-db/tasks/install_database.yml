@@ -39,7 +39,6 @@
 
   - name: Extraction des binaires Oracle
     unarchive: src={{ oracle_sources }}/LINUX.X64_193000_db_home.zip  dest={{ oracle_home }}
-    sudo: yes
     sudo_user: oracle
     tags: transfert
 
