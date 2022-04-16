@@ -7,6 +7,6 @@ if [[ $chkifinstalled == 1 ]]; then
  exit 0
 else
 export CV_ASSUME_DISTID=OEL7.6
-{{ oracle_home }}/runInstaller -responseFile {{ oracle_sources }}/{{ db_response_file }} -ignorePrereq -ignoreSysPrereqs -silent -waitforcompletion
+{{ oracle_home }}/runInstaller -responseFile {{ oracle_sources }}/{{ db_response_file }} -ignorePrereq -silent -waitforcompletion
 fi
 
