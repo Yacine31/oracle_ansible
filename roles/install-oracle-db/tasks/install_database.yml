@@ -32,7 +32,7 @@
     tags: diskfreespace
 
   - name: Vérifier si une installation existe ...
-    shell: grep "{{ oracle_home  }}" "{{ oracle_inventory }}/ContentsXML/inventory.xml" | wc -l
+    shell: grep "{{ oracle_home }}" "{{ oracle_inventory }}/ContentsXML/inventory.xml" | wc -l
     register: checkdbswinstall
     failed_when: checkdbswinstall.stdout != "0"
     tags: checkifexists
@@ -53,7 +53,7 @@
 #    when: ansible_distribution_major_version == '7' and db_version == "11.2.0.4"
 
   - name: Copie du fichier de réponse pour installation silencieuse
-    template: src=db_install_{{ db_version }}.j2 dest={{ oracle_sources }}/{{ db_response_file }}
+    template: src=db_install_{{ oracle_version }}.j2 dest={{ oracle_sources }}/{{ db_response_file }}
     sudo: yes
     sudo_user: oracle
     tags: responsefile

@@ -4,9 +4,9 @@
 # dans cette section ne rien modifier sauf si besoin
 #--------------------------------------------------------------------
 
-oracle_version: "19.3.0.0"
+oracle_version: "19.0.0"
 oracle_base: "/u01/app/oracle"
-oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
+oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_2"
 oracle_inventory: "/u01/app/oraInventory"
 oracle_sources: "/u01/sources"
 
@@ -64,5 +64,5 @@ gi_response_file: "install_gi_{{ gi_version }}.rsp"
 db_user: "oracle"
 
 db_edition: "EE"
-db_response_file: "install_db_{{ db_version }}_{{ db_edition }}.rsp"
+db_response_file: "install_db_{{ oracle_version }}.rsp"
 
