@@ -39,7 +39,6 @@
 
   - name: Extraction des binaires Oracle
     unarchive: src={{ oracle_sources }}/LINUX.X64_193000_db_home.zip  dest={{ oracle_home }}
-    sudo_user: oracle
     tags: transfert
 
 #  - name: Linux 7 - application du pacth 19404309 pour installer 11.2 sur Linux 7
@@ -53,20 +52,14 @@
 
   - name: Copie du fichier de réponse pour installation silencieuse
     template: src=db_install_{{ oracle_version }}.j2 dest={{ oracle_sources }}/{{ db_response_file }}
-    sudo: yes
-    sudo_user: oracle
     tags: responsefile
 
   - name: Création du script d installation silencieuse
     template: src=run_db_install.sh.j2 dest={{ oracle_sources }}/run_db_install.sh mode=755
-    sudo: yes
-    sudo_user: oracle
     tags: responsefile
 
   - name: Installation des binaires Oracle
     shell: "{{ oracle_sources }}/run_db_install.sh"
-    sudo: yes
-    sudo_user: oracle
     register: oradbinstall
     tags: orainstall
 
@@ -80,21 +73,15 @@
 
   - name: Exécution du script orainstRoot.sh
     shell: "{{ oracle_inventory }}/orainstRoot.sh"
-    sudo: yes
-    sudo_user: root
     when: orainstRoot.stat.exists
     tags: runroot
 
   - name: Exécution du script root.sh
     shell: "{{ oracle_home }}/root.sh"
-    sudo: yes
-    sudo_user: root
     tags: runroot
 
   - name: Résultat de l installation via OPatch
     shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
-    sudo: yes
-    sudo_user: oracle
     register: opatchls
     tags: opatch
 
