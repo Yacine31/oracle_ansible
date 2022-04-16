@@ -9,7 +9,7 @@
   oracle_sources: "/u01/sources"
 
   # faire une configuration minimal ?
-  # la configuration complète : fait en plsu la création des users, des groupes, des répertoires ...
+  # la configuration complète : fait en plus la création des users, des groupes, des répertoires ...
   full_configuration: false
   
   # faire une configuration securisée du system d'exploitation
@@ -33,6 +33,7 @@
       - isdn
       - mcstrans
       - mdmonitor
+      - ntpd
       - restorecond
       - rhnsd
       - setroubleshoot
