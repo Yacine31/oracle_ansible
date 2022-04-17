@@ -1,0 +1,104 @@
+---
+# 
+# installation des binaires ORACLE
+#
+
+  - name: Création du répertoire oracle
+    file: dest={{ item }} mode=775 owner=oracle group=oinstall state=directory recurse=yes
+    with_items:
+      - "{{ oracle_base }}"
+      - "{{ oracle_inventory }}"
+      - "{{ oracle_home }}"
+      - "{{ oracle_sources }}"
+    tags: createdir
+
+  - name: vérification de l espace disque disponible sur oracle_base
+    action: shell df -P {{ oracle_base }} | awk 'END { print $4 }'
+    register: u01size
+    failed_when: u01size.stdout|int < u01_free_space_gb*1024*1024
+    tags: diskfreespace
+
+  - name: vérification de l espace disque disponible sur /tmp
+    action: shell df -P /tmp | awk 'END { print $4 }'
+    register: tmpsize
+    failed_when: tmpsize.stdout|int < tmp_free_space_gb*1024*1024
+    tags: diskfreespace
+
+
+
+
+  - name: Récupérer oraInventory ...
+    shell: cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2
+    register: orainventoryloc
+    failed_when: orainventoryloc.stdout == ""
+    tags: getorainventoryloc
+
+  - name: Récupération des ORACLE_HOME ..
+    shell: cat {{ orainventoryloc.stdout }} |  grep "HOME NAME" | cut -d' ' -f3 | cut -d= -f2 | sed 's/"//g'
+    register: oracle_home
+    failed_when: oracle_home.stdout == ""
+    tags: getoraclehome
+
+
+
+
+  - name: Copie du fichier de réponse pour installation silencieuse
+    template: src=db_install_{{ oracle_version }}.j2 dest={{ oracle_sources }}/{{ db_response_file }}
+    tags: responsefile
+
+  - name: Création du script d installation silencieuse
+    template: src=run_db_install.sh.j2 dest={{ oracle_sources }}/run_db_install.sh mode=755
+    tags: responsefile
+
+  - name: modification du numero de distib sur Linux 8
+    lineinfile: dest={{ oracle_home }}/cv/admin/cvu_config state=present line="CV_ASSUME_DISTID=OEL7.6"
+    tags: distid_ol7
+
+  - name: Installation des binaires Oracle
+    shell: "{{ oracle_sources }}/run_db_install.sh"
+    register: oradbinstall
+    become: true
+    become_method: su
+    become_user: oracle
+    ignore_errors: true
+    tags: orainstall
+
+  - debug: var=oradbinstall.stdout_lines
+    # with_items: oradbinstall.results
+    tags: orainstall
+
+  - name: Vérification de l existance du fichier orainstRoot.sh
+    stat: path="{{ oracle_inventory }}/orainstRoot.sh"
+    register: orainstRoot
+
+  - name: Exécution du script orainstRoot.sh
+    shell: "{{ oracle_inventory }}/orainstRoot.sh"
+    when: orainstRoot.stat.exists
+    tags: runroot
+
+  - name: Exécution du script root.sh
+    shell: "{{ oracle_home }}/root.sh"
+    tags: runroot
+
+  - name: Résultat de l installation via OPatch
+    shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
+    become: true
+    become_method: su
+    become_user: oracle
+    register: opatchls
+    tags: opatch
+
+  - debug: var=opatchls.stdout_lines
+    # with_items: opatchls.results
+    tags: opatch
+
+  # suppression des binaires, du fichier de réponse et du script d'install
+#  - name: suppression du repertoire des fichiers decompressés
+#    file: path={{ oracle_sources }}/database state=absent
+#
+#  - name: suppression du fichier de réponse
+#    file: path={{ oracle_sources }}/{{ db_response_file }} state=absent
+#
+#  - name: suppression du script d'installation
+#    file: path={{ oracle_sources }}/run_db_install.sh state=absent
+

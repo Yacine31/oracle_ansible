@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> 
+<!-- Copyright (c) 2004, 2014, Oracle and/or its affiliates. 
+All rights reserved.-->
+
+
+<!-- ref host for linux -->
+
+<HOST PLATID="226">
+   <SYSTEM>
+      <MEMORY>
+         <PHYSICAL_MEMORY VALUE="1024" UNIT="MB" SEVERITY="IGNORABLE"/>
+         <AVAILABLE_MEMORY VALUE="50" UNIT="MB" SEVERITY="IGNORABLE"/>
+            <SWAP_SIZE SEVERITY="IGNORABLE">
+              <STEPS>
+                <MIN VALUE="1024" UNIT="MB"/>
+		<MAX VALUE="16" UNIT="GB"/>
+                 <STEP NAME="PHYSICAL_MEMORY" ATLEAST="1024" ATMOST="2048" UNIT="MB" MULTIPLE="1.5"/>
+                 	<STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="2048" UNIT="MB" MULTIPLE="1"/>
+              </STEPS>
+            </SWAP_SIZE>
+      </MEMORY>
+      <SPACE>
+         <LOC VAR="RAC_HOME" SIZE="4.70" UNIT="GB" SEVERITY="IGNORABLE"/>
+         <LOC VAR="TEMP_AREA" TEMP="true" SIZE="1" UNIT="GB" SEVERITY="IGNORABLE"/>
+      </SPACE>
+      <USERS_GROUPS>
+         <USER VAR="INSTALL_USER">
+	    <GROUP VAR="INSTALL_GROUP"/>
+	    <GROUP VAR="DBA_GROUP"/>
+
+	 </USER>
+	 <USER VAR="BACKUP_USER"/>
+      </USERS_GROUPS>
+      <RUNLEVEL>
+        <LIST>
+          <VALUE>3</VALUE>
+          <VALUE>5</VALUE>
+        </LIST>
+      </RUNLEVEL>
+      <!-- shell limit checks based on Seetha's inputs -->
+      <SHELL_LIMIT_CHECKS>
+         <CHOICE VAR="SHELL">
+            <SELECTION VALUE="SH">
+               <FILE_DESCRIPTORS>
+                  <HARDLIMIT VALUE="65536" SEVERITY="IGNORABLE"/>
+                  <SOFTLIMIT VALUE="1024" SEVERITY="IGNORABLE"/>
+               </FILE_DESCRIPTORS>
+               <MAXPROC>
+                  <HARDLIMIT VALUE="16384" SEVERITY="IGNORABLE"/>
+                  <SOFTLIMIT VALUE="2047" SEVERITY="IGNORABLE"/>
+               </MAXPROC>
+               <STACK>
+                  <SOFTLIMIT VALUE="10" UNIT="MB" OPERATOR="ATMOST" SEVERITY="IGNORABLE"/>
+               </STACK>
+            </SELECTION>
+            <SELECTION VALUE="BASH">
+               <FILE_DESCRIPTORS>
+                  <HARDLIMIT VALUE="65536" SEVERITY="IGNORABLE"/>
+                  <SOFTLIMIT VALUE="1024" SEVERITY="IGNORABLE"/>
+               </FILE_DESCRIPTORS>
+               <MAXPROC>
+                  <HARDLIMIT VALUE="16384" SEVERITY="IGNORABLE"/>
+                  <SOFTLIMIT VALUE="2047" SEVERITY="IGNORABLE"/>
+               </MAXPROC>
+               <STACK>
+                  <SOFTLIMIT VALUE="10" UNIT="MB" OPERATOR="ATMOST" SEVERITY="IGNORABLE"/>
+               </STACK>
+            </SELECTION>
+            <SELECTION VALUE="KSH">
+               <FILE_DESCRIPTORS>
+                  <HARDLIMIT VALUE="65536" SEVERITY="IGNORABLE"/>
+                  <SOFTLIMIT VALUE="1024" SEVERITY="IGNORABLE"/>
+               </FILE_DESCRIPTORS>
+               <MAXPROC>
+                  <HARDLIMIT VALUE="16384" SEVERITY="IGNORABLE"/>
+                  <SOFTLIMIT VALUE="2047" SEVERITY="IGNORABLE"/>
+               </MAXPROC>
+               <STACK>
+                  <SOFTLIMIT VALUE="10" UNIT="MB" OPERATOR="ATMOST" SEVERITY="IGNORABLE"/>
+               </STACK>
+            </SELECTION>
+            <SELECTION VALUE="CSH">
+               <FILE_DESCRIPTORS>
+                  <HARDLIMIT VALUE="65536" SEVERITY="IGNORABLE"/>
+               </FILE_DESCRIPTORS>
+               <MAXPROC>
+                  <HARDLIMIT VALUE="16384" SEVERITY="IGNORABLE"/>
+               </MAXPROC>
+               <STACK>
+                  <SOFTLIMIT VALUE="10" UNIT="MB" OPERATOR="ATMOST" SEVERITY="IGNORABLE"/>
+               </STACK>
+            </SELECTION>
+            <SELECTION VALUE="TCSH">
+               <FILE_DESCRIPTORS>
+                  <HARDLIMIT VALUE="65536" SEVERITY="IGNORABLE"/>
+               </FILE_DESCRIPTORS>
+               <MAXPROC>
+                  <HARDLIMIT VALUE="16384" SEVERITY="IGNORABLE"/>
+               </MAXPROC>
+               <STACK>
+                  <SOFTLIMIT VALUE="10" UNIT="MB" OPERATOR="ATMOST" SEVERITY="IGNORABLE"/>
+               </STACK>
+            </SELECTION>
+            <SELECTION VALUE="ZSH">
+               <FILE_DESCRIPTORS>
+                  <HARDLIMIT VALUE="65536" SEVERITY="IGNORABLE"/>
+               </FILE_DESCRIPTORS>
+               <MAXPROC>
+                  <HARDLIMIT VALUE="16384" SEVERITY="IGNORABLE"/>
+               </MAXPROC>
+               <STACK>
+                  <SOFTLIMIT VALUE="10" UNIT="MB" OPERATOR="ATMOST" SEVERITY="IGNORABLE"/>
+               </STACK>
+            </SELECTION>
+         </CHOICE>
+      </SHELL_LIMIT_CHECKS>
+      <!-- This checks has the list of proceesses that should be running/off on the machine -->
+      <PROCESS_CHECKS>
+         <CONDITION VAR="OCFS">
+            <PROCESS NAME="ncsd" EXISTS="TRUE"/>
+         </CONDITION>
+      </PROCESS_CHECKS>   
+   </SYSTEM>
+   <CERTIFIED_SYSTEMS>
+      <OPERATING_SYSTEM RELEASE="OEL5">
+         <VERSION VALUE="3"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="enterprise"/>
+         <KERNEL_VER VALUE="2.6.18"/>
+         <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+            <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <!-- Need to confirm version for following ASM packages -->
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.81" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.17.50.0.6" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio" VALUE="0.3.106" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="glibc" VALUE="2.5-24" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="elfutils-libelf" VALUE="0.125" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="elfutils-libelf-devel" VALUE="0.125" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc-common" VALUE="2.5" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="glibc-devel" VALUE="2.5" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-headers" VALUE="2.5" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio-devel" VALUE="0.3.106" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libgcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="7.0.2" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="ksh" VALUE="20060214" SEVERITY="IGNORABLE"/>
+         </PACKAGES>
+         <SYSTEM_FILES>
+            <DHCP FILENAME="/etc/network_sysconfig"/>
+         </SYSTEM_FILES>
+      </OPERATING_SYSTEM>
+      
+      <OPERATING_SYSTEM RELEASE="RHEL5">
+         <VERSION VALUE="3"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="redhat"/>
+         <KERNEL_VER VALUE="2.6.18"/>
+         <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+            <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <!-- Need to confirm version for following ASM packages -->
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.81" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.17.50.0.6" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio" VALUE="0.3.106" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="glibc" VALUE="2.5-24" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="elfutils-libelf" VALUE="0.125" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="elfutils-libelf-devel" VALUE="0.125" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc-common" VALUE="2.5" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="glibc-devel" VALUE="2.5" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-headers" VALUE="2.5" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio-devel" VALUE="0.3.106" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libgcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="7.0.2" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="ksh" VALUE="20060214" SEVERITY="IGNORABLE"/>
+         </PACKAGES>
+         <SYSTEM_FILES>
+            <DHCP FILENAME="/etc/network_sysconfig"/>
+         </SYSTEM_FILES>
+      </OPERATING_SYSTEM>
+      
+      <OPERATING_SYSTEM RELEASE="ASIANUX3">
+         <VERSION VALUE="3"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="asianux"/>
+	<KERNEL_VER VALUE="2.6.18"/>
+	<KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+
+         <PACKAGES>
+	    <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.81" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.17.50.0.6" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio" VALUE="0.3.106" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="glibc" VALUE="2.5-24" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="elfutils-libelf" VALUE="0.125" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="elfutils-libelf-devel" VALUE="0.125" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc-common" VALUE="2.5" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="glibc-devel" VALUE="2.5" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-headers" VALUE="2.5" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio-devel" VALUE="0.3.106" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libgcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="7.0.2" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="ksh" VALUE="20060214" SEVERITY="IGNORABLE"/>
+          </PACKAGES>
+      </OPERATING_SYSTEM>
+      
+      <OPERATING_SYSTEM RELEASE="OEL4">
+         <VERSION VALUE="3"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="enterprise"/>
+         <KERNEL_VER VALUE="2.6.9"/>
+         <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+            <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <!-- Need to confirm version for following ASM packages -->
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.80" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.15.92.0.2" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio" VALUE="0.3.105" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio-devel" VALUE="0.3.105" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="glibc" VALUE="2.3.4-2.41" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="elfutils-libelf" VALUE="0.97" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="elfutils-libelf-devel" VALUE="0.97" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc-common" VALUE="2.3.4" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="glibc-devel" VALUE="2.3.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-headers" VALUE="2.3.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libgcc" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="5.0.5" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="pdksh" VALUE="5.2.14" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="expat" VALUE="1.95.7" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>	    
+         </PACKAGES>
+         <SYSTEM_FILES>
+            <DHCP FILENAME="/etc/network_sysconfig"/>
+         </SYSTEM_FILES>
+      </OPERATING_SYSTEM>
+      
+      <OPERATING_SYSTEM RELEASE="RHEL4">
+         <VERSION VALUE="3"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="redhat"/>
+         <KERNEL_VER VALUE="2.6.9"/>
+	 <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+            <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <!-- Need to confirm version for following ASM packages -->
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.80" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.15.92.0.2" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio" VALUE="0.3.105" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/> 
+	    <PACKAGE NAME="glibc" VALUE="2.3.4-2.41" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="elfutils-libelf" VALUE="0.97" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="elfutils-libelf-devel" VALUE="0.97" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc-common" VALUE="2.3.4" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="glibc-devel" VALUE="2.3.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-headers" VALUE="2.3.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libaio-devel" VALUE="0.3.105" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libgcc" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="3.4.6" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="5.0.5" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="pdksh" VALUE="5.2.14" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="expat" VALUE="1.95.7" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>	    
+         </PACKAGES>
+         <SYSTEM_FILES>
+            <DHCP FILENAME="/etc/network_sysconfig"/>
+         </SYSTEM_FILES>
+      </OPERATING_SYSTEM>
+      <OPERATING_SYSTEM RELEASE="SUSE10">
+         <VERSION VALUE="10"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="SuSE"/>
+	<KERNEL_VER VALUE="2.6.16.21"/>
+	<KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+
+         <PACKAGES>
+	    <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.3" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.80" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.16.91.0.5" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="gcc-c++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio" VALUE="0.3.104" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc" SEVERITY="CRITICAL" ARCHITECTURE="x86_64">
+               <RANGE ATLEAST="2.4-31.63">
+                  <EXCLUDE ATLEAST="2.5-18" ATMOST="2.5-23"/>
+               </RANGE>
+            </PACKAGE>
+	    <PACKAGE NAME="compat-libstdc++" VALUE="5.0.7" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-devel" VALUE="2.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="ksh" VALUE="93r-12.9" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="libaio-devel" VALUE="0.3.104" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="libelf" VALUE="0.8.5" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="libgcc" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="4.1.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="8.0.4" SEVERITY="IGNORABLE"/>
+         </PACKAGES>
+      </OPERATING_SYSTEM>
+      <OPERATING_SYSTEM RELEASE="SUSE11">
+         <VERSION VALUE="11"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="SuSE"/>
+	<KERNEL_VER VALUE="2.6.27.19"/>
+	<KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+
+         <PACKAGES>
+	    <!-- Packages for ASM -->
+            <CONDITION VAR="ASM">
+               <PACKAGE NAME="oracleasm-support" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasm-%KERNEL_RELEASE%" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="oracleasmlib" VALUE="2.0"  SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.3" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="make" VALUE="3.81" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="binutils" VALUE="2.19" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.3" SEVERITY="IGNORABLE"  ARCHITECTURE="x86_64"/>
+	    <PACKAGE NAME="gcc-c++" VALUE="4.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio" VALUE="0.3.104" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc" VALUE="2.9" SEVERITY="CRITICAL"/>
+            <PACKAGE NAME="glibc-devel" VALUE="2.9" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="ksh" VALUE="93t" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="libaio-devel" VALUE="0.3.104" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="libstdc++33" VALUE="3.3.3"  SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="libstdc++43-devel" VALUE="4.3.3_20081022" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="libstdc++-devel" VALUE="4.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="8.1.5" SEVERITY="IGNORABLE"/>
+	<CONDITION VAR="SUSE_PATCHLEVEL" TYPE="VERSION" LESS_THAN="2"> 
+	  <PACKAGE NAME="libstdc++43" VALUE="4.3.3_20081022" SEVERITY="IGNORABLE"/> 
+	  <PACKAGE NAME="libgcc43" VALUE="4.3.3_20081022" SEVERITY="IGNORABLE"/> 
+        </CONDITION> 
+	<CONDITION VAR="SUSE_PATCHLEVEL" TYPE="VERSION" ATLEAST="2"> 
+	  <PACKAGE NAME="libstdc++46" VALUE="4.6.1_20110701" SEVERITY="IGNORABLE"/> 
+ 	  <PACKAGE NAME="libgcc46" VALUE="4.6.1_20110701" SEVERITY="IGNORABLE"/> 
+	</CONDITION>
+          </PACKAGES>
+      </OPERATING_SYSTEM>
+      <OPERATING_SYSTEM RELEASE="OEL6">
+         <VERSION VALUE="6"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="enterprise"/>
+         <KERNEL_VER VALUE="2.6.32"/>
+         <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            
+
+            <PACKAGE NAME="binutils" VALUE="2.20.51.0.2" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="compat-libcap1" VALUE="1.10" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libgcc" VALUE="4.4.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libstdc++" VALUE="4.4.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libstdc++-devel" VALUE="4.4.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="9.0.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.4.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="4.4.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="ksh" VALUE="20100621" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="make" VALUE="3.81" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc" VALUE="2.12" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-devel" VALUE="2.12" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio" VALUE="0.3.107" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio-devel" VALUE="0.3.107" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>	    
+         </PACKAGES>
+         <SYSTEM_FILES>
+            <DHCP FILENAME="/etc/network_sysconfig"/>
+         </SYSTEM_FILES>
+      </OPERATING_SYSTEM>
+     
+      <OPERATING_SYSTEM RELEASE="OL7">
+         <VERSION VALUE="7"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="Oracle"/>
+         <KERNEL_VER VALUE="3.8.0"/>
+         <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1024" UNIT="MB" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1024" UNIT="MB" MULTIPLE="0.4"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65535" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+            <!-- Packages for OCFS2 -->
+            <CONDITION VAR="OCFS2">
+               <PACKAGE VAR="ocfs2" VALUE="1.2.9" SEVERITY="IGNORABLE"/>
+               <PACKAGE NAME="ocfs2-tools" VALUE="1.2.7" SEVERITY="IGNORABLE"/>
+            </CONDITION>
+            <PACKAGE NAME="binutils" VALUE="2.23.52.0.1" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="compat-libcap1" VALUE="1.10" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libgcc" VALUE="4.8.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libstdc++" VALUE="4.8.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libstdc++-devel" VALUE="4.8.2" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="10.1.5" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.8.2" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="4.8.2" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="ksh" VALUE="..." SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="make" VALUE="3.82" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc" VALUE="2.17" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-devel" VALUE="2.17" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio" VALUE="0.3.109" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio-devel" VALUE="0.3.109" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            </PACKAGES>
+         <SYSTEM_FILES>
+            <DHCP FILENAME="/etc/network_sysconfig"/>
+         </SYSTEM_FILES>
+      </OPERATING_SYSTEM>
+ 
+      <OPERATING_SYSTEM RELEASE="RHEL6">
+         <VERSION VALUE="6"/>
+         <ARCHITECTURE VALUE="x86_64"/>
+         <NAME VALUE="Linux"/>
+         <VENDOR VALUE="enterprise"/>
+         <KERNEL_VER VALUE="2.6.32"/>
+         <KERNEL>
+            <PROPERTY NAME="semmsl" NAME2="semmsl2" VALUE="250" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmns" VALUE="32000" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semopm" VALUE="100" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="semmni" VALUE="128" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmmax" SEVERITY="IGNORABLE">
+                 <STEPS>
+                   <MAX VALUE="4294967295" UNIT="B"/>
+                   <STEP NAME="PHYSICAL_MEMORY" GREATER_THAN="1" UNIT="B" MULTIPLE="0.5"/>
+                 </STEPS>
+            </PROPERTY>
+            <PROPERTY NAME="shmmni" VALUE="4096" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="shmall" VALUE="2097152" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="file-max" VALUE="6815744" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="ip_local_port_range" ATLEAST="9000" ATMOST="65500" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="rmem_max" VALUE="4194304" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_default" VALUE="262144" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="wmem_max" VALUE="1048576" SEVERITY="IGNORABLE"/>
+            <PROPERTY NAME="aio-max-nr" VALUE="1048576" SEVERITY="IGNORABLE"/>
+         </KERNEL>
+         <PACKAGES>
+	    
+<PACKAGE NAME="binutils" VALUE="2.20.51.0.2" SEVERITY="IGNORABLE"/>
+	    <PACKAGE NAME="compat-libcap1" VALUE="1.10" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="compat-libstdc++-33" VALUE="3.2.3" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libgcc" VALUE="4.4.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libstdc++" VALUE="4.4.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libstdc++-devel" VALUE="4.4.4" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="sysstat" VALUE="9.0.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc" VALUE="4.4.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="gcc-c++" VALUE="4.4.4" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="ksh" VALUE="20100621" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="make" VALUE="3.81" SEVERITY="IGNORABLE"/>
+            <PACKAGE NAME="glibc" VALUE="2.12" SEVERITY="CRITICAL" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="glibc-devel" VALUE="2.12" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio" VALUE="0.3.107" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>
+            <PACKAGE NAME="libaio-devel" VALUE="0.3.107" SEVERITY="IGNORABLE" ARCHITECTURE="x86_64"/>	    
+         </PACKAGES>         
+      </OPERATING_SYSTEM>
+      
+   </CERTIFIED_SYSTEMS>
+   <REFERENCE_DEVICES>
+      <DEVICE VAR="DEVICES"/>
+      <MOUNT_PARAMS NAME="nfs" VALUE="rw,bg,hard,nointr,rsize=32768,wsize=32768,tcp,noac,vers=3,timeo=600"/>
+      <MOUNT_PARAMS NAME="ocfs" VALUE="rw,sid=5"/>
+      <MOUNT_PARAMS NAME="ocfs2" VALUE="..."/>
+      <MOUNT_PARAMS NAME="ofs" VALUE="...."/>
+      <MOUNT_PARAMS NAME="raw" VALUE="..."/>
+      <MOUNT_PARAMS NAME="asm" VALUE="..."/>
+      <REDUNDANT_LOCS VAR="OCR_REDUND"/>
+      <REDUNDANT_LOCS VAR="VDISK_REDUND"/>
+   </REFERENCE_DEVICES>
+   <SCRIPTS>
+      <SCRIPT VAR="USER_SCRIPT"/>
+   </SCRIPTS>
+   <USER_INPUTS>
+      <CLUSTERNAME VAR="CLUSTERNAME"/>
+      <SID VAR="SID"/>
+      <INSTALL_USER VAR="INSTALL_USER"/>
+      <LOCS>
+         <LOC VAR="OCR_LOC"/>
+         <LOC VAR="OCR_MIRROR_LOC"/>
+         <LOC VAR="VDISK_LOC"/>
+         <LOC VAR="VDISK_LOC2"/>
+         <LOC VAR="VDISK_LOC3"/>
+         <LOC VAR="DB_FILE_STORAGE"/>
+         <CONDITION VAR="OCFS">
+            <LOC VAR="RPM_BASE_URL_OCFS"/>
+            <LOC VAR="RPM_BASE_URL_OCFS_TOOLS"/>
+         </CONDITION>
+         <CONDITION VAR="RAW">
+            <LOC VAR="DB_RAW_STORAGE"/>
+            <LOC VAR="DB_REC_AREA_STORAGE"/>
+         </CONDITION>
+      </LOCS>
+   </USER_INPUTS>
+   <DIRS>
+      <DIR VAR="INSTALL_BASE_DIR" WRITABLE="TRUE"/>
+   </DIRS>
+   <NETWORK>
+      <NODELIST>
+         <NODE NAME="PRIVATE_NODES" TYPE="PRIVATE" VAR="PRIVATE_NODES" IP_VAR="PRIVATE_NODES_IP"/>
+         <NODE NAME="PUBLIC_NODES" TYPE="PUBLIC" VAR="PUBLIC_NODES" IP_VAR="PUBLIC_NODES_IP"/>
+         <NODE NAME="VIRTUAL_NODES" TYPE="VIRTUAL" VAR="VIRTUAL_NODES" IP_VAR="VIRTUAL_NODES_IP"/>
+      </NODELIST>
+      <INTERCONNECTS VAR="NICS"/> 
+      <!-- This variable currently gives ':' seperated details for all interconnects -->
+   </NETWORK>
+   <ORACLE_HOME>
+      <COMPATIBILITY_MATRIX>
+         <ALLOW>
+            <NEW_HOME/>
+         </ALLOW>
+         <DISALLOW>
+            <COMP NAME="oracle.server" ATLEAST="8.1.0.0.0" ATMOST="9.2.0.9.0"/>
+            <COMP NAME="oracle.server" ATLEAST="10.1.0.0.0" ATMOST="10.1.0.9.0"/>
+            <COMP NAME="oracle.client" ATLEAST="8.1.0.0.0" ATMOST="9.2.0.9.0"/>
+            <COMP NAME="oracle.iappserver.iapptop" ATLEAST="9.0.2.0.0" ATMOST="99.9.9.9.9"/>
+            <COMP NAME="oracle.iappserver.infrastructure" ATLEAST="9.0.2.0.0" ATMOST="99.9.9.9.9"/>
+            <COMP NAME="oracle.iappserver.devcorner " ATLEAST="9.0.2.0.0" ATMOST="99.9.9.9.9"/>
+            <COMP NAME="oracle.ids.toplevel.development" ATLEAST="9.0.0.0.0" ATMOST="99.9.9.9.9"/>
+            <COMP NAME="oracle.install.instcommon" ATLEAST="8.1.3.0.0" ATMOST="9.2.9.9.9"/>
+            <COMP NAME="oracle.client" ATLEAST="10.1.0.0.0"/>
+            <COMP NAME="oracle.crs" ATLEAST="10.1.0.0.0"/>
+            <ORCA_HOME/>
+         </DISALLOW>     
+      </COMPATIBILITY_MATRIX>
+      <!-- EXISTENCE_MATRIX>
+         <COMP NAME="oracle.crs" DESC="Oracle Cluster Ready Services (CRS) 11gR2" EXISTS="FALSE"       ATLEAST="10.1.0.0.0" ATMOST="11.1.9.9.9"/>
+         <COMP NAME="oracle.server" DESC="Oracle Real Application Cluster (RAC) 11gR2" EXISTS="FALSE"     ATLEAST="9.2.0.0.0" ATMOST="11.1.9.9.9"/>
+      </EXISTENCE_MATRIX -->
+   </ORACLE_HOME>
+</HOST>

@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+#!/bin/bash
+
+chkifinstalled=`grep "{{ oracle_home }}" "{{ oracle_inventory }}/ContentsXML/inventory.xml" |wc -l`
+if [[ $chkifinstalled == 1 ]]; then
+ echo "Error: ORACLE_HOME: {{ oracle_home }} already present. Exiting"
+ exit 0
+else
+export CV_ASSUME_DISTID=OEL7.6
+{{ oracle_home }}/runInstaller -responseFile {{ oracle_sources }}/{{ db_response_file }} -ignorePrereqFailure -silent -waitforcompletion
+fi
+
