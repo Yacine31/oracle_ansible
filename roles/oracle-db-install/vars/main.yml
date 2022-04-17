@@ -1,0 +1,20 @@
+---
+#--------------------------------------------------------------------
+# paramètres commun
+# dans cette section ne rien modifier sauf si besoin
+#--------------------------------------------------------------------
+
+oracle_version: "19.0.0"
+oracle_base: "/u01/app/oracle"
+oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
+oracle_inventory: "/u01/app/oraInventory"
+oracle_sources: "/u01/sources"
+oracle_install_edition: "SE2"
+
+# u01_free_space 4 Go pour l'install et 4 Go pour transfert et decompression des zip
+u01_free_space_gb: 8
+tmp_free_space_gb: 1
+etc_free_spage_gb: 1
+var_free_spage_gb: 1
+
+db_response_file: "install_db_{{ oracle_version }}.rsp"
