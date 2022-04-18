@@ -21,6 +21,8 @@
       - "{{ oracle_inventory }}"
       - "{{ oracle_home }}"
       - "{{ oracle_sources }}"
+      - "{{ oracle_oradata }}"
+      - "{{ oracle_fra }}"
     when: full_configuration
     tags: directoriesdb
 

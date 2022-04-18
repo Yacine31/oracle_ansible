@@ -7,6 +7,8 @@
   oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_2"
   oracle_inventory: "/u01/app/oraInventory"
   oracle_sources: "/u01/sources"
+  oracle_oradata: "/u02/oradata/"
+  oracle_fra: "/u03/fast_recovery_area/"
 
   # faire une configuration minimal ?
   # la configuration complète : fait en plus la création des users, des groupes, des répertoires ...

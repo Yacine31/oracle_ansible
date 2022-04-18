@@ -26,12 +26,13 @@
 
 
 
+  - name: Modification du prompt SQLPlus
+    copy: src=login.sql dest=/home/oracle mode=644 owner=oracle group=oinstall
+    tags: login.sql
 
-  - name: Récupérer oraInventory ...
-    shell: cat /etc/oraInst.loc | grep inventory_loc | cut -d= -f2
-    register: orainventoryloc
-    failed_when: orainventoryloc.stdout == ""
-    tags: getorainventoryloc
+  - name: Ajout de la variabe ORACLE_PATH ans .bash_profile
+    lineinfile: path=/home/oracle/.bash_profile line="export ORACLE_PATH=/home/oracle" create=yes
+    tags: oraclepath
 
   - name: Récupération des ORACLE_HOME ..
     shell: cat {{ orainventoryloc.stdout }} |  grep "HOME NAME" | cut -d' ' -f3 | cut -d= -f2 | sed 's/"//g'
@@ -50,9 +51,6 @@
     template: src=run_db_install.sh.j2 dest={{ oracle_sources }}/run_db_install.sh mode=755
     tags: responsefile
 
-  - name: modification du numero de distib sur Linux 8
-    lineinfile: dest={{ oracle_home }}/cv/admin/cvu_config state=present line="CV_ASSUME_DISTID=OEL7.6"
-    tags: distid_ol7
 
   - name: Installation des binaires Oracle
     shell: "{{ oracle_sources }}/run_db_install.sh"
