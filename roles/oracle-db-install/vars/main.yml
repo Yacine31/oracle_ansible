@@ -9,6 +9,8 @@ oracle_base: "/u01/app/oracle"
 oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
 oracle_inventory: "/u01/app/oraInventory"
 oracle_sources: "/u01/sources"
+oracle_oradata: "/u02/oradata/"
+oracle_fra: "/u03/fast_recovery_area/"
 oracle_install_edition: "SE2"
 
 # u01_free_space 4 Go pour l'install et 4 Go pour transfert et decompression des zip
