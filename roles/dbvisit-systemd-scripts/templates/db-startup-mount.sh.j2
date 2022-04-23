@@ -6,9 +6,14 @@ do
         then
                 if [ $(dbvctl -d $i -o status --suppress | grep read | wc -l) -eq 1 ]
                 then
-                        dbvctl -d $i -D stop
-                        dbvctl -d $i -o restart
-                        dbvctl -d $i -D start
+                        if [ $(ps -ef | grep dbvctl | grep $i) -eq 1 ]
+                        then
+                                dbvctl -d $i -D stop
+                                dbvctl -d $i -o restart
+                                dbvctl -d $i -D start
+                        elif
+                                dbvctl -d $i -o restart
+                        fi
                 fi
         fi
 done
