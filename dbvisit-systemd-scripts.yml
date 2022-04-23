@@ -6,3 +6,19 @@
 
    roles:
      - dbvisit-systemd-scripts
+
+
+
+
+# dbvisit-systemd-scripts/
+# ├── tasks
+# │     └── main.yml
+# ├── templates
+# │     ├── dbora.service.j2          => service systemd pour le démarrage des bases
+# │     ├── db-startup-mount.sh.j2    => si une base standby démarre en read only, dbvctl la redémarre en mount
+# │     ├── dbvagent.service.j2       => service systemd pour le démarrage de l'agent
+# │     ├── dbvctl-daemon.sh.j2       => cherche les fichier DDC dans $DBVISIT_HOME/standby/conf et démarre ou arrête le démon dbvctl
+# │     ├── dbvctl.service.j2         => service systemd : appel le script précédent pour démarrer ou arrêter le démon dbvctl
+# │     └── dbvnet.service.j2         => service systemd pour le démarrage de dbvnet
+# └── vars
+#     └── main.yml                    => variabes : oracle_home et dbvisit_home
