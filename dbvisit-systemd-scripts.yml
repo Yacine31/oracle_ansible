@@ -1,0 +1,8 @@
+---
+ - name: dbvisit systemd scripts
+   hosts: all
+   become_user: root
+   become_method: sudo
+
+   roles:
+     - dbvisit-systemd-scripts

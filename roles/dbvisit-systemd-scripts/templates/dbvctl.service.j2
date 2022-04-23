@@ -1,0 +1,17 @@
+# Dbvisit Standby - Dbvctl DDC daemon start/stop systemd unit file
+# description : Dbvctl DDC daemon start/stop daemon
+
+[Unit]
+Description=Dbvisit Standby - Dbvctl DDC daemon service
+After=network-online.target oracle_db.service network.target multi-user.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+User=oracle
+Group=oinstall
+ExecStart=/bin/bash {{dbvisit_home}}/dbvctl-daemon.sh start
+ExecStop=/bin/bash {{dbvisit_home}}/dbvctl-daemon.sh stop
+
+[Install]
+WantedBy=multi-user.target

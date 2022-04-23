@@ -1,0 +1,5 @@
+cd {{dbvisit_home}}/standby/conf/
+for ddc in $(ls -1 dbv_*.env | sed -e 's/dbv_//' -e 's/.env//')
+do
+        {{dbvisit_home}}/standby/dbvctl -d $ddc -D $1
+done

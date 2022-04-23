@@ -1,0 +1,15 @@
+[Unit]
+Description=Start Oracle Database
+After=multi-user.target
+After=network.target
+
+[Service]
+Type=simple
+Environment=PIDFILE=/run/dbora.pid
+ExecStart=/usr/bin/su - oracle -c "{{oracle_home}}/bin/dbstart {{oracle_home}} && {{oracle_user_home}}/scripts/db-startup-mount"
+ExecStop=/usr/bin/su - oracle -c "{{oracle_home}}/bin/dbshut {{oracle_home}}"
+TimeoutSec=900
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

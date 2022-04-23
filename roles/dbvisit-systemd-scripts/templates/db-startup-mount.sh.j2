@@ -1,0 +1,11 @@
+export PATH={{ dbvisit_home }}/standby:$PATH
+
+for i in $(ps -ef | grep pmon | grep -v grep | cut -d_ -f3 | sort)
+do
+        if [ $(dbvctl -d $i -o status | grep status | grep "read only" | wc -l) -eq 1 ]
+        then
+                dbvctl -d $i -D stop
+                dbvctl -d $i -o restart
+                dbvctl -d $i -D start
+        fi
+done

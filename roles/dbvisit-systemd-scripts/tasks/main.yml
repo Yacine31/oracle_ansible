@@ -1,0 +1,54 @@
+---
+  # --------------------------------------------------- 
+  # copy du fichier dbora.service dans /lib/systemd/system pour démmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage des bases Oracle en mode mount
+    template: src=db-startup-mount.sh.j2 dest={{oracle_user_home}}/scripts/db-startup-mount.sh owner=oracle mode=755
+    tags: db-startup-mount
+
+  - name: Copie du script de démarrage auto des bases Oracle
+    template: src=dbora.service.j2 dest=/lib/systemd/system/dbora.service owner=root mode=644
+    tags: dbora.service
+
+  - name: Activation par systemctl du script de démarrage auto des bases Oracle
+    systemd: name=dbora daemon_reload=yes enabled=yes
+    tags: dbora.service
+
+  # --------------------------------------------------- 
+  # copy du fichier dbvagent.service dans /lib/systemd/system pour démmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage dbvagent
+    template: src=dbvagent.service.j2 dest=/lib/systemd/system/dbvagent.service owner=root mode=644
+    tags: dbvagent.service
+
+  - name: Activation par systemctl du script de démarrage auto dbvagent
+    systemd: name=dbvagent daemon_reload=yes enabled=yes
+    tags: dbvagent.service
+
+  # --------------------------------------------------- 
+  # copy du fichier dbvnet.service dans /lib/systemd/system pour démmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage dbvnet
+    template: src=dbvnet.service.j2 dest=/lib/systemd/system/dbvnet.service owner=root mode=644
+    tags: dbvnet.service
+
+  - name: Activation par systemctl du script de démarrage auto dbvnet
+    systemd: name=dbvnet daemon_reload=yes enabled=yes
+    tags: dbvnet.service
+
+  # --------------------------------------------------- 
+  # copy du fichier dbvctl.service dans /lib/systemd/system pour démmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage des bases Oracle en mode mount
+    template: src=dbvctl-daemon.sh.j2 dest={{dbvisit_home}}/dbvctl-daemon.sh owner=oracle mode=755
+    tags: dbvctl-daemon.sh
+
+  - name: Copie du script de démarrage dbvctl
+    template: src=dbvctl.service.j2 dest=/lib/systemd/system/dbvctl.service owner=root mode=644
+    tags: dbvctl.service
+
+  - name: Activation par systemctl du script de démarrage auto dbvctl
+    systemd: name=dbvctl daemon_reload=yes enabled=yes
+    tags: dbvctl.service
+
+

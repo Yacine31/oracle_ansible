@@ -1,0 +1,17 @@
+# Dbvisit Standby - Dbvagent systemd unit file
+# description : Dbvisit agent daemon
+
+[Unit]
+Description=Dbvisit Standby - Start Dbvagent
+After=network-online.target network.target multi-user.target syslog.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+User=oracle
+Group=oinstall
+ExecStart={{dbviit_home}}/dbvagent/dbvagent -d start
+ExecStop={{dbviit_home}}/dbvagent/dbvagent -d stop
+
+[Install]
+WantedBy=multi-user.target

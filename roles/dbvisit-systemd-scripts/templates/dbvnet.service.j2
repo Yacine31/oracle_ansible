@@ -1,0 +1,17 @@
+# Dbvisit Standby - Dbvnet systemd unit file
+# description : Dbvisit network infrastructure daemon
+
+[Unit]
+Description=Dbvisit Standby - Start dbvnet
+After=network-online.target network.target multi-user.target syslog.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+User=oracle
+Group=oinstall
+ExecStart={{dbvisit_home}}/dbvnet/dbvnet -d start
+ExecStop={{dbvisit_home}}/dbvnet/dbvnet -d stop
+
+[Install]
+WantedBy=multi-user.target
