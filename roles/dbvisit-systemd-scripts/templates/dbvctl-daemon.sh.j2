@@ -1,8 +1,5 @@
 cd {{dbvisit_home}}/standby/conf/
 for DDC in $(ls -1 dbv_*.env | sed -e 's/dbv_//' -e 's/.env//')
 do
-        if [ $(ps -ef | grep standby/dbvctl | grep $DDC | wc -l) -eq 0 ]
-        then
-                {{dbvisit_home}}/standby/dbvctl -d $DDC -D $1
-        fi
+        {{dbvisit_home}}/standby/dbvctl -d $DDC -D $1
 done
