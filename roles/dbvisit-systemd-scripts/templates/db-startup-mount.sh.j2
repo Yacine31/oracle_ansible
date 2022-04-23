@@ -14,7 +14,7 @@ do
                         # si un service dbvctl est en cours d'exécution, il faut le stopper,
                         # avant de relancer la base en mode 'mount' et redémarrer le service dbvctl
                         # à nouveau
-                        if [ $(ps -ef | grep dbvctl | grep $SID) -eq 1 ]
+                        if [ $(ps -ef | grep standby/dbvctl | grep $SID | wc -l) -ge 1 ]
                         then
                                 dbvctl -d $SID -D stop
                                 dbvctl -d $SID -o restart
