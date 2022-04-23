@@ -1,18 +1,27 @@
 export PATH={{ dbvisit_home }}/standby:$PATH
 
-for i in $(ps -ef | grep pmon | grep -v grep | cut -d_ -f3 | sort)
+# le script permet de rédamrrer une base standby ouverte en "read only"
+# pour qu'elle soit en mode "mount"
+
+for SID in $(ps -ef | grep pmon | grep -v grep | cut -d_ -f3 | sort)
 do
-        if [ $(dbvctl -d $i -o status --suppress | grep Standby | wc -l) -eq 1 ]
+        # si la base est une standby 'database_role=standby database'
+        if [ $(dbvctl -d $SID -o status --suppress | grep Standby | wc -l) -eq 1 ]
         then
-                if [ $(dbvctl -d $i -o status --suppress | grep read | wc -l) -eq 1 ]
+                # si open_mode = read only
+                if [ $(dbvctl -d $SID -o status --suppress | grep read | wc -l) -eq 1 ]
                 then
-                        if [ $(ps -ef | grep dbvctl | grep $i) -eq 1 ]
+                        # si un service dbvctl est en cours d'exécution, il faut le stopper,
+                        # avant de relancer la base en mode 'mount' et redémarrer le service dbvctl
+                        # à nouveau
+                        if [ $(ps -ef | grep dbvctl | grep $SID) -eq 1 ]
                         then
-                                dbvctl -d $i -D stop
-                                dbvctl -d $i -o restart
-                                dbvctl -d $i -D start
-                        elif
-                                dbvctl -d $i -o restart
+                                dbvctl -d $SID -D stop
+                                dbvctl -d $SID -o restart
+                                dbvctl -d $SID -D start
+                        else
+                                # sinon, on se contente de redémarrer la base seulement
+                                dbvctl -d $SID -o restart
                         fi
                 fi
         fi
