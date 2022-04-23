@@ -5,6 +5,7 @@ do
         if [ $(dbvctl -d $i -o status | grep Standby | wc -l) -eq 1 ]
         then
                 if [ $(dbvctl -d $i -o status | grep read | wc -l) -eq 1 ]
+                then
                         dbvctl -d $i -D stop
                         dbvctl -d $i -o restart
                         dbvctl -d $i -D start
