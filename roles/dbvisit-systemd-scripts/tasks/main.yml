@@ -3,7 +3,7 @@
   # copy du fichier dbora.service dans /lib/systemd/system pour démmarage auto
   # ---------------------------------------------------
   - name: Copie du script de démarrage des bases Oracle en mode mount
-    template: src=db-startup-mount.sh.j2 dest={{oracle_user_home}}/scripts/db-startup-mount.sh owner=oracle mode=755
+    template: src=db-startup-mount.sh.j2 dest={{dbvisit_home}}/db-startup-mount.sh owner=oracle mode=755
     tags: db-startup-mount
 
   - name: Copie du script de démarrage auto des bases Oracle
