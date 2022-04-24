@@ -1,5 +1,14 @@
 ---
   # --------------------------------------------------- 
+  # ajout du chemin vers l'executable dbvctl dans le PATH
+  # ---------------------------------------------------
+  - name: ajout du chemin vers l'executable dbvctl dans le PATH
+    lineinfile: dest="/home/oracle/.bashrc"
+             line='export PATH=$PATH:{{dbvisit_home}}/standby'
+             state=present
+             create=yes
+
+  # --------------------------------------------------- 
   # copy du fichier dbora.service dans /lib/systemd/system pour démmarage auto
   # ---------------------------------------------------
   - name: Copie du script de démarrage des bases Oracle en mode mount
