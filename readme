@@ -1,38 +1,37 @@
 =====
-
-ansible sur le poste à configurer 
-
-===
-
-$ pwd = /root
-
-yum install -y wget bzip2 unzip git python2
-git clone https://github.com/Yacine31/config_linux
-tar xfj config_linux/portable-ansible-v0.4.2-py2.tar.bz2
-ln -s ansible ansible-playbook
-python2 ansible-playbook config_linux/book-configure_OS.yml -i config_linux/hosts -e "oracle_version=11.2.0.4"
-
-#--- Si pas de version, la version par défaut pour créer les répertoires est 19.0.0
-
-# pour actualiser 
-# cd ~/config_linux
-# git pull origin master
-# python2 ../ansible-playbook book-configure_OS.yml -i hosts
-
+INSTALLATION ANSIBLE DIRECT SUR LA MACHINE
 =====
 
+yum install -y git epel-release
+yum install -y ansible
+
+2 books à jour : 
+- oracle-db-preinstall.yml => configuration de Linux pour une installation Oracle
+- oracle-db-install.yml    => installation d'Oracle 19 SE
+
+git clone https://github.com/Yacine31/oracle_ansible
+
+cd oracle_ansible
+ansible-playbook -i hosts oracle-db-preinstall.yml 
+
+ou avc des variables différentes de celles par défaut : 
+ansible-playbook -i hosts oracle-db-preinstall.yml --extra-vars "oracle_version=19c oracle_base=/opt/oracle oracle_home=/opt/oracle/product/19c/dbhome_1"
+
+
+Pour mettre à jour le contenu du répertoire suite à une mise à jour :
+cd oracle_ansible/
+git pull
+
+=====
 deux books : 
 - configure_OS
 - install-oracle-sw
 - fichier hosts avec les ip/nom des serveurs cibles
 
-
 Pour une première configuration, faire ssh-copy-id root@ip => pour copier la clé ssh vers la cible
 
 Le premier configure l'OS seulement
 Le second va créer les users (grid et/ou oracle) et faire l'installation DB et/ou GI
-
-
 
 
 Pour la configuration de l'Os tout est automatisé, rien à configurer juste exécuter le book :
@@ -56,24 +55,5 @@ aller dans le fichier roles/install-oracle-sw/vars/main.yml
 3 - executer le book : ansible-playbook -i hosts book-install-oracle-sw.yml
 
 
-=====
-INSTALLATION ANSIBLE DIRECT SUR LA MACHINE
-=====
 
-yum install -y git epel-release
-yum install -y ansible
-
-# pour Oracle Linux
-# yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-git clone https://github.com/Yacine31/config_linux
-
-cd config_linux/
-ansible-playbook book-configure_OS.yml -i hosts --extra-vars "oracle_version=19c oracle_base=/opt/oracle oracle_home=/opt/oracle/product/19c/dbhome_1"
-
-
-Pour mettre à jour le contenu du répertoire suite à une mise à jour :
-
-cd config_linux/
-git pull
 
