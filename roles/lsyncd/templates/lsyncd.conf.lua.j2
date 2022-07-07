@@ -1,0 +1,39 @@
+settings {
+    logfile = "/var/log/lsyncd.log",
+    statusFile = "/var/log/lsyncd.status",
+    statusInterval = 10,
+    nodaemon   = false
+}
+
+sync {
+    default.rsyncssh,
+    source = "/root/",
+    host = "192.168.31.15",
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
+    rsync = {
+        binary = "/usr/bin/rsync",
+        rsh = "sudo -u merlin ssh",
+    }
+}
+
+sync {
+    default.rsyncssh,
+    source = "/home/pi/",
+    host = "192.168.31.15",
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
+    rsync = {
+        binary = "/usr/bin/rsync",
+        rsh = "sudo -u merlin ssh",
+    }
+}
+
+sync {
+    default.rsyncssh,
+    source = "/etc/",
+    host = "192.168.31.15",
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
+    rsync = {
+        binary = "/usr/bin/rsync",
+        rsh = "sudo -u merlin ssh",
+    }
+}

@@ -1,0 +1,11 @@
+--- 
+
+# deploiement de lsyncd sur les VMS pour les sauvegarder vers quark
+ - name: install lsyncd
+   hosts: all
+   become_user: root
+   become_method: sudo
+
+   roles:
+     - lsyncd
+
