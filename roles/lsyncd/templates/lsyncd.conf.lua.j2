@@ -10,26 +10,18 @@ sync {
     source = "/root/",
     host = "192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
-    rsync = {
-        binary = "/usr/bin/rsync",
-        rsh = "sudo -u pi ssh",
-    }
-}
-
-sync {
-    default.rsyncssh,
-    source = "/home/pi/",
-    host = "192.168.31.15",
-    targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
-    rsync = {
-        binary = "/usr/bin/rsync",
-        rsh = "sudo -u pi ssh",
-    }
 }
 
 sync {
     default.rsyncssh,
     source = "/etc/",
+    host = "192.168.31.15",
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
+}
+
+sync {
+    default.rsyncssh,
+    source = "/home/pi/",
     host = "192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
     rsync = {
