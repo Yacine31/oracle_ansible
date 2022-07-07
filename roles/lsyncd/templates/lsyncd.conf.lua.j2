@@ -24,8 +24,4 @@ sync {
     source = "/home/pi/",
     host = "192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
-    rsync = {
-        binary = "/usr/bin/rsync",
-        rsh = "sudo -u pi ssh",
-    }
 }
