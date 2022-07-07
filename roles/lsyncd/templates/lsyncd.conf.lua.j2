@@ -7,21 +7,21 @@ settings {
 
 sync {
     default.rsyncssh,
-    source = "/root",
+    source = "/root/",
     host = "merlin@192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}/",
 }²
 
 sync {
     default.rsyncssh,
-    source = "/etc",
+    source = "/etc/",
     host = "merlin@192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}/",
 }
 
 sync {
     default.rsyncssh,
-    source = "/home",
+    source = "/home/",
     host = "merlin@192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}/",
 }
