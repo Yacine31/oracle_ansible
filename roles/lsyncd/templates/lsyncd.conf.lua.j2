@@ -8,20 +8,20 @@ settings {
 sync {
     default.rsyncssh,
     source = "/root/",
-    host = "192.168.31.15",
+    host = "merlin@192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
 }
 
 sync {
     default.rsyncssh,
     source = "/etc/",
-    host = "192.168.31.15",
+    host = "merlin@192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
 }
 
 sync {
     default.rsyncssh,
     source = "/home/pi/",
-    host = "192.168.31.15",
+    host = "merlin@192.168.31.15",
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
 }
