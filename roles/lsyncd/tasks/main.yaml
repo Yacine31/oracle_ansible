@@ -14,8 +14,7 @@
     file: path=/etc/lsyncd state=directory mode=0755
 
   - name: copy config file
-    template: lsyncd.conf.lua.j2
-    dest: /etc/lsyncd/lsyncd.conf.lua
+    template: src=lsyncd.conf.lua.j2 dest=/etc/lsyncd/lsyncd.conf.lua
 
   - name: restart lsyncd
     service: name=lsyncd state=restarted
