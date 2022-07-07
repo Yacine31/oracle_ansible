@@ -12,7 +12,7 @@ sync {
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
     rsync = {
         binary = "/usr/bin/rsync",
-        rsh = "sudo -u merlin ssh",
+        rsh = "sudo -u pi ssh",
     }
 }
 
@@ -23,7 +23,7 @@ sync {
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
     rsync = {
         binary = "/usr/bin/rsync",
-        rsh = "sudo -u merlin ssh",
+        rsh = "sudo -u pi ssh",
     }
 }
 
@@ -34,6 +34,6 @@ sync {
     targetdir = "/home/merlin/backup/{{ ansible_hostname }}",
     rsync = {
         binary = "/usr/bin/rsync",
-        rsh = "sudo -u merlin ssh",
+        rsh = "sudo -u pi ssh",
     }
 }
