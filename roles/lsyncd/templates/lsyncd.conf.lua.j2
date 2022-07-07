@@ -9,19 +9,19 @@ sync {
     default.rsyncssh,
     source = "/root/",
     host = "merlin@192.168.31.15",
-    targetdir = "/home/merlin/backup/{{ ansible_hostname }}/",
-}
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}/root/",
+}²
 
 sync {
     default.rsyncssh,
     source = "/etc/",
     host = "merlin@192.168.31.15",
-    targetdir = "/home/merlin/backup/{{ ansible_hostname }}/",
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}/etc/",
 }
 
 sync {
     default.rsyncssh,
     source = "/home/",
     host = "merlin@192.168.31.15",
-    targetdir = "/home/merlin/backup/{{ ansible_hostname }}/",
+    targetdir = "/home/merlin/backup/{{ ansible_hostname }}/home/",
 }
