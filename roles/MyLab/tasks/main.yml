@@ -44,15 +44,7 @@
   # RedHat : installation de telegraf
   #-------------------------------------------
   - name: create repo file for RedHat
-    blockinfile:
-      path: /etc/yum.repos.d/influxdb.repo
-      block: |
-        [influxdb]
-        name = InfluxDB Repository - RHEL $releasever
-        baseurl = https://repos.influxdata.com/rhel/$releasever/$basearch/stable
-        enabled = 1
-        gpgcheck = 1
-        gpgkey = https://repos.influxdata.com/influxdb.key
+    file: src=influxdb.repo dest=/etc/yum.repos.d/influxdb.repo owner=root group=root mode=0755 
     when: ansible_os_family == 'RedHat'
 
   - name: install telgreaf
