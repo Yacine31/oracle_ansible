@@ -44,7 +44,7 @@
   # RedHat : installation de telegraf
   #-------------------------------------------
   - name: create repo file for RedHat
-    file: src=influxdb.repo dest=/etc/yum.repos.d/influxdb.repo owner=root group=root mode=0755 
+    copy: src=influxdb.repo dest=/etc/yum.repos.d/influxdb.repo owner=root group=root mode=0755 
     when: ansible_os_family == 'RedHat'
 
   - name: install telgreaf
