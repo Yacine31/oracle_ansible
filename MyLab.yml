@@ -1,6 +1,6 @@
 ---
  - name: Config MyLab
-   hosts: groupe_root
+   hosts: all
    user: root
    become: yes
    roles:
