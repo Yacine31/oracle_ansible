@@ -62,4 +62,12 @@
 
   - name: restart tlegraf
     service: name=telegraf state=restarted
+    when: ansible_os_family == 'RedHat'
 
+  - name: install logrotate
+    yum: name=logrotate state=present 
+    when: ansible_os_family == 'RedHat'
+
+  - name: add config file to logrotate.d
+    copy: src=telegraf.logrotate dest=/etc/logrotate.d/telegraf owner=root group=root mode=0644
+    when: ansible_os_family == 'RedHat'

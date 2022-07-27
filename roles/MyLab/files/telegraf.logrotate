@@ -1,0 +1,15 @@
+/var/log/telegraf.log
+{
+    rotate 2
+    daily
+    missingok
+    compress
+    delaycompress
+    notifempty
+    create 755 telegraf telegraf
+    sharedscripts
+    postrotate
+        /usr/bin/systemctl try-reload-or-restart telegraf.service
+    endscript
+
+}
