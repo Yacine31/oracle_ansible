@@ -12,7 +12,7 @@
 
   # faire une configuration minimal ?
   # la configuration complète : fait en plus la création des users, des groupes, des répertoires ...
-  full_configuration: false
+  full_configuration: true
   
   # faire une configuration securisée du system d'exploitation
   secure_configuration: false
