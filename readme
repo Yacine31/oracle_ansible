@@ -2,22 +2,40 @@
 INSTALLATION ANSIBLE DIRECT SUR LA MACHINE
 =====
 
-yum install -y git epel-release
-yum install -y ansible
+yum install -y oracle-epel-release-el8
+yum install -y git wget ansible
 
-2 books à jour : 
-- oracle-db-preinstall.yml => configuration de Linux pour une installation Oracle
-- oracle-db-install.yml    => installation d'Oracle 19 SE
+cloner le repository :
+======================
+# git clone git clone https://github.com/Yacine31/oracle_ansible
+# cd oracle_ansible/
 
-git clone https://github.com/Yacine31/oracle_ansible
+3 books à jour : 
+================
+- oracle-db-preinstall.yml  => configuration de Linux pour une installation Oracle
+- oracle-db-install.yml     => installation d'Oracle 19 SE
+- oracle-db-postinstall.yml => ajout des scripts d'exploitation
 
+Exécution :
+===========
 cd oracle_ansible
 ansible-playbook -i hosts oracle-db-preinstall.yml 
 
-ou avc des variables différentes de celles par défaut : 
+Les valuers par défaut sont dans : 
+ - oracle_version: "19.0.0"
+ - oracle_base: "/u01/app/oracle"
+ - oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
+ - oracle_inventory: "/u01/app/oraInventory"
+ - oracle_sources: "/u01/sources"
+ - oracle_oradata: "/u02/oradata/"
+ - oracle_fra: "/u03/fast_recovery_area/"
+
+Pour l'exécuter avec des variables différentes : 
+
 ansible-playbook -i hosts oracle-db-preinstall.yml --extra-vars "oracle_version=19c oracle_base=/opt/oracle oracle_home=/opt/oracle/product/19c/dbhome_1"
 
-
+Mise à jour :
+=============
 Pour mettre à jour le contenu du répertoire suite à une mise à jour :
 cd oracle_ansible/
 git pull
