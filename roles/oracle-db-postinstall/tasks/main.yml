@@ -13,6 +13,16 @@
       update: yes
       force: yes
  
+  # ---------------------------------------------------
+  # changement du propriétaire de root en oracle 
+  # ---------------------------------------------------
+  - name: Changement du propriétaire
+    file: 
+      dest: "{{ scripts_dir }}" 
+      owner: oracle
+      group: oinstall
+      recurse: yes
+
   # --------------------------------------------------- 
   # Modification du prompt SQLPlus
   # --------------------------------------------------- 
