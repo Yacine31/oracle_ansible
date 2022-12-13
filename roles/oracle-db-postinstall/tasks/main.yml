@@ -56,3 +56,4 @@
       dest: "{{ scripts_dir }}"
       clone: yes
       update: yes
+      force: yes
