@@ -2,11 +2,27 @@
 # 
 # post configuration d'une installation de base de données Oracle 
 #
+  # ---------------------------------------------------
+  # récupération des scripts sql 
+  # ---------------------------------------------------
+  - name: Clonage du repository github SQL
+    git:
+      repo: https://github.com/Yacine31/sql.git
+      dest: "{{ scripts_dir }}"
+      clone: yes
+      update: yes
+      force: yes
  
+  # --------------------------------------------------- 
+  # Modification du prompt SQLPlus
+  # --------------------------------------------------- 
   - name: Modification du prompt SQLPlus
     copy: src=login.sql dest={{ scripts_dir }} mode=644 owner=oracle group=oinstall
     tags: login.sql
 
+  # --------------------------------------------------- 
+  # Ajout de la variabe ORACLE_PATH ans .bash_profile
+  # --------------------------------------------------- 
   - name: Ajout de la variabe ORACLE_PATH ans .bash_profile
     lineinfile: path=/home/oracle/.bash_profile line="export ORACLE_PATH={{ scripts_dir }}" create=yes
     tags: oraclepath
@@ -46,14 +62,3 @@
     tags: dbora_init
 
   - debug: msg="Pensez à mettre Y au lieu de N dans /etc/oratab pour les bases à démarreage automatique"
-
-  # ---------------------------------------------------
-  # récupération des scripts sql 
-  # ---------------------------------------------------
-  - name: Clonage du repository github SQL
-    git:
-      repo: https://github.com/Yacine31/sql.git
-      dest: "{{ scripts_dir }}"
-      clone: yes
-      update: yes
-      force: yes
