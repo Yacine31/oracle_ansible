@@ -4,11 +4,45 @@
 #
  
   - name: Modification du prompt SQLPlus
-    copy: src=login.sql dest=/home/oracle/scripts mode=644 owner=oracle group=oinstall
+    copy: src=login.sql dest={{ scripts_dir }} mode=644 owner=oracle group=oinstall
     tags: login.sql
 
   - name: Ajout de la variabe ORACLE_PATH ans .bash_profile
-    lineinfile: path=/home/oracle/.bash_profile line="export ORACLE_PATH=/home/oracle/scripts" create=yes
+    lineinfile: path=/home/oracle/.bash_profile line="export ORACLE_PATH={{ scripts_dir }}" create=yes
     tags: oraclepath
 
-  - include: scripts_exploitation.yml
+  # --------------------------------------------------- 
+  # ajout de script oracle pour les backups rman
+  # ---------------------------------------------------
+
+  - name: Copie du script backup_rman.sh dans {{ scripts_dir }}
+    copy: src=backup_rman.sh dest={{ scripts_dir }}/ owner=oracle group=oinstall mode=755
+
+  # --------------------------------------------------- 
+  # configuration Linux : config oracle pour logrotate
+  # Gestion des fichiers logs seulement (archivage et réinitialisation)
+  # ---------------------------------------------------
+  - name: Gestion des logs Oracle - copie du fichier de configuration pour logrotate
+    template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+    tags: logrotate
+
+  # --------------------------------------------------- 
+  # configuration Linux : oracle cleaner dans cron.daily
+  # Gestion des fichiers trace et xml : purge des anciens fichiers
+  # ---------------------------------------------------
+  - name: Netoyage ADR Oracle - copie du fichier de configuration pour cron
+    template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle_cleaner mode=755 owner=root group=root
+    tags: cron_daily
+
+  # --------------------------------------------------- 
+  # copy du fichier dbora.service dans /lib/systemd/system pour redémmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage auto des bases Oracle
+    template: src=dbora.service.j2 dest=/lib/systemd/system/dbora.service owner=root mode=644
+    tags: dbora_init
+
+  - name: Activation par systemctl du script de démarrage auto des bases Oracle
+    systemd: name=dbora daemon_reload=yes enabled=yes
+    tags: dbora_init
+
+  - debug: msg="Pensez à mettre Y au lieu de N dans /etc/oratab pour les bases à démarreage automatique"
