@@ -4,4 +4,13 @@
 # dans cette section ne rien modifier sauf si besoin
 #--------------------------------------------------------------------
 
+# emplacement des sripts du compte oracle
 scripts_dir: "/home/oracle/scripts"
+
+# oracle_version: "19.0.0"
+oracle_base: "/u01/app/oracle"
+# oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
+# oracle_inventory: "/u01/app/oraInventory"
+# oracle_sources: "/u01/sources"
+# oracle_oradata: "/u02/oradata/"
+# oracle_fra: "/u03/fast_recovery_area/"
