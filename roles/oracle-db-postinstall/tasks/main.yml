@@ -53,6 +53,6 @@
   - name: Clonage du repository github SQL
     git:
       repo: https://github.com/Yacine31/sql.git
-      dest: {{ scripts_dir }}
+      dest: "{{ scripts_dir }}"
       clone: yes
       update: yes
