@@ -1,7 +1,4 @@
 ---
-- hosts: all
-  remote_user: oracle
-
   vars:
     u01_size_gb: 1
     tmp_size_gb: 1
