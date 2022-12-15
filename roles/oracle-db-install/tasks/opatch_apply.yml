@@ -16,7 +16,7 @@
     action: shell unzip -oq {{ patch_dir }}/{{ psu_file }} -d {{ patch_dir }}
 
   - name: patch conflict detection
-    action: shell export ORACLE_HOME={{ oracle_home }}; cd {{ patch_remote_dir }}/{{ patch_number }}; $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+    action: shell export ORACLE_HOME={{ oracle_home }}; cd {{ patch_dir }}/{{ patch_number }}; $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./
     register: conflict_detection
     failed_when: "'Prereq \"checkConflictAgainstOHWithDetail\" passed.' not in conflict_detection.stdout"
 
