@@ -1,12 +1,14 @@
 ---
 # 
-# installation des binaires ORACLE : database
+# installation des binaires ORACLE et patch
 #
 
-  # ---------------------------------------------------
-  # configuration Linux : Utilisateurs et groupes
-  # ---------------------------------------------------
+# installation des binaires Oracle DB
   - include: install_database.yml
 
+# Application du patch
+  - include: opatch_apply.yml
+
+# Ajout des sripts d'exploitation
   - include: scripts_exploitation.yml
 
