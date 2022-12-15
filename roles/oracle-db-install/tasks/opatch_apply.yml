@@ -11,20 +11,32 @@
 
   - name: Installation OPatch dns ORACLE_HOME
     action: shell unzip -oq {{ patch_dir }}/{{ opatch_file }} -d {{ oracle_home }}
+    become: true
+    become_method: su
+    become_user: oracle
 
   - name: unzip du patch
     action: shell unzip -oq {{ patch_dir }}/{{ psu_file }} -d {{ patch_dir }}
+    become: true
+    become_method: su
+    become_user: oracle
 
   - name: patch conflict detection
     action: shell export ORACLE_HOME={{ oracle_home }}; cd {{ patch_dir }}/{{ patch_number }}; $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./
     register: conflict_detection
     failed_when: "'Prereq \"checkConflictAgainstOHWithDetail\" passed.' not in conflict_detection.stdout"
+    become: true
+    become_method: su
+    become_user: oracle
 
   - name: Application du patch 
     action: shell export ORACLE_HOME={{ oracle_home}}; cd {{ patch_dir }}/{{ patch_number }}; $ORACLE_HOME/OPatch/opatch apply -silent
     register: apply_psu
     failed_when: "'OPatch succeeded.' not in apply_psu.stdout"
-
+    become: true
+    become_method: su
+    become_user: oracle
+    
   - name: Résultat de l'installation via OPatch
     shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
     become: true
