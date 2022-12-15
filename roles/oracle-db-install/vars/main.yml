@@ -21,3 +21,11 @@ etc_free_spage_gb: 1
 var_free_spage_gb: 1
 
 db_response_file: "install_db_{{ oracle_version }}.rsp"
+
+# Variables pour le patch 
+u01_size_gb: 1
+tmp_size_gb: 1
+patch_dir: "{{ oracle_sources }}"
+opatch_file: p6880880_190000_Linux-x86-64.zip
+psu_file: p34133642_190000_Linux-x86-64_RU_19.16.zip
+patch_number: 34133642
