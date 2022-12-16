@@ -1,1 +1,1 @@
-set sqlprompt "_user'@'_connect_identifier >"
+set sqlprompt "_user'@'_connect_identifier> "
