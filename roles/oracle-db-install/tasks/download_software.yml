@@ -2,8 +2,9 @@
   - name: Téléchrgement des binaires 
     become: yes
     get_url:
-      url: https://cloud.axiome.io/s/aPD2BamMSfwQj4r/download/{{oracle_zip_filename}}
-      dest: /u01/sources/db_19.zip
+      # url: https://cloud.axiome.io/s/aPD2BamMSfwQj4r/download/{{oracle_zip_filename}}
+      url: https://kutt.axiome.io/m7EQg2p
+      dest: /u01/sources/{{oracle_zip_filename}}
       mode: 0755
       group: oinstall
       owner: oracle
@@ -12,8 +13,9 @@
   - name: Téléchrgement OPatch
     become: yes
     get_url:
-      url: https://cloud.axiome.io/s/L7coB8qdzonwyd2/download/{{opatch_file}}
-      dest: /u01/sources/opatch.zip
+      # url: https://cloud.axiome.io/s/L7coB8qdzonwyd2/download/{{opatch_file}}
+      url : https://kutt.axiome.io/fYuP5Q5
+      dest: /u01/sources/{{opatch_file}}
       mode: 0755
       group: oinstall
       owner: oracle
@@ -22,8 +24,9 @@
   - name: Téléchrgement du PSU
     become: yes
     get_url:
-      url: https://cloud.axiome.io/s/WJHTiaZozNtzJKB/download/{{psu_file}}
-      dest: /u01/sources/patch_ru.zip
+      # url: https://cloud.axiome.io/s/WJHTiaZozNtzJKB/download/{{psu_file}}
+      url: https://kutt.axiome.io/pSCsxTa 
+      dest: /u01/sources/{{psu_file}}
       mode: 0755
       group: oinstall
       owner: oracle
