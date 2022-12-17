@@ -11,12 +11,6 @@
     failed_when: tmpsize.stdout|int < {{ tmp_size_gb }} * 1024 * 1024
     tags: patch_db
 
-  - name: Extraction des binaires Oracle
-    become: true
-    become_method: su
-    become_user: oracle
-    tags: transfert
-
   - name: Installation OPatch dns ORACLE_HOME
     unarchive: src={{ patch_dir }}/{{ opatch_file }} dest={{ oracle_home }}
     # action: shell unzip -oq {{ patch_dir }}/{{ opatch_file }} -d {{ oracle_home }}
