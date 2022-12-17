@@ -93,3 +93,6 @@
 
   - name: suppression du script d'installation
     file: path={{ oracle_sources }}/run_db_install.sh state=absent
+
+  - name: suppression du binaires
+    file: path={{ oracle_sources }}/{{oracle_zip_filename}} state=absent

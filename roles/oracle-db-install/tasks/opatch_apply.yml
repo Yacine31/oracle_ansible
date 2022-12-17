@@ -49,6 +49,12 @@
     # with_items: opatchls.results
     tags: opatch
 
+  # suppression des binaires, du fichier de réponse et du script d'install
   - name: Nettoyage du répertoire du patch
-    file: path={{ patch_number }} state=absent
+    file: path={{ oracle_sources }}/{{ patch_number }} state=absent
 
+  - name: suppression du fichier OPatch
+    file: path={{ oracle_sources }}/{{ opatch_file }} state=absent
+
+  - name: suppression du Patch RU
+    file: path={{ oracle_sources }}/{{ psu_file }} state=absent
