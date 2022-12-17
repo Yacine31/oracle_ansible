@@ -88,12 +88,8 @@
     tags: opatch
 
   # suppression des binaires, du fichier de réponse et du script d'install
-#  - name: suppression du repertoire des fichiers decompressés
-#    file: path={{ oracle_sources }}/database state=absent
-#
-#  - name: suppression du fichier de réponse
-#    file: path={{ oracle_sources }}/{{ db_response_file }} state=absent
-#
-#  - name: suppression du script d'installation
-#    file: path={{ oracle_sources }}/run_db_install.sh state=absent
+  - name: suppression du fichier de réponse
+    file: path={{ oracle_sources }}/{{ db_response_file }} state=absent
 
+  - name: suppression du script d'installation
+    file: path={{ oracle_sources }}/run_db_install.sh state=absent
