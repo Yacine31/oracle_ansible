@@ -3,6 +3,9 @@
 # installation des binaires ORACLE et patch
 #
 
+# telechargement des fihiers : oracle DB + opatch + PSU-RU
+  - include: download_software.yml
+
 # installation des binaires Oracle DB
   - include: install_database.yml
 

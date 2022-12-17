@@ -1,5 +1,5 @@
 ---
- - name: Install Oracle Software (grid + db)
+ - name: Install Oracle Software
    hosts: all
    # user: root
    # become: yes
