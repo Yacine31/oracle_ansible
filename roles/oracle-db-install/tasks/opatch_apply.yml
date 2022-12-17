@@ -3,23 +3,27 @@
     action: shell df -P /u01 | awk 'END { print $4 }'
     register: u01size
     failed_when: u01size.stdout|int < {{ u01_size_gb }} * 1024 * 1024
+    tags: patch_db
 
   - name: Vérification de l'espace disque tmp
     action: shell df -P /tmp | awk 'END { print $4 }'
     register: tmpsize
     failed_when: tmpsize.stdout|int < {{ tmp_size_gb }} * 1024 * 1024
+    tags: patch_db
 
   - name: Installation OPatch dns ORACLE_HOME
     action: shell unzip -oq {{ patch_dir }}/{{ opatch_file }} -d {{ oracle_home }}
     become: true
     become_method: su
     become_user: oracle
+    tags: patch_db
 
   - name: unzip du patch
     action: shell unzip -oq {{ patch_dir }}/{{ psu_file }} -d {{ patch_dir }}
     become: true
     become_method: su
     become_user: oracle
+    tags: patch_db
 
   - name: patch conflict detection
     action: shell export ORACLE_HOME={{ oracle_home }}; cd {{ patch_dir }}/{{ patch_number }}; $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./
@@ -28,6 +32,7 @@
     become: true
     become_method: su
     become_user: oracle
+    tags: patch_db
 
   - name: Application du patch 
     action: shell export ORACLE_HOME={{ oracle_home}}; cd {{ patch_dir }}/{{ patch_number }}; $ORACLE_HOME/OPatch/opatch apply -silent
@@ -36,6 +41,7 @@
     become: true
     become_method: su
     become_user: oracle
+    tags: patch_db
     
   - name: Résultat de l'installation via OPatch
     shell: "{{ oracle_home }}/OPatch/opatch lsinventory"
@@ -43,18 +49,21 @@
     become_method: su
     become_user: oracle
     register: opatchls
-    tags: opatch
+    tags: patch_db
 
   - debug: var=opatchls.stdout_lines
     # with_items: opatchls.results
-    tags: opatch
+    tags: patch_db
 
   # suppression des binaires, du fichier de réponse et du script d'install
   - name: Nettoyage du répertoire du patch
     file: path={{ oracle_sources }}/{{ patch_number }} state=absent
+    tags: patch_db
 
   - name: suppression du fichier OPatch
     file: path={{ oracle_sources }}/{{ opatch_file }} state=absent
+    tags: patch_db
 
   - name: suppression du Patch RU
     file: path={{ oracle_sources }}/{{ psu_file }} state=absent
+    tags: patch_db
