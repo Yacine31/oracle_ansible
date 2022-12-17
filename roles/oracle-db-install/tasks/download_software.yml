@@ -1,0 +1,15 @@
+---
+  - name: Téléchrgement des fihiers
+    become: yes
+    get_url:
+      url: https://cloud.axiome.io/s/{{ item.url }}/download/{{ item.file_src }}
+      dest: /u01/sources/{{ item.file_dest }}
+      mode: 0755
+      group: oinstall
+      owner: oracle
+    with_items:
+      - { url: aPD2BamMSfwQj4r, file_src: {{oracle_zip_filename}}, file_dest: db_19.zip}
+      - { url: L7coB8qdzonwyd2, file_src: {{opatch_file}}, file_dest: opatch.zip}
+      - { url: WJHTiaZozNtzJKB, file_src: {{psu_file}}, file_dest: patch_ru.zip}
+    tags: download_sw
+       
