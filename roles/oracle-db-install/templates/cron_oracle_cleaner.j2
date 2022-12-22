@@ -11,3 +11,6 @@ find {{ oracle_base }}/diag/rdbms/ -iname "*trc"  -mtime +30 -print -delete | lo
 
 /usr/bin/logger -t ora_db_clean_trm "Clean trm file older than 30 days from {{ oracle_base }}/diag/rdbms/"
 find {{ oracle_base }}/diag/rdbms/ -iname "*trm"  -mtime +30 -print -delete | logger -t oracle_clean_trm
+
+/usr/bin/logger -t ora_db_clean_aud "Clean audit file older than 30 days from {{ oracle_base }}/admin/"
+find {{ oracle_base }}/admin/ -iname "*.aud"  -mtime +30 -print -delete | logger -t oracle_clean_aud
