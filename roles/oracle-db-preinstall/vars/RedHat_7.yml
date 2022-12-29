@@ -95,6 +95,7 @@
     - readline
     - readline-devel
     - rlwrap
+    - rsync
     - rpcbind
     - sg3_utils
     - smartmontools

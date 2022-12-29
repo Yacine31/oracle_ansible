@@ -76,7 +76,8 @@
    - quota
    - quota-nls
    - rpcbind
-   - smartmontools
+   - rsync
+   - rlwrap
    - smartmontools
    - sysstat
    - tar
