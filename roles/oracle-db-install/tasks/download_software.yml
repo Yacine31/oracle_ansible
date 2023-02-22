@@ -12,7 +12,7 @@
   - name: Téléchrgement OPatch
     become: yes
     get_url:
-      url : https://kutt.axiome.io/fYuP5Q5
+      url : https://kutt.axiome.io/opatch
       dest: /u01/sources/{{opatch_file}}
       mode: 0755
       group: oinstall
@@ -22,7 +22,7 @@
   - name: Téléchrgement du PSU
     become: yes
     get_url:
-      url: https://kutt.axiome.io/pSCsxTa 
+      url: https://kutt.axiome.io/db_ru 
       dest: /u01/sources/{{psu_file}}
       mode: 0755
       group: oinstall
