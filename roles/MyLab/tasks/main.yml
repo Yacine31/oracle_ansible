@@ -4,70 +4,131 @@
   #-------------------------------------------
 
   #-------------------------------------------
-  # installation de telegraf
-  #-------------------------------------------
-
-#  - name: get id 
-#    shell: cat /etc/os-release | grep "^ID=" | cut -d= -f2
-#    register: os_id
-
-  - name: get version_codename 
-    shell: cat /etc/os-release | grep "VERSION_CODENAME=" | cut -d= -f2
-    register: version_codename
-
-  #-------------------------------------------
   # Debian : installation de telegraf
   #-------------------------------------------
   - name: download influxdb key
-    get_url: url=https://repos.influxdata.com/influxdb.key dest=/etc/apt/trusted.gpg.d/influxdb.asc
+    get_url:
+      url: https://repos.influxdata.com/influxdata-archive_compat.key
+      dest: /tmp/influxdata-archive_compat.key
+      mode: 0644
     when: ansible_os_family == 'Debian'
 
-  - name: remove repo file for debian
-    file: 
+  - name: import key
+    action: shell gpg --with-fingerprint --show-keys /tmp/influxdata-archive_compat.key
+    when: ansible_os_family == 'Debian'
+
+  - name: remove old repository
+    file:
       path: /etc/apt/sources.list.d/influxdb.list
+      state: absent
+    when: ansible_os_family == 'Debian'
+
+  - name: clean old key
+    file:
+      path: /etc/apt/trusted.gpg.d/influxdb.gpg
+      state: absent
+    when: ansible_os_family == 'Debian'
+
+  - name: clean temporary key
+    file:
+      path: /tmp/influxdata-archive_compat.key
       state: absent
     when: ansible_os_family == 'Debian'
 
   - name: create repo file for debian
     lineinfile: 
-      dest: /etc/apt/sources.list.d/influxdb.list
-      line: "deb https://repos.influxdata.com/debian {{version_codename.stdout}} stable"
+      dest: /etc/apt/sources.list.d/influxdata.list
+      line: "deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main"
       create: yes
     when: ansible_os_family == 'Debian'
 
+  - name: update package index
+    apt:
+      update_cache: yes
+    when: ansible_os_family == 'Debian'
+
+  - name: upgrade the OS (dist-upgrade)
+    apt:
+      upgrade: dist
+    when: ansible_os_family == 'Debian'
+
+  - name: remove old packages
+    apt:
+      autoremove: yes
+    when: ansible_os_family == 'Debian'
 
   - name: install telgreaf
     apt: name=telegraf state=present
     when: ansible_os_family == 'Debian'
 
+
   #-------------------------------------------
   # RedHat : installation de telegraf
   #-------------------------------------------
+
+  - name: remoe old repository
+    file:
+      path: /etc/yum.repos.d/influxdb.repo
+      state: absent
+    when: ansible_os_family == 'RedHat'
+
   - name: create repo file for RedHat
-    copy: src=influxdb.repo dest=/etc/yum.repos.d/influxdb.repo owner=root group=root mode=0755 
+    copy: src=influxdata.repo dest=/etc/yum.repos.d/influxdata.repo owner=root group=root mode=0755 
+    when: ansible_os_family == 'RedHat'
+
+  - name: Upgrade all packages, excluding kernel 
+    yum:
+      name: '*'
+      state: latest
+      exclude: kernel*
     when: ansible_os_family == 'RedHat'
 
   - name: install telgreaf
-    yum: name=telegraf state=present 
-    when: ansible_os_family == 'RedHat'
-
-  - name: create config file
-    copy: src=telegraf.conf dest=/etc/telegraf/telegraf.conf owner=root group=root mode=0755
-
-  - name: delete log file if exist
-    file: path=/var/log/telegraf.log state=absent
-
-  - name: create new log file 
-    file: path=/var/log/telegraf.log state=touch owner=telegraf group=telegraf mode=0755
-
-  - name: restart tlegraf
-    service: name=telegraf state=restarted
+    yum: 
+      name: telegraf 
+      state: present 
     when: ansible_os_family == 'RedHat'
 
   - name: install logrotate
-    yum: name=logrotate state=present 
+    yum: 
+      name: logrotate 
+      state: present 
     when: ansible_os_family == 'RedHat'
 
+  #-------------------------------------------
+  # Telegraf : configuration
+  #-------------------------------------------
+
+  - name: create config file
+    copy: 
+      src: telegraf.conf 
+      dest: /etc/telegraf/telegraf.conf 
+      owner: root 
+      group: root 
+      mode: 0755
+
+  - name: delete log file if exist
+    file: 
+      path: /var/log/telegraf.log 
+      state: absent
+
+  - name: create new log file 
+    file: 
+      path: /var/log/telegraf.log 
+      state: touch 
+      owner: telegraf 
+      group: telegraf 
+      mode: 0755
+
   - name: add config file to logrotate.d
-    copy: src=telegraf.logrotate dest=/etc/logrotate.d/telegraf owner=root group=root mode=0644
-    when: ansible_os_family == 'RedHat'
+    copy: 
+      src: telegraf.logrotate 
+      dest: /etc/logrotate.d/telegraf 
+      owner: root 
+      group: root 
+      mode: 0644
+
+  - name: start service telegraf, if not started
+    service:
+      name: telegraf
+      state: started
