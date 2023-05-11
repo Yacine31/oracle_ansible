@@ -1,0 +1,50 @@
+---
+  - name: Vérification de la distribution, la version et le kernel
+    assert:
+     that: ansible_architecture == 'x86_64' and ansible_os_family == 'RedHat' and ansible_system == 'Linux' 
+    tags: oscheck
+
+  # ---------------------------------------------------
+  # Ajout du fichier de paramètres : Redhat_8.yml ou Redhat_7.yml ...
+  # ---------------------------------------------------
+  - name: ajout des paramètres spécifique à l'OS
+    include_vars: "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
+
+  # ---------------------------------------------------
+  # configuration des packages necessaires pour Linux
+  # ---------------------------------------------------
+  - include: os_configuration.yml
+
+  # ---------------------------------------------------
+  # configuration réseau
+  # ---------------------------------------------------
+  - include: network_configuration.yml
+
+  # --------------------------------------------------- 
+  # configuration Linux : grub
+  # ---------------------------------------------------
+  - include: grub_configuration.yml
+
+  # --------------------------------------------------- 
+  # configuration Linux : Sécurisation
+  # ---------------------------------------------------
+  - include: secure_configuration.yml
+
+  # ---------------------------------------------------
+  # configuration Linux : Utilisateurs et groupes Oracle
+  # ---------------------------------------------------
+  - include: users_configuration.yml
+ 
+  # ---------------------------------------------------
+  # configuration Linux : personnalisation rlwrap
+  # ---------------------------------------------------
+  - include: rlwrap.yml
+
+  # ---------------------------------------------------
+  # configuration Linux : Création des répertoires Oracle
+  # => la creation des répertoires se fait dans le role db-install
+  # ---------------------------------------------------
+  # - include: dir_creation.yml
+  
+
+

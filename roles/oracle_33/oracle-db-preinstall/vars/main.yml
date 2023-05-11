@@ -1,0 +1,43 @@
+---
+  # pour une installation oracle  renseigner ces variables 
+  # pour les scripts d'exploitation et la création des répertoires
+
+  oracle_version: "19.0.0"
+  oracle_base: "/u01/app/oracle"
+  oracle_home: "{{ oracle_base }}/product/{{oracle_version}}/dbhome_1"
+  oracle_inventory: "/u01/app/oraInventory"
+  oracle_sources: "/u01/sources"
+  oracle_oradata: "/u02/oradata/"
+  oracle_fra: "/u03/fast_recovery_area/"
+
+  # faire une configuration minimal ?
+  # la configuration complète : fait en plus la création des users, des groupes, des répertoires ...
+  full_configuration: true
+  
+  # faire une configuration securisée du system d'exploitation
+  secure_configuration: false
+
+
+  #----------------------------------------------------------------------
+  # services Linux à désactiver :
+  #----------------------------------------------------------------------
+  linux_services:
+      - avahi-daemon
+      - bluetooth
+      - cups
+      - firewalld
+      - firstboot
+      - gpm
+      - hidd
+      - hplip
+      - ip6tables
+      - iptables
+      - isdn
+      - mcstrans
+      - mdmonitor
+      - ntpd
+      - restorecond
+      - rhnsd
+      - setroubleshoot
+      - smartd
+      - yum-updatesd

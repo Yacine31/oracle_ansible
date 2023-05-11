@@ -1,0 +1,187 @@
+# Fichier de paramètres pour Oracle Linux 8
+---
+
+  #----------------------------------------------------------------------
+  # packages linux nécessaires pour travailler
+  #----------------------------------------------------------------------
+  linux_packages:
+   - bc
+   - bind-libs
+   - bind-libs-lite
+   - bind-license
+   - bind-utils
+   - binutils
+   - chrony
+   - elfutils-libelf
+   - elfutils-libelf-devel
+   - fontconfig-devel
+   - fstrm
+   - gcc
+   - glibc
+   - glibc-devel
+   - glibc-devel.i686
+   - glibc-headers
+   - gssproxy
+   - htop
+   - kernel-headers
+   - keyutils
+   - ksh
+   - libaio
+   - libaio.i686
+   - libaio-devel
+   - libaio-devel.i686
+   - libdmx
+   - libgcc
+   - libgcc.i686
+   - libibverbs
+   - libICE
+   - libmaxminddb
+   - libnsl
+   - libpkgconf
+   - librdmacm
+   - libSM
+   - libstdc++.i686
+   - libstdc++
+   - libstdc++-devel
+   - libstdc++-devel.i686
+   - libverto-libevent
+   - libX11
+   - libX11-common
+   - libX11-xcb
+   - libXau
+   - libxcb
+   - libXcomposite
+   - libxcrypt-devel
+   - libXext
+   - libXi
+   - libXi.i686
+   - libXinerama
+   - libXmu
+   - libXrandr
+   - libXrender
+   - libXt
+   - libXtst
+   - libXtst.i686
+   - libXv
+   - libXxf86dga
+   - libXxf86misc
+   - libXxf86vm
+   - lm_sensors-libs
+   - make
+   - mlocate
+   - nscd
+   - net-snmp
+   - net-tools
+   - nfs-utils
+   - perl
+   - pkgconf
+   - pkgconf-m4
+   - pkgconf-pkg-config
+   - policycoreutils
+   - policycoreutils-python-utils
+   - protobuf-c
+   - psmisc
+   - python3-bind
+   - python3-pyyaml
+   - quota
+   - quota-nls
+   - rpcbind
+   - rsync
+   - rlwrap
+   - smartmontools
+   - sysstat
+   - tar
+   - tree
+   - unixODBC
+   - unixODBC-devel
+   - unzip
+   - vim
+   - vim-enhanced
+   - wget
+   - xorg-x11-utils
+   - xorg-x11-xauth
+   - numactl
+   - rsyslog
+
+
+  #----------------------------------------------------------------------
+  # paramètres du noyeau pour une installation Oracle
+  #----------------------------------------------------------------------
+  oracle_sysconfig:
+      # shmall = 50% de la RAM pour les SGA Oracle, divisé par PAGE_SIZE (getconf PAGE_SIZE = 4096)
+      # on suppose que 60% de la RAM sera affectée aux SGA
+      - { name: fs.file-max, value: 6815744 }
+      - { name: fs.aio-max-nr, value: 1048576 }
+      - { name: kernel.sem, value: "250 32000 100 128" }
+      - { name: kernel.shmmni, value: 4096 }
+      # setting for kernel.shmall is 1073741824 on x86_64
+      - { name: kernel.shmall, value: 1073741824 }
+      # - { name: kernel.shmall, value: "{{ ((0.6 * ansible_memtotal_mb)*1024*1024/4096)|round|int  }}" }
+      # setting for kernel.shmmax is 4398046511104 on x86_64
+      - { name: kernel.shmmax, value: 4398046511104 }
+      # - { name: kernel.shmmax, value: "{{ ((0.8 * ansible_memtotal_mb)*1024*1024)|round|int  }}" }
+      - { name: net.core.rmem_default, value: 262144 }
+      - { name: net.core.rmem_max, value: 4194304 }
+      - { name: net.core.wmem_default, value: 262144 }
+      - { name: net.core.wmem_max, value: 1048576 }
+      - { name: net.ipv4.conf.all.rp_filter, value: 2 }
+      - { name: net.ipv4.conf.default.rp_filter, value: 2 }
+      - { name: net.ipv4.ip_local_port_range, value: "9000 65500" }
+      - { name: vm.swappiness, value: 10 }
+      # vm.min_free_kbytes value (Kb) MAX(1GB * number_numa_nodes, 0.5% * total_memory) 
+      - { name: vm.min_free_kbytes, value: "{{ ((1048576, ((0.5/100 * ansible_memtotal_mb)*1024)|round|int) | max) }}" }
+      # - { name: vm.min_free_kbytes, value: 1048576 }
+      - { name: vm.hugetlb_shm_group, value: 1001 }
+      # - { name: vm.nr_hugepages, value: "{{ (((percent_hugepages/100) * ansible_memtotal_mb)/2)|round|int  }}" }
+      # Orabug 19212317
+      - { name: kernel.panic_on_oops, value: 1 }
+
+  #----------------------------------------------------------------------
+  # paramètres security limits pour une installation Oracle
+  #----------------------------------------------------------------------
+  oracle_seclimits:
+      # setting for nofile soft limit is 1024
+      - "* soft nofile 1024"
+      #  setting for nofile hard limit is 65536
+      - "* hard nofile 65536"
+      # setting for nproc soft limit is 16384
+      - "* soft nproc 16384"
+      # setting for nproc hard limit is 16384
+      - "* hard nproc 16384"
+      # setting for memlock soft limit is maximum of 128GB on x86_64 or 3GB on x86 OR 90% of RAM
+      # - "* soft memlock 134217728"
+      - "* soft memlock {{ [((0.9 * ansible_memtotal_mb)*1024)|round|int,134217728] | max }}"
+      # setting for memlock hard limit is maximum of 128GB on x86_64 or 3GB on x86 OR 90% of RAM
+      # - "* hard memlock 134217728"
+      - "* hard memlock {{ [((0.9 * ansible_memtotal_mb)*1024)|round|int,134217728] | max }}"
+      # setting for stack soft limit is 10240KB
+      - "* soft stack 10240"
+      # setting for stack hard limit is 32768KB
+      - "* hard stack 32768"
+      - "* soft data unlimited"
+      - "* hard data unlimited"
+      - "* soft core unlimited"
+      - "* hard core unlimited"
+
+  #---------------------------------------------------------------------
+  # pramètres de configuation sécurisée :
+  #---------------------------------------------------------------------
+  linux_secure_config:
+      - { name: net.ipv4.conf.all.accept_redirects, value: 0 }
+      - { name: net.ipv4.conf.all.accept_source_route, value: 0 }
+      - { name: net.ipv4.conf.all.log_martians, value: 1 }
+      - { name: net.ipv4.conf.all.secure_redirects, value: 0 }
+      - { name: net.ipv4.conf.default.accept_redirects, value: 0 }
+      - { name: net.ipv4.conf.default.accept_source_route, value: 0 }
+      - { name: net.ipv4.conf.default.log_martians, value: 1 }
+      - { name: net.ipv4.conf.default.secure_redirects, value: 0 }
+      - { name: net.ipv4.icmp_echo_ignore_broadcasts, value: 1 }
+      - { name: net.ipv4.icmp_ignore_bogus_error_responses, value: 1 }
+      - { name: net.ipv4.ip_forward, value: 0 }
+      - { name: net.ipv6.conf.all.accept_ra, value: 0 }
+      - { name: net.ipv6.conf.all.accept_redirects, value: 0 }
+      - { name: net.ipv6.conf.all.accept_source_route, value: 0 }
+      - { name: net.ipv6.conf.default.accept_ra, value: 0 }
+      - { name: net.ipv6.conf.default.accept_redirects, value: 0 }
+      - { name: net.ipv6.conf.default.accept_source_route, value: 0 }
+

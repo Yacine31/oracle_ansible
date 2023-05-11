@@ -1,0 +1,32 @@
+---
+# création des répertoires Oracle
+#
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/oraInventory
+# chown -R oracle:oinstall /u01/app/oracle
+# chown -R oracle:oinstall /u01/app/oraInventory
+# chmod -R 775 /u01/app
+
+# su - oracle
+# mkdir -p /u01/app/oracle/product/19.0.0/dbhome_1
+# cd /u01/app/oracle/product/19.0.0/dbhome_1
+# unzip -q /tmp/db_home.zip
+# cd /u01/app/oracle/product/19.0.0/dbhome_1
+# ./runInstaller
+
+  - name: Création du répertoire oracle
+    shell: |
+      mkdir -p {{ item }}
+      chown -R oracle:oinstall /$(echo {{ item }} | cut -d"/" -f2)
+      chmod -R 775 /$(echo {{ item }} | cut -d"/" -f2)
+    # file: path={{ item }} mode=775 owner=oracle group=oinstall state=directory recurse=yes
+    with_items:
+      - "{{ oracle_base }}"
+      - "{{ oracle_inventory }}"
+      - "{{ oracle_home }}"
+      - "{{ oracle_sources }}"
+      - "{{ oracle_oradata }}"
+      - "{{ oracle_fra }}"
+    when: full_configuration
+    tags: directoriesdb
+

@@ -1,0 +1,17 @@
+#!/bin/sh
+# ---
+# Suppression des fichiers trc, trm et xml des sous repertoire dans diag
+
+modif_time=7
+
+/usr/bin/logger -t ora_db_clean_xml "Clean xml file older than ${modif_time} days from {{ oracle_base }}/diag/rdbms/"
+find {{ oracle_base }}/diag/rdbms/ -iname "*xml"  -mtime +${modif_time} -print -delete | logger -t oracle_clean_xml
+
+/usr/bin/logger -t ora_lsnr_clean_xml "Clean xml file older than ${modif_time} days from {{ oracle_base }}/diag/tnslsnr/"
+find {{ oracle_base }}/diag/tnslsnr/ -iname "*xml"  -mtime +${modif_time} -print -delete | logger -t oracle_clean_xml
+
+/usr/bin/logger -t ora_db_clean_trc "Clean trc file older than ${modif_time} days from {{ oracle_base }}/diag/rdbms/"
+find {{ oracle_base }}/diag/rdbms/ -iname "*trc"  -mtime +${modif_time} -print -delete | logger -t oracle_clean_trc
+
+/usr/bin/logger -t ora_db_clean_trm "Clean trm file older than ${modif_time} days from {{ oracle_base }}/diag/rdbms/"
+find {{ oracle_base }}/diag/rdbms/ -iname "*trm"  -mtime +${modif_time} -print -delete | logger -t oracle_clean_trm

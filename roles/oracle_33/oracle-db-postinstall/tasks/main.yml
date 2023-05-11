@@ -1,0 +1,102 @@
+---
+# 
+# post configuration d'une installation de base de données Oracle 
+#
+  # ---------------------------------------------------
+  # récupération des scripts sql 
+  # ---------------------------------------------------
+  - name: Clonage du repository github SQL
+    git:
+      repo: https://github.com/Yacine31/sql.git
+      dest: "{{ scripts_dir }}"
+      clone: yes
+      update: yes
+      force: yes
+ 
+  # ---------------------------------------------------
+  # changement du propriétaire de root en oracle 
+  # ---------------------------------------------------
+  - name: Changement du propriétaire
+    file: 
+      dest: "{{ scripts_dir }}" 
+      owner: oracle
+      group: oinstall
+      recurse: yes
+
+  # --------------------------------------------------- 
+  # Modification du prompt SQLPlus
+  # --------------------------------------------------- 
+  - name: Modification du prompt SQLPlus
+    copy: src=login.sql dest={{ scripts_dir }} mode=644 owner=oracle group=oinstall
+    tags: login.sql
+
+  # --------------------------------------------------- 
+  # Ajout de la variabe ORACLE_PATH ans .bash_profile
+  # --------------------------------------------------- 
+  - name: Ajout de la variabe ORACLE_PATH ans .bash_profile
+    lineinfile: path=/home/oracle/.bash_profile line="export ORACLE_PATH={{ scripts_dir }}" create=yes
+    tags: oraclepath
+
+  # --------------------------------------------------- 
+  # ajout de script oracle pour les backups rman
+  # ---------------------------------------------------
+
+  #  - name: Copie du script backup_rman.sh dans {{ scripts_dir }}
+  #    copy: src=backup_rman.sh dest={{ scripts_dir }}/ owner=oracle group=oinstall mode=755  #
+
+  #  - name: Copie du script backup_rman_alldb.sh dans {{ scripts_dir }}
+  #    copy: src=backup_rman_alldb.sh dest={{ scripts_dir }}/ owner=oracle group=oinstall mode=755
+
+  - name: Copie du script RMAN et Datapump dans {{ scripts_dir }}
+    copy: src={{ item }} dest={{ scripts_dir }}/ owner=oracle group=oinstall mode=755
+    loop: 
+      - backup_rman.sh
+      - backup_rman_alldb.sh
+      - export_datapump.sh
+      - export_datapump_alldb.sh
+    tags: backup
+
+  - name: Création de répertoire de sauvegarde RMAN et Datapump /u04
+    file: dest=/u04 mode=775 owner=oracle group=oinstall state=directory recurse=yes
+    tags: backup
+
+  - name: installation du package mutt pour envoyer des mails depuis le shell
+    yum:  name=mutt state=latest disable_gpg_check=yes
+    tags: backup
+
+  - name: Ajout de la tâche cron RMAN
+    cron: name="Backup RMAN des bases ouvertes et en AL" user=oracle minute="44" hour="23" job="sh {{ scripts_dir }}/backup_rman_alldb.sh 2>&1 1>/dev/null"
+    tags: backup
+
+  - name: Ajout de la tâche cron Datapump
+    cron: name="Export Datapump des bases ouvertes" user=oracle minute="44" hour="21" job="sh {{ scripts_dir }}/export_datapump_alldb.sh 2>&1 1>/dev/null"
+    tags: backup
+
+  # --------------------------------------------------- 
+  # configuration Linux : config oracle pour logrotate
+  # Gestion des fichiers logs seulement (archivage et réinitialisation)
+  # ---------------------------------------------------
+  - name: Gestion des logs Oracle - copie du fichier de configuration pour logrotate
+    template: src=logrotate_oracle.j2 dest=/etc/logrotate.d/oracle mode=644 owner=root group=root
+    tags: logrotate
+
+  # --------------------------------------------------- 
+  # configuration Linux : oracle cleaner dans cron.daily
+  # Gestion des fichiers trace et xml : purge des anciens fichiers
+  # ---------------------------------------------------
+  - name: Netoyage ADR Oracle - copie du fichier de configuration pour cron
+    template: src=cron_oracle_cleaner.j2 dest=/etc/cron.daily/oracle_cleaner mode=755 owner=root group=root
+    tags: cron_daily
+
+  # --------------------------------------------------- 
+  # copy du fichier dbora.service dans /lib/systemd/system pour redémmarage auto
+  # ---------------------------------------------------
+  - name: Copie du script de démarrage auto des bases Oracle
+    template: src=dbora.service.j2 dest=/lib/systemd/system/dbora.service owner=root mode=644
+    tags: dbora_init
+
+  - name: Activation par systemctl du script de démarrage auto des bases Oracle
+    systemd: name=dbora daemon_reload=yes enabled=yes
+    tags: dbora_init
+
+  - debug: msg="Pensez à mettre Y au lieu de N dans /etc/oratab pour les bases à démarreage automatique"

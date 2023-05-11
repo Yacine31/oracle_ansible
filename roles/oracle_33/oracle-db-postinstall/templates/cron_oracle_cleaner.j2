@@ -1,0 +1,24 @@
+#!/bin/sh
+
+export ORACLE_BASE={{ oracle_base }}
+
+export ADMIN_DIR=${ORACLE_BASE}/admin
+export RDBMS_LOG_DIR=${ORACLE_BASE}/diag/rdbms
+export LSNR_LOG_DIR=${ORACLE_BASE}/diag/tnslsnr
+
+export DAYS=15
+
+/usr/bin/logger -t ora_db_clean_xml "Clean xml file older than $DAYS days from ${RDBMS_LOG_DIR}"
+find ${RDBMS_LOG_DIR} -iname "*.xml"  -mtime +$DAYS -print -delete | logger -t oracle_clean_xml
+
+/usr/bin/logger -t ora_lsnr_clean_xml "Clean xml file older than $DAYS days from ${LSNR_LOG_DIR}"
+find ${LSNR_LOG_DIR} -iname "*.xml"  -mtime +$DAYS -print -delete | logger -t oracle_clean_xml
+
+/usr/bin/logger -t ora_db_clean_trc "Clean trc file older than $DAYS days from ${RDBMS_LOG_DIR}"
+find ${RDBMS_LOG_DIR} -iname "*.trc"  -mtime +$DAYS -print -delete | logger -t oracle_clean_trc
+
+/usr/bin/logger -t ora_db_clean_trm "Clean trm file older than $DAYS days from ${RDBMS_LOG_DIR}"
+find ${RDBMS_LOG_DIR} -iname "*.trm"  -mtime +$DAYS -print -delete | logger -t oracle_clean_trm
+
+/usr/bin/logger -t ora_db_clean_aud "Clean audit file older than +$DAYS days from ${ADMIN_DIR}"
+find ${ADMIN_DIR} -iname "*.aud"  -mtime +$DAYS -print -delete | logger -t oracle_clean_aud

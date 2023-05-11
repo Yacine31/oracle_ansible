@@ -1,0 +1,10 @@
+---
+ - name: Host configuration
+   hosts: all
+#   user: root
+#   become: yes
+   become_user: root
+   become_method: sudo
+
+   roles:
+     - oracle-db-postinstall

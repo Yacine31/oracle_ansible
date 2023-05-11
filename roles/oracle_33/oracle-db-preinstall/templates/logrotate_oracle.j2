@@ -1,0 +1,14 @@
+{{ oracle_base }}/diag/rdbms/*/*/trace/*.log 
+{{ oracle_base }}/diag/tnslsnr/*/*/trace/*.log 
+{
+    su oracle oinstall
+    daily
+    size 100M
+    rotate 6
+    missingok
+    compress
+    notifempty
+    dateext
+    create 0640 oracle oinstall
+}
+
